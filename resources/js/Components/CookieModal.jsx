@@ -94,7 +94,9 @@ export const CookieModal = ({ acceptCookies, visible }) => {
                             <div className="max-w-lg">
                                 <h3 className="text-2xl text-white uppercase mb-4">Cookies</h3>
                                 <p className="font-secondary text-sm text-white text-justify">
-                                    This website uses cookies to improve the user experience by registering the preffered language and theme.
+                                    Utilizamos cookies para oferecer uma melhor experiência, melhorar o desempenho, analisar como você interage em nosso site e personalizar conteúdo. Para mais informações acesse nossa <a href={route('Politicas.privacidade')} className="underline hover:opacity-80 transition-colors">
+                                        Política de Privacidade
+                                    </a>.
                                 </p>
                             </div>
                             <div className="flex gap-8 mt-6 justify-center max-w-lg">
@@ -102,14 +104,14 @@ export const CookieModal = ({ acceptCookies, visible }) => {
                                     onClick={handleAcceptAllCookies}
                                     className="border border-white text-white font-light text-center px-6 py-1.5 min-w-36 transition-all hover:bg-white hover:text-black hover:border-white"
                                 >
-                                    Accept all
+                                    Aceitar todos
                                 </button>
                                 
                                 <button
                                     onClick={handleSelectCookies}
                                     className="text-white text-sm underline hover:opacity-80 transition-colors"
                                 >
-                                    Select cookies
+                                    Selecionar cookies
                                 </button>
                             </div>
                         </>
