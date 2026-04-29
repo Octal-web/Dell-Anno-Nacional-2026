@@ -14,16 +14,16 @@ export const InspirationLinks = () => {
                     
                     <Link href={route('Lojas.Projetos.index')} className="group">
                         <div className="overflow-hidden mb-4 md:mb-10">
-                            <img src="/site/img/inspiration-2.jpg" className="transition-all duration-500 group-hover:scale-110" alt="Projects" />
+                            <img src="/site/img/inspiration-2.jpg" className="transition-all duration-500 group-hover:scale-110" alt="Projetos" />
                         </div>
-                        <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light text-center uppercase tracking-wide">// Projects</h3>
+                        <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light text-center uppercase tracking-wide">// Projetos</h3>
                     </Link>
                     
                     <Link href={route('Mostras.index')} className="group">
                         <div className="overflow-hidden mb-4 md:mb-10">
-                            <img src="/site/img/inspiration-3.jpg" className="transition-all duration-500 group-hover:scale-110" alt="Decoration Fairs" />
+                            <img src="/site/img/inspiration-3.jpg" className="transition-all duration-500 group-hover:scale-110" alt="Mostras de Decoração" />
                         </div>
-                        <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light text-center uppercase tracking-wide">// Decoration Fairs</h3>
+                        <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light text-center uppercase tracking-wide">// Mostras de Decoração</h3>
                     </Link>
                 </div>
             </div>
