@@ -1,0 +1,137 @@
+import React, { useState, useEffect } from 'react';
+import { Link, usePage, useForm } from '@inertiajs/react';
+
+import Select from 'react-select';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBuilding, faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
+import AdminLayout from '@/Layouts/AdminLayout';
+import { Breadcrumb } from '@/Components/Manager/Breadcrumb';
+import { FormGroup } from '@/Components/Manager/Inputs/FormGroup';
+
+const Page = () => {
+    const { idioma, idiomas, paises, loja } = usePage().props;
+
+    const { data, setData, post, processing, errors } = useForm(loja);
+
+    const breadcrumbItems = [
+        { label: 'Lojas', link: 'Manager.Lojas.index' },
+    ];
+
+    const inputItems = [
+        [{ titulo: 'Cidade', name: 'cidade', tamanho: 'col-span-12 lg:col-span-4', tipo: 'texto', max: 120 }, { titulo: 'Estado', name: 'estado', tamanho: 'col-span-4 lg:col-span-1', tipo: 'texto', max: 2 }, { titulo: 'País', name: 'pais_id', tamanho: 'col-span-8 lg:col-span-3', tipo: 'select', options: paises }],
+        [{ titulo: 'Link Landing Page', name: 'link_lp', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto', max: 120 }, { titulo: 'Link Incorporado Showroom', name: 'link_showroom', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto', max: 120 }],
+        [{ titulo: 'E-mails loja', name: 'emails_lojas', tamanho: 'col-span-12 lg:col-span-8', tipo: 'tag', max: 120 }],
+        [{ titulo: 'Endereço', name: 'endereco', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 150 }, { titulo: 'Contato', name: 'contato', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 150 }],
+        [{ titulo: 'Horário de Atendimento', name: 'horario_atendimento', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 150 }, { titulo: 'Texto chamada', name: 'chamada', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 380 }],
+        [{ titulo: 'Logo', name: 'img_logo', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'imagem', crop: false, largura: 250, altura: 150, imagem: loja.logo }, { titulo: 'Imagem', name: 'img', tamanho: 'col-span-12 md:col-span-6', tipo: 'imagem', crop: true, largura: 1920, altura: 760, imagem: loja.imagem }],
+        [{ titulo: 'Imagem Showroom', name: 'img_showroom', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'imagem', crop: true, largura: 1920, altura: 1310, imagem: loja.imagem_showroom }, { titulo: 'Vídeo Showroom', name: 'vid_showroom', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'video', arquivo: loja.video_showroom ? route('Manager.Lojas.baixarVideo', { id: loja.id }) : null }],
+        [{ titulo: 'Título da Página', name: 'titulo_pagina', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto', max: 100 }],
+        [{ titulo: 'Descrição da Página', name: 'descricao_pagina', tamanho: 'col-span-12 lg:col-span-8', editor: false, tipo: 'texto_longo', max: 300 }],
+    ];
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const idioma_url = new URLSearchParams(window.location.search).get('lang');
+
+        post(route('Manager.Lojas.atualizar', {id: loja.id, lang: idioma_url}), {
+            preserveScroll: true,
+        });
+        console.log(data);
+
+        console.log(errors);
+    };
+
+    const onChange = (name, value) => {
+        setData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleImageCrop = (croppedImage, fileExtension, name) => {
+        setData(prevData => ({
+            ...prevData,
+            [name]: croppedImage
+        }));
+
+        if (name === 'img') {
+            const resizeBlobImage = (blob, scale = 0.40625) => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        const newWidth = img.width * scale;
+                        const newHeight = img.height * scale;
+
+                        canvas.width = newWidth;
+                        canvas.height = newHeight;
+                        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+                        canvas.toBlob(resizedBlob => {
+                            resolve(resizedBlob);
+                        }, blob.type);
+                    };
+
+                    img.src = URL.createObjectURL(blob);
+                });
+            };
+
+            resizeBlobImage(croppedImage).then(resizedBlob => {
+                setData(prevData => ({
+                    ...prevData,
+                    [`${name}_alt`]: resizedBlob
+                }));
+            });
+        }
+    };
+    
+    return (
+        <AdminLayout>
+            <Breadcrumb icon={faBuilding} items={breadcrumbItems} current="Editar" idioma={idioma.codigo} idiomas={idiomas} id={loja.id} />
+
+            <div className="mb-6 border border-stroke bg-white px-5 py-5 shadow-md">
+                <div className="mt-10">
+                    <form onSubmit={handleSubmit}>
+                        {inputItems.map((group, groupIndex) => (
+                            <div key={groupIndex} className="grid grid-cols-12 gap-x-6">
+                                {group.map((input, index) => (
+                                    <div key={index} className={`w-full ${input.tamanho}`}>
+                                        <FormGroup
+                                            input={input}
+                                            idioma={idioma}
+                                            value={data[input.name]}
+                                            onChange={onChange}
+                                            handleImageCrop={handleImageCrop}
+                                        />
+                                        {errors[input.name] && <p className="text-sm text-red-500 -mt-5 mb-3">{errors[input.name]}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+
+                        <div className="flex items-center justify-end">
+                            <Link href={route('Manager.Lojas.index')} className="flex items-center w-fit border border-red-700 text-red-700 px-3 py-2 mr-3 cursor-pointer transition-all hover:bg-red-100">
+                                <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
+                                Voltar
+                            </Link>
+
+                            <button
+                                type="submit"
+                                className="block relative w-fit border border-gray-300 px-3 py-2 cursor-pointer transition-all hover:bg-slate-200"
+                            >   
+                                <FontAwesomeIcon icon={faSave} className="text-slate-700 mr-2" />
+                                Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </AdminLayout>
+    );
+};
+
+export default Page;
