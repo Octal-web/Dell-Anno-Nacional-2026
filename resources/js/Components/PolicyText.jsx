@@ -9,7 +9,7 @@ export const PolicyText = ({ content }) => {
 
             <section className="mb-30">
                 <div className="container max-w-medium">
-                    <div className="font-secondary font-light text-center sm:tracking-wide sm:leading-loose text-justify" dangerouslySetInnerHTML={{ __html: content.texto }}>
+                    <div className="font-secondary font-light sm:tracking-wide sm:leading-loose text-justify" dangerouslySetInnerHTML={{ __html: content.texto }}>
                     </div>
                 </div>
             </section>

@@ -51,15 +51,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Busca o gh-pages remoto
           git fetch origin gh-pages || true
           
-          # Cria branch local apontando pro gh-pages remoto
           git checkout -B gh-pages origin/gh-pages || git checkout --orphan gh-pages
           
-          # Adiciona o build
           git add -f public/build
           git commit -m "chore: deploy build [skip ci]" || echo "Nothing to commit"
           
-          # Push normal, sem force
           git push origin gh-pages
