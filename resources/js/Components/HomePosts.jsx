@@ -15,7 +15,7 @@ export const HomePosts = ({ content, posts }) => {
                         {content.texto}
                     </p>
 
-                    <Link href={route('Blog.index')} className="block w-fit mx-auto font-light text-center uppercase border border-black px-8 py-2 mt-10 md:mt-16 mb-20 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label="See news">Saiba mais</Link>
+                    <Link href={route('Blog.index')} className="block w-fit mx-auto font-light text-center uppercase border border-black px-8 py-2 mt-10 md:mt-16 mb-20 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label="Saiba mais">Saiba mais</Link>
                 </Reveal>
 
                 <HomePostsSlides slides={posts} />
