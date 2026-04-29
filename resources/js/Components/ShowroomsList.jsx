@@ -24,7 +24,7 @@ export const ShowroomsList = ({ content, data }) => {
                                     <h3 className="text-xl 2xl:text-[20px] font-light">{item.nome}</h3>
                                 </Link>
                                  
-                                <Link href={route('Showrooms.showroom', {slug: item.slug})} className="mt-auto mr-auto border border-neutral-800 bg-white font-light text-center uppercase p-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label={item.nome}>View Showroom</Link>
+                                <Link href={route('Showrooms.showroom', {slug: item.slug})} className="mt-auto mr-auto border border-neutral-800 bg-white font-light text-center uppercase p-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label={item.nome}>Ver Showroom</Link>
                             </Reveal>
                         ))}
                     </div>

@@ -9,7 +9,7 @@ export const OtherShowroomsList = ({ showrooms }) => {
                     <div className="flex items-center justify-between gap-10 md:gap-20">
                         <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light uppercase tracking-wide leading-snug whitespace-nowrap">Saiba mais</h3>
                         
-                        <Link href={route('Showrooms.index')} className="mt-auto md:mx-4 border border-neutral-800 bg-white max-sm:text-sm font-light text-center uppercase max-sm:tracking-tight py-2 px-2 sm:px-4 md:px-8 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label="All Showrooms">All Showrooms</Link>
+                        <Link href={route('Showrooms.index')} className="mt-auto md:mx-4 border border-neutral-800 bg-white max-sm:text-sm font-light text-center uppercase max-sm:tracking-tight py-2 px-2 sm:px-4 md:px-8 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label="All Showrooms">Todos os Showrooms</Link>
                     </div>
                 </div>
             </section>
@@ -27,7 +27,7 @@ export const OtherShowroomsList = ({ showrooms }) => {
                                     <h3 className="text-xl 2xl:text-[20px] font-light">{showroom.nome}</h3>
                                 </Link>
                                  
-                                <Link href={route('Showrooms.showroom', {slug: showroom.slug})} className="mt-auto mr-auto border border-neutral-800 bg-white font-light text-center uppercase p-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label={showroom.nome}>View Showroom</Link>
+                                <Link href={route('Showrooms.showroom', {slug: showroom.slug})} className="mt-auto mr-auto border border-neutral-800 bg-white font-light text-center uppercase p-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label={showroom.nome}>Ver Showroom</Link>
                             </Reveal>
                         ))}
                     </div>

@@ -53,7 +53,7 @@ export const StoreProjectGallery = ({ slides }) => {
         <section className="py-10 md:py-14">
             <div className="container max-w-large">
                 <div className="flex items-end justify-between mb-10">
-                    <h2 className="text-3xl sm:text-4xl 2xl:text-[45px] font-light uppercase tracking-wide leading-snug -mb-2">Details</h2>
+                    <h2 className="text-3xl sm:text-4xl 2xl:text-[45px] font-light uppercase tracking-wide leading-snug -mb-2">Detalhes</h2>
 
                     <div className="flex items-center">
                         <div className="flex items-center text-gray-400 text-sm font-light sm:tracking-widest">

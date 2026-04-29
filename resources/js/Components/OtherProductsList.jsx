@@ -9,7 +9,7 @@ export const OtherProductsList = ({ products }) => {
                     <div className="flex items-center justify-between gap-10 md:gap-20">
                         <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light uppercase tracking-wide leading-snug whitespace-nowrap">Saiba mais</h3>
                         
-                        <Link href={route('Produtos.index')} className="mt-auto md:mx-4 border border-neutral-800 bg-white max-sm:text-sm font-light text-center uppercase max-sm:tracking-tight py-2 px-2 sm:px-4 md:px-8 sm:min-w-44 transition-all hover:bg-black hover:text-white" alt="All Environments">All Environments</Link>
+                        <Link href={route('Produtos.index')} className="mt-auto md:mx-4 border border-neutral-800 bg-white max-sm:text-sm font-light text-center uppercase max-sm:tracking-tight py-2 px-2 sm:px-4 md:px-8 sm:min-w-44 transition-all hover:bg-black hover:text-white" alt="All Environments">Todos os Ambientes</Link>
                     </div>
                 </div>
             </section>
