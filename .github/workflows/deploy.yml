@@ -51,11 +51,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          git fetch origin gh-pages || true
+          cp -r . /tmp/repo
           
+          git fetch origin gh-pages || true
           git checkout -B gh-pages origin/gh-pages || git checkout --orphan gh-pages
           
-          git add -f public/build
-          git commit -m "chore: deploy build [skip ci]" || echo "Nothing to commit"
+          cp -r /tmp/repo/. .
           
+          git add -A
+          git commit -m "chore: deploy build [skip ci]" || echo "Nothing to commit"
           git push origin gh-pages
