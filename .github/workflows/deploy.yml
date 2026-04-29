@@ -50,7 +50,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -B gh-pages
           git add -f public/build
           git commit -m "chore: deploy build [skip ci]" || echo "Nothing to commit"
-          git push origin gh-pages --force
+          git push origin HEAD:gh-pages
