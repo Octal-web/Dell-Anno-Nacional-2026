@@ -28,9 +28,9 @@ export const StoresProjectsList = ({ content, data }) => {
 
                                 <h5 className="text-2xl text-[26px] font-light uppercase mb-10">{item.dados}</h5>
 
-                                <p className="font-secondary mb-12 font-secondary font-light leading-loose max-w-[530px]">{item.chamada}</p>
+                                <p className="mb-12 font-secondary font-light leading-loose max-w-[530px]">{item.chamada}</p>
                                 
-                                <Link href={route('Lojas.Projetos.projeto', {slug: item.slug})} className="mt-auto mr-auto border border-neutral-800 bg-white font-light text-center uppercase py-2 px-8 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white">View Project</Link>
+                                <Link href={route('Lojas.Projetos.projeto', {slug: item.slug})} className="mt-auto mr-auto border border-neutral-800 bg-white font-light text-center uppercase py-2 px-8 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white">Ver Projeto</Link>
                             </Reveal>
                         </div>
                     ))}

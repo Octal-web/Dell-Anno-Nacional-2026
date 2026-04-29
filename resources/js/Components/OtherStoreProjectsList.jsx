@@ -27,7 +27,7 @@ export const OtherStoreProjectsList = ({ projects }) => {
                                     <h4 className="text-xl font-light">{project.nome}</h4>
                                 </Link>
                                 
-                                <Link href={route('Lojas.Projetos.projeto', {slug: project.slug})} className="mt-auto border border-neutral-800 bg-white font-light text-center uppercase p-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white">View Project</Link>
+                                <Link href={route('Lojas.Projetos.projeto', {slug: project.slug})} className="mt-auto border border-neutral-800 bg-white font-light text-center uppercase p-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white">Ver Projeto</Link>
                             </Reveal>
                         ))}
                     </div>
