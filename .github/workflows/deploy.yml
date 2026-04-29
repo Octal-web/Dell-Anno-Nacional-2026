@@ -51,12 +51,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          cp -r . /tmp/repo
+          rsync -a --exclude='.git' . /tmp/repo/
           
           git fetch origin gh-pages || true
           git checkout -B gh-pages origin/gh-pages || git checkout --orphan gh-pages
           
-          cp -r /tmp/repo/. .
+          rsync -a /tmp/repo/. .
           
           git add -A
           git commit -m "chore: deploy build [skip ci]" || echo "Nothing to commit"
