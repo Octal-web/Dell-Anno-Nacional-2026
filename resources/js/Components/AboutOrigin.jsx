@@ -16,7 +16,7 @@ export const AboutOrigin = ({ content, images }) => {
 
                 <AboutOriginSlides slides={images} />
 
-                <Link href={route('Produtos.index')} className="block w-fit mx-auto font-light text-center uppercase border border-black px-8 py-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white">Our Projects</Link>
+                <Link href={route('Produtos.index')} className="block w-fit mx-auto font-light text-center uppercase border border-black px-8 py-2 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white">Nossos Projetos</Link>
             </div>
         </section>
     );
