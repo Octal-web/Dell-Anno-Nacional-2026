@@ -33,7 +33,7 @@ export const FairsList = ({ content, fairs }) => {
                                 
                                 {item.anos.length > 0 ? (
                                     <>
-                                        <p className="mb-4 md:mb-8 font-secondary font-bold leading-loose">select the fair year:</p>
+                                        <p className="mb-4 md:mb-8 font-secondary font-bold leading-loose">selecione o ano:</p>
 
                                         <div className="grid grid-cols-3 gap-4 w-5/6 max-w-[575px]">
                                             {item.anos.map((ano, idx) => (
