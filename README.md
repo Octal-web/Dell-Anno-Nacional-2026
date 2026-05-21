@@ -163,7 +163,7 @@ Dell-Anno-Naciona-2026
 
 ```bash
 git clone https://github.com/Octal-web/Dell-Anno-Nacional-2026.git
-cd Dell-Anno-Naciona-2026
+cd Dell-Anno-Nacional-2026
 ```
 
 2. Instale as dependências do Front-end:
