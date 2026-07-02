@@ -1,61 +1,202 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <h1>Dell Anno - Nacional 2026</h1>
+</div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+O Dell Anno 2026 é o uma atualização do site da Dell Anno desenvolvido em Wordpress
+  
+---
 
-## About Laravel
+## Índice
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Sobre](#sobre)
+- [Visualização](#visualizacao)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Arquitetura do Projeto](#arquitetura-do-projeto)
+- [Como Executar o Projeto](#como-executar-o-projeto)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<h2 id="sobre">Sobre:</h2>
 
-## Learning Laravel
+Através do painel de gerenciamento (manager), é possível:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Gerenciar conteúdos de cada seção da página em pt-BR:
+    - SEO
+    - Home
+    - Institucional
+    - Produtos
+    - Lojas
+    - Inspiração
+    - Acabamentos
+    - Blog
+    - Catálogos
+    - Contato
+    - Política de privacidade 
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+E através do site para o público:
 
-## Laravel Sponsors
+- Visualizar as páginas:
+    - **Home**: apresenta um pouco sobre cada seção do site
+    - **Brand**: história, timeline, origem, tradição, sustentabilidade e características da marca
+    - **Produtos**: separado por segmento, cada um deles fala com detalhes sobre àquele produto
+    - **Lojas**: dividida por localidade, cada uma com detalhes
+    - **Global Living**: site externo
+    - **Inspire-se**: separa showrooms, projetos e mostras de decoração para o usuário 
+    - **Frame**: posts Dell Anno
+    - **Catálogos **: categoria com os podutos
+    - **Programa comercial**: site externo
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+<h2 id="visualizacao">Visualização:</h2>
 
-## Contributing
+<img width="400" alt="image home" src="https://github.com/user-attachments/assets/a09d56bd-d9fb-4f62-9d3a-d645ef602b63" />
+<img width="400" alt="image marca" src="https://github.com/user-attachments/assets/c6f9c390-c5fd-41db-aad8-984cd8ac8527" />
+<img width="400" alt="image produtos" src="https://github.com/user-attachments/assets/e5433dda-09d7-4391-a99c-2f0a6340d6a0" />
+<img width="400" alt="image lojas" src="https://github.com/user-attachments/assets/fa3989df-0607-498b-98c7-1bec7615e814" />
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<h2 id="tecnologias-utilizadas">Tecnologias Utilizadas:</h2>
 
-## Security Vulnerabilities
+### Back-end:
+- **Laravel (^12.0)**: framework PHP para construção do projeto, gerenciamento de rotas, autenticação e etc.
+- **PHP (^8.2)**: linguagem de desenvolvimento
+- **Laravel Sanctum (^4.0)**: autenticação e proteção de rotas
+- **Inertia.js (^2.0)**: integração entre backend Laravel e frontend React sem necessidade de API tradicional
+- **Laravel Localization (^2.2)**: gerenciamennto de idiomas e rotas traduzidas
+- **Ziggy (^2.0)**: compartilhamento de rotas Laravel diretamente no frontend React
+- **Laravel Tinker (^2.9)**: ferramenta para testes e execução de comandos no ambiente
+- **Laravel PT-BR Validator (*)**: validações adaptadas para formato brasileiro
+- **Tinify (^1.6)**: ferramenta para comprimir imagens
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Front-end:
+- **React (^18.2.0)**: biblioteca para construção de interfaces
+- **Inertia React (^2.0.0)**: integração entre Laravel e React sem necessidade de API REST tradicional
+- **Vite (^6.2.4)**: ferramenta de build e desenvolvimento rápido
+- **Laravel Vite Plugin (^1.2.0)**: integração entre Laravel e Vite
+- **Tailwind CSS (^3.2.1)**: framework para estilização
+- **Tailwind Forms (^0.5.3)**: plugin para estilização de formulários no Tailwind
+- **PostCSS (^8.4.31)**: processador de CSS usado junto do Tailwind
+- **Autoprefixer (^10.4.12)**: adiciona prefixos CSS automaticamente para compatibilidade entre navegadores
 
-## License
+### UI e experiência do usuário:
+- **Font Awesome React (^0.2.2)**: biblioteca de ícones para interface
+- **Font Awesome Free Solid Icons (^6.7.2)**: conjunto de ícones sólidos
+- **Headless UI (^2.0.0)**: componentes acessíveis e sem estilos pré-definidos
+- **Swiper (^11.2.6)**: criação de sliders e carrosséis
+- **GSAP (^3.12.7)**: biblioteca para animações
+- **Lenis (^1.0.42)**: implementação de scroll suave
+- **React Select (^5.10.1)**: select customizado
+- **React Tag Input (^6.10.6)**: gerenciamento e criação de tags
+- **Yet Another React Lightbox (^3.25.0)**: exibição de imagens em lightbox
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Tabelas, dados e formulários:
+- **React Input Mask (^2.0.4)**: máscaras para inputs como CPF e telefones
+- **React SortableJS (^6.1.4)**: drag and drop para ordenação de elementos
+- **Tailwind Forms (^0.5.3)**: melhoria visual para campos de formulário
+
+### Upload e manipulação de arquivos:
+- **React Dropzone (^14.3.8)**: upload de arquivos via drag and drop
+- **React Image Crop (^11.0.7)**: recorte de imagens no navegador
+- **browser-image-compression (^2.0.2)**: compressão de imagens
+
+### Editor de texto:
+- **Tiptap (^2.11.7)**: editor de texto altamente customizável
+- Extensões utilizadas:
+    - **Starter Kit**: funcionalidades básicas do editor
+    - **Text**: manipulação de texto
+    - **Image**: suporte para imagens
+    - **Link**: gerenciamento de links
+    - **Underline**: sublinhado no texto
+    - **Text Align**: alinhamento de texto
+    - **Table**: criação de tabelas
+    - **Table Row**: gerenciamento de linhas
+    - **Table Header**: cabeçalhos de tabelas
+    - **Table Cell**: células de tabelas
+    - **List Item**: manipulação de listas
+    - **Figure Extension (@pentestpad/tiptap-extension-figure)**: suporte a figuras e legendas
+
+---
+
+<h2 id="arquitetura-do-projeto">Arquitetura principal do Projeto:</h2>
+
+```bash
+Dell-Anno-Naciona-2026
+│
+├── app
+│   ├── Http
+│   │   ├── Controllers    # Controladores responsáveis pelas requisições e retornar respostas (separado por Manager)
+│   │   ├── Middleware     # Interceptação, autenticação e tratamento de requisições
+│   │   ├── Requests       # Validação e autorização de formulários e requisições (separado por Manager)
+│   │   ├── helpers.php    # Auxiliares globais utilizados no projeto
+│   ├── Models             # Representação das tabelas do banco (Eloquent)
+│   ├── Providers          # Configuração de pacotes
+│   ├── Services           #Regras de negócio
+├── bootstrap              # Inicialização do framework
+├── config                 # Arquivos de configuração
+├── database               # Migrations, seeds e factories
+├── public                 # Diretório público acessível pelo navegador
+│   ├── admin              # Arquivos relacionados ao Manager
+│   ├── content            # Arquivos relacionados as páginas e gerenciáveis pelo Manager
+│   ├── files              # Arquivos do site institucional como pdfs e etc.
+│   ├── site               # Arquivos do site institucional
+├── resources              # Frontend e recursos
+│   ├── css                # Estilização 
+│   ├── js                 # Componentes, páginas, hooks e layouts (separados por Manager)
+│   ├── views              # Templates e views do Laravel/Inertia
+├── routes                 # Definição das rotas web e Manager
+├── storage                # Arquivos gerados (logs, cache e etc.)
+├── tests
+│
+
+```
+
+---
+
+<h2 id="como-executar-o-projeto">Como Executar o Projeto:</h2>
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/Octal-web/Dell-Anno-Nacional-2026.git
+cd Dell-Anno-Nacional-2026
+```
+
+2. Instale as dependências do Front-end:
+
+```bash
+npm install
+```
+
+3. Instale as dependências do Back-end:
+
+```bash
+composer install
+```
+
+4. Configure o ambiente
+
+Crie o arquivo .env:
+
+```bash
+cp .env.example .env
+```
+
+Gere a chave da aplicação:
+```bash
+php artisan key:generate
+```
+
+Configure o banco de dados SQL e preencha com o acesso no .env
+
+5. Rode o projeto:
+```bash
+npm run dev
+php artisan serve
+```
+
+
