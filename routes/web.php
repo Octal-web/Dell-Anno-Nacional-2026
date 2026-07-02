@@ -59,6 +59,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
+    Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
+
     Route::get('/brand', [InstitucionalController::class, 'index'])->name('Institucional.index');
 
     Route::get('/produtos', [ProdutosController::class, 'index'])->name('Produtos.index');
@@ -319,10 +321,7 @@ Route::prefix('/manager')->group(function () {
         Route::get('/contato/visualizar/{id}', [ManagerContatoController::class, 'visualizar'])->name('Manager.Contato.visualizar');
         Route::post('/contato/excluir/{id}', [ManagerContatoController::class, 'excluir'])->name('Manager.Contato.excluir');
 
-        Route::get('/orcamentos/visualizar/{id}', [ManagerOrcamentosController::class, 'visualizar'])->name('Manager.Orcamentos.visualizar');
-        Route::post('/orcamentos/excluir/{id}', [ManagerOrcamentosController::class, 'excluir'])->name('Manager.Orcamentos.excluir');
-
-
+        
         Route::get('/acabamentos', [ManagerAcabamentosController::class, 'index'])->name('Manager.Acabamentos.index');
 
         Route::post('/acabamentos/ordenar', [ManagerAcabamentosController::class, 'ordenar'])->name('Manager.Acabamentos.ordenar');
