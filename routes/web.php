@@ -19,6 +19,7 @@ use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\CatalogosController;
 use App\Http\Controllers\PoliticasController;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\LandingPagesController;
 use App\Http\Controllers\SitemapController;
 
 use App\Http\Controllers\Manager\UsuariosController;
@@ -55,6 +56,8 @@ use App\Http\Controllers\Manager\PoliticasController as ManagerPoliticasControll
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home.index');
     Route::post('/cidades/carregar', [CidadesController::class, 'carregar'])->name('Cidades.carregar');
+
+    Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
     Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
@@ -103,7 +106,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
     Route::get('/manual-do-proprietario', [ManualController::class, 'index'])->name('Manual.index');
 });
 
-Route::prefix('/manager')->group(function () {
+Route::get('/loja/{slug}', [LandingPagesController::class, 'index'])->name('LandingPage.index');
+Route::get('/loja/{slug}/contato/concluido/{token}', [LandingPagesController::class, 'cadastroConcluido'])->name('LandingPage.cadastroConcluido');
+Route::get('/loja/{slug}/politica-de-privacidade', [LandingPagesController::class, 'politicaDePrivacidade'])->name('LandingPage.politicaDePrivacidade');
+Route::get('/loja/{slug}/politica-de-cookies', [LandingPagesController::class, 'politicaDeCookies'])->name('LandingPage.politicaDeCookies');
+
+Route::prefix('/manager')->group(function() {
     Route::get('/', [UsuariosController::class, 'login'])->name('Manager.Usuarios.login');
     Route::post('/', ['as' => 'login', 'uses' => 'App\Http\Controllers\Manager\UsuariosController@authenticate']);
 
@@ -312,10 +320,7 @@ Route::prefix('/manager')->group(function () {
         Route::get('/contato/visualizar/{id}', [ManagerContatoController::class, 'visualizar'])->name('Manager.Contato.visualizar');
         Route::post('/contato/excluir/{id}', [ManagerContatoController::class, 'excluir'])->name('Manager.Contato.excluir');
 
-        Route::get('/orcamentos/visualizar/{id}', [ManagerOrcamentosController::class, 'visualizar'])->name('Manager.Orcamentos.visualizar');
-        Route::post('/orcamentos/excluir/{id}', [ManagerOrcamentosController::class, 'excluir'])->name('Manager.Orcamentos.excluir');
-
-
+        
         Route::get('/acabamentos', [ManagerAcabamentosController::class, 'index'])->name('Manager.Acabamentos.index');
 
         Route::post('/acabamentos/ordenar', [ManagerAcabamentosController::class, 'ordenar'])->name('Manager.Acabamentos.ordenar');

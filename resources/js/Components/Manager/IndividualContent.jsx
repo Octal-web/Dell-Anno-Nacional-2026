@@ -47,7 +47,7 @@ export const IndividualContent = ({ individualContent, imagensPath, imagensClass
 
     useEffect(() => {
         setIsChecked(individualContent.visivel);
-    }, [individualContent?.visivel])
+    }, [individualContent?.visivel]);
 
     return (
         <>
