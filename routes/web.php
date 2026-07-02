@@ -112,7 +112,6 @@ Route::get('/loja/{slug}/politica-de-privacidade', [LandingPagesController::clas
 Route::get('/loja/{slug}/politica-de-cookies', [LandingPagesController::class, 'politicaDeCookies'])->name('LandingPage.politicaDeCookies');
 
 Route::prefix('/manager')->group(function() {
-Route::prefix('/manager')->group(function () {
     Route::get('/', [UsuariosController::class, 'login'])->name('Manager.Usuarios.login');
     Route::post('/', ['as' => 'login', 'uses' => 'App\Http\Controllers\Manager\UsuariosController@authenticate']);
 
