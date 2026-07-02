@@ -20,6 +20,7 @@ use App\Http\Controllers\CatalogosController;
 use App\Http\Controllers\PoliticasController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\LandingPagesController;
+use App\Http\Controllers\SitemapController;
 
 use App\Http\Controllers\Manager\UsuariosController;
 use App\Http\Controllers\Manager\ConteudosController as ManagerConteudosController;
@@ -55,6 +56,8 @@ use App\Http\Controllers\Manager\PoliticasController as ManagerPoliticasControll
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home.index');
     Route::post('/cidades/carregar', [CidadesController::class, 'carregar'])->name('Cidades.carregar');    
+
+    Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
     Route::get('/brand', [InstitucionalController::class, 'index'])->name('Institucional.index');
     
@@ -314,9 +317,6 @@ Route::prefix('/manager')->group(function() {
 
         Route::get('/contato/visualizar/{id}', [ManagerContatoController::class, 'visualizar'])->name('Manager.Contato.visualizar');
         Route::post('/contato/excluir/{id}', [ManagerContatoController::class, 'excluir'])->name('Manager.Contato.excluir');
-
-        Route::get('/orcamentos/visualizar/{id}', [ManagerOrcamentosController::class, 'visualizar'])->name('Manager.Orcamentos.visualizar');
-        Route::post('/orcamentos/excluir/{id}', [ManagerOrcamentosController::class, 'excluir'])->name('Manager.Orcamentos.excluir');
 
         
         Route::get('/acabamentos', [ManagerAcabamentosController::class, 'index'])->name('Manager.Acabamentos.index');
