@@ -39,7 +39,7 @@ export const InputTag = ({ title, name, value = [], idioma, onChange, max, place
                 maxTags={max}
                 allowUnique={true}
                 autofocus={false}
-                classNames={{ tagInput: '!ml-0', tagInputField: 'w-full border-gray-300 bg-transparent p-3 font-normal text-sm text-black outline-none transition focus:border-black focus:ring-0 active:border-black disabled:cursor-default', tag: 'text-sm border border-gray-300 pt-0.5 pb-1 px-2 inline-block mb-2 ', selected: 'space-x-2', remove: 'ml-1 inline-block translate-y-px [&_svg]:fill-red-500' }}
+                classNames={{ tagInput: '!ml-0', tagInputField: 'w-full border-gray-300 bg-transparent p-3 font-normal text-sm text-black outline-none transition focus:border-black focus:ring-0 active:border-black disabled:cursor-default', tag: 'text-sm border border-gray-300 pt-0.5 pb-1 px-2 inline-block mb-2 ', selected: 'space-x-2', remove: 'ReactTags__remove ml-1 inline-block translate-y-px [&_svg]:fill-red-500' }}
                 readOnly={max && tags.length >= max}
             />
         </div>

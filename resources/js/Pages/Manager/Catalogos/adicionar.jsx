@@ -9,9 +9,9 @@ import { Breadcrumb } from '@/Components/Manager/Breadcrumb';
 import { FormGroup } from '@/Components/Manager/Inputs/FormGroup';
 
 const Page = () => {
-    const { idioma } = usePage().props;
+    const { idioma, categorias } = usePage().props;
 
-    const { data, setData, post, processing, errors, categorias } = useForm();
+    const { data, setData, post, processing, errors } = useForm();
 
     const breadcrumbItems = [
         { label: 'Catálogos', link: 'Manager.Catalogos.index' },

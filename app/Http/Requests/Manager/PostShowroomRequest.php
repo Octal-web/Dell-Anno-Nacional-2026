@@ -24,8 +24,8 @@ class PostShowroomRequest extends FormRequest
         return [
             'nome' => 'required|string|max:120',
             'loja_id' => 'nullable|integer|exists:lojas,id',
-            'chamada' => 'required|string|max:120',
-            'texto_chamada' => 'required|string|max:320',
+            'chamada' => 'nullable|string|max:120',
+            'texto_chamada' => 'nullable|string|max:320',
             'img' => inertia()->getShared('action') === 'novo'
                 ? 'required|image|mimes:png,jpg|max:4096'
                 : 'nullable|image|mimes:png,jpg|max:4096',
@@ -50,10 +50,8 @@ class PostShowroomRequest extends FormRequest
 
             'loja_id.exists' => 'A loja selecionada é inválida.',
 
-            'chamada.required' => 'Por favor, informe a chamada.',
             'chamada.max' => 'A chamada deve ter no máximo 120 caracteres.',
 
-            'texto_chamada.required' => 'Por favor, informe o texto da chamada.',
             'texto_chamada.max' => 'O texto da chamada deve ter no máximo 320 caracteres.',
 
             'img.required' => 'Por favor, selecione uma imagem.',
