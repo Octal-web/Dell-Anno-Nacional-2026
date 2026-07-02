@@ -19,6 +19,7 @@ use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\CatalogosController;
 use App\Http\Controllers\PoliticasController;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\LandingPagesController;
 use App\Http\Controllers\SitemapController;
 
 use App\Http\Controllers\Manager\UsuariosController;
@@ -103,6 +104,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
     Route::get('/manual-do-proprietario', [ManualController::class, 'index'])->name('Manual.index');
 });
 
+Route::get('/loja/{slug}', [LandingPagesController::class, 'index'])->name('LandingPage.index');
+Route::get('/loja/{slug}/contato/concluido/{token}', [LandingPagesController::class, 'cadastroConcluido'])->name('LandingPage.cadastroConcluido');
+Route::get('/loja/{slug}/politica-de-privacidade', [LandingPagesController::class, 'politicaDePrivacidade'])->name('LandingPage.politicaDePrivacidade');
+Route::get('/loja/{slug}/politica-de-cookies', [LandingPagesController::class, 'politicaDeCookies'])->name('LandingPage.politicaDeCookies');
+
+Route::prefix('/manager')->group(function() {
 Route::prefix('/manager')->group(function () {
     Route::get('/', [UsuariosController::class, 'login'])->name('Manager.Usuarios.login');
     Route::post('/', ['as' => 'login', 'uses' => 'App\Http\Controllers\Manager\UsuariosController@authenticate']);

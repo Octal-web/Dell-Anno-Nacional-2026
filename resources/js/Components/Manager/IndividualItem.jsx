@@ -63,6 +63,10 @@ export const IndividualItem = ({ individualContent, imagensPath, imagensClass, c
         setIsModalOpen(false);
     };
 
+    useEffect(() => {
+        setIsChecked(individualContent.visivel);
+    }, [individualContent?.visivel]);
+    
     return (
         <tr ref={rowRef} className="bg-slate-50">
             <td className="border px-4 w-1/6 py-4" width={`${cellWidths[0] || 'auto'}`}>{index + 1}</td>
