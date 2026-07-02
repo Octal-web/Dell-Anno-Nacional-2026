@@ -88,14 +88,22 @@ class CatalogosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function adicionar() {
-        $idiomas = Idioma::query()
-            ->orderBy('padrao', 'DESC')
-            ->orderBy('id', 'DESC')
-            ->get();
-
-        $idioma = request('lang');
+        $categorias = CatalogoCategoria::query()
+            ->where([
+                'excluido' => NULL,
+                'visivel' => true
+            ])
+            ->get()
+            ->map(function ($categoria) {
+                return [
+                    'label' => $categoria->titulo,
+                    'value' => $categoria->id,
+                ];
+            });
         
-        return Inertia::render('Manager/Catalogos/adicionar');
+        return Inertia::render('Manager/Catalogos/adicionar', [
+            'categorias' => $categorias
+        ]);
     }
 
     /**
@@ -187,10 +195,24 @@ class CatalogosController extends Controller
             'descricao' => count($catalogo->catalogosIdiomas) ? $catalogo->catalogosIdiomas[0]->descricao : null,
         ];
 
+        $categorias = CatalogoCategoria::query()
+            ->where([
+                'excluido' => NULL,
+                'visivel' => true
+            ])
+            ->get()
+            ->map(function ($categoria) {
+                return [
+                    'label' => $categoria->titulo,
+                    'value' => $categoria->id,
+                ];
+            });
+        
         return Inertia::render('Manager/Catalogos/editar', [
             'idiomas' => $idiomas,
             'idioma' => $idioma,
             'catalogo' => $catalogoData,
+            'categorias' => $categorias,
         ]);
     }
 

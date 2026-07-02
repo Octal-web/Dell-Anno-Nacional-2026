@@ -12,663 +12,671 @@ class ManualController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $texto = '<ol start="1" type="1">
-                <li><strong>USE OF FURNITURE</strong></li>
+        $texto = '    <ol start="1" type="1">
+                <li><strong>USO DOS MÓVEIS</strong></li>
             </ol>
             <br>
             <ul type="circle">
-                <li>After the installation of the furniture, leave it without bearing any kind of weight for about 24 hours. This is the time necessary for the products to bond completely.</li>
-                <li>The areas around the sink, oven, and skirting boards are more prone to the effects of humidity and therefore warrant special attention.</li>
-                <li>Immediately dry any liquid that has been spilled on the furniture.</li>
-                <li>Fully and carefully open the doors of your furniture. When handling them, avoid slamming or leaving them ajar to prevent collisions with drawers, as this could damage the coating of the parts.</li>
-                <li>The furniture must not be exposed to direct sunlight, as this could alter its characteristics, cause yellowing, and reduce its durability. We recommend using blinds, curtains, or window films.</li>
-                <li>When moving objects on top of the furniture for cleaning, lift them instead of dragging, as dragging may cause scratches on the surface.</li>
-                <li>Do not place excessive weight on the furniture and never lean or stand on the doors, as this may cause warping, misalignment, or breakage.</li>
-                <li>Do not lean on drawers to reach upper parts. Pay special attention to children, as they may use open drawers as “stairs” to climb onto countertops.</li>
-                <li>Do not hang wet or damp towels over the furniture doors. Over time, moisture may cause permanent damage.</li>
-                <li>Do not place hot pans, trays, baking dishes, or other heated utensils directly on countertops, as this may cause damage. Always use heat-resistant supports or pads for protection.</li>
-                <li>Do not cut food directly on countertops, as cutting tools can damage the surface finish. Always use cutting boards or other protective supports.</li>
-                <li>Do not use utility knives or other sharp or pointed objects to make cuts on the surfaces. The coatings may become permanently scratched or damaged.</li>
-                <li>Avoid contact of ink (such as from pens) with the coatings of cabinets and countertops, as it can cause stains. Use pen holders and protective mats to store such items.</li>
-                <li>Always keep the furniture free from moisture. Use silicone-based sealants to seal the joints between countertops, sinks, and wall coverings. Regularly check the installations to prevent leaks.</li>
+                <li>Após a instalação dos móveis, deixe-os sem qualquer tipo de peso por aproximadamente 24 horas. Este é o tempo necessário para a colagem completa dos produtos;</li>
+                <li>A áreas ao redor da pia, do forno e dos rodapés são mais suscetíveis à ação da umidade e merecem atenção especial;</li>
+                <li>Seque de imediato qualquer líquido derramado sobre os móveis;</li>
+                <li>Abra totalmente e com cuidado as portas do seu móvel. Durante o manuseio, evite batê-las ou deixá-las entreabertas, de modo que não ocorram colisões com gavetas, pois isso pode danificar o revestimento das peças;</li>
+                <li>Os raios solares não devem incidir diretamente sobre os móveis, pois podem alterar suas características, tornando-os amarelados e prejudicando sua durabilidade. Sugerimos a utilização de persianas, cortinas ou películas;</li>
+                <li>Ao mover objetos acima dos móveis para a limpeza, levante-os e não arraste, pois isso pode causar riscos no revestimento dos móveis;</li>
+                <li>Não coloque peso excessivo sobre os móveis e nunca se apoie sobre as portas, pois isso pode ocasionar empenamento, desregulamento ou quebra;</li>
+                <li>Não se apoie sobre as gavetas para alcançar as partes superiores. Deve-se ter atenção com as crianças, pois elas geralmente utilizam as gavetas abertas como “escada” para subir nos balcões;</li>
+                <li>Não estenda toalhas úmidas ou molhadas sobre as portas dos móveis. Ao longo do tempo, a umidade pode causar danos permanentes;</li>
+                <li>Não apoie panelas, fôrmas, assadeiras e demais utensílios aquecidos sobre os balcões, pois isso pode causar danos. Sempre utilize apoios ou amparos para colocar objetos quentes sobre os balcões;</li>
+                <li>Não corte alimentos diretamente sobre os balcões, pois os instrumentos de corte poderão danificar o acabamento dos produtos. Sempre utilize apoios para proteção;</li>
+                <li>Não utilize estiletes e outros objetos com lâminas ou pontiagudos para fazer cortes sobre tampos. Os revestimentos podem ser riscados ou danificados permanentemente;</li>
+                <li>Evite o contato de tinta (canetas em geral), nos revestimentos dos armários e dos tampos, pois podem causar manchas. Utilize porta-canetas e anteparos para guardar esses materiais;</li>
+                <li>Sempre mantenha os móveis livres da umidade. Utilize vedantes de silicone para vedar a junção dos tampos e das pias com o revestimento das paredes. Verifique as instalações periodicamente a fim de evitar vazamento.</li>
             </ul>
             <br>
 
             <ol start="2" type="1">
-                <li><strong>WEIGHT</strong></li>
+                <li><strong>PESO</strong></li>
             </ol>
             <br>
 
             <ul type="circle">
-                <li>Check the maximum weight borne (without damaging the furniture) for each internal shelf, on the upper and lower modules:</li>
+                <li>Confira o peso máximo suportado (sem danos aos móveis) para cada prateleira interna de superiores e inferiores.</li>
             </ul>
+
             <p>
-                <strong>Kitchen and Bathroom</strong><br>
+                <strong>Cozinha e Banheiro</strong><br>
             </p>
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>Width</strong></p>
+                            <p align="center"><strong>Largura</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>Upper Shelf</strong></p>
+                            <p align="center"><strong>Prateleira Superior</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>Lower Shelf</strong></p>
+                            <p align="center"><strong>Prateleira Inferior</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">15 3/4”</p>
+                            <p align="center">40cm</p>
                         </td>
                         <td valign="top">
-                            <p align="center">13.22 lb</p>
+                            <p align="center">6kg</p>
                         </td>
                         <td valign="top">
-                            <p align="center">13.22 lb</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">23 5/8”</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">19.84 lb</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">19.84 lb</p>
+                            <p align="center">6kg</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">31 1/2”</p>
+                            <p align="center">60cm</p>
                         </td>
                         <td valign="top">
-                            <p align="center">28.66 lb</p>
+                            <p align="center">9kg</p>
                         </td>
                         <td valign="top">
-                            <p align="center">28.66 lb</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">39 3/8”</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">35.27 lb</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">35.27 lb</p>
+                            <p align="center">9kg</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">47 1/4”</p>
+                            <p align="center">80cm</p>
                         </td>
                         <td valign="top">
-                            <p align="center">28.66 lb (larger)<br>30.86 lb (larger)</p>
+                            <p align="center">13kg</p>
                         </td>
                         <td valign="top">
-                            <p align="center">28.66 lb (larger)<br>30.86 lb (larger)</p>
+                            <p align="center">13kg</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">100cm</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">16kg</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">16kg</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">120cm</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">18kg</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">18kg</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
             <br>
-
             <p>
-                <strong>Bedrooms, Home Office and Home Theater</strong><br>
+                <strong>Dormitórios, Home Office Home Theather</strong><br>
             </p>
             <table border="1" cellspacing="0" cellpadding="0" width="80%">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>Width</strong></p>
+                            <p align="center"><strong>Largura</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>Upper Shelf</strong></p>
+                            <p align="center"><strong>Prateleira</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">13 3/4”</p>
+                            <p align="center">35cm</p>
                         </td>
                         <td valign="top">
-                            <p align="center">13.22 lb</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">17 3/4”</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">17.63 lb</p>
+                            <p align="center">6kg</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">27 9/16”</p>
+                            <p align="center">45cm</p>
                         </td>
                         <td valign="top">
-                            <p align="center">26.45 lb</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">35 7/16”</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">33.06 lb</p>
+                            <p align="center">8kg</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">39 3/8”</p>
+                            <p align="center">70cm</p>
                         </td>
                         <td valign="top">
-                            <p align="center">35.27 lb</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">43 5/16”</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">35.27 lb</p>
+                            <p align="center">12kg</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">47 1/4”</p>
+                            <p align="center">90cm</p>
                         </td>
                         <td valign="top">
-                            <p align="center">35.27 lb</p>
+                            <p align="center">15kg</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">100cm</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">16kg</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">110cm</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">16kg</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">120cm</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">16kg</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
             <br>
-
             <p>
-                <strong>External Shelves (Decorative)</strong><br><br>
-                The external shelves can bear a load of <strong>22.05 lb per linear metre</strong>, provided the following conditions are met:
+                <strong>Prateleiras Externas (Decorativas)</strong><br>
+                <br>
+                As prateleiras externas suportam 10kg por metro linear, respeitando as seguintes condições:
             </p>
-
             <ul type="circle">
-                <li>Support brackets at intervals of 23.62”;<br>
-                    Fixation at both ends.</li>
+                <li>As prateleiras externas suportam 10kg por metro linear, respeitando as seguintes condições:<br>
+                    - Suporte de sustentação a cada 60cm;<br>
+                    - Fixação nas extremidades.<br></li>
             </ul>
-
             <p>
-                <strong>Please note:</strong><br>
-                To avoid damage to the furniture, the maximum weight corresponding to each of the above measurements was calculated based on the even distribution of weight across the surface of the shelf.
+                Fique atento:<br>
+                Para que não ocorram danos aos móveis, o peso máximo correspondente a cada medida foi calculado com base na exata distribuição do peso na superfície da prateleira.
             </p>
-
             <br>
             <ol start="3" type="1">
-                <li><strong>CLEANING AND UP KEEP</strong></li>
+                <li><strong>LIMPEZA E CONSERVAÇÃO</strong></li>
             </ol>
-            <br><p>
-                3.1 <strong>Cabinets / Panels or Doors</strong>
+            <br>
+            <p>
+                3.1 <strong>Módulos/Painéis/Portas</strong>
             </p>
             <ul type="circle">
-                <li>Always use a soft clean cloth, slightly moistened with warm water (just enough to make the dust stick), drying right afterwards. For more resistant stains, use a clean cloth moistened with neutral soap (not alkaline) and water. After cleaning, dry thoroughly with a soft cloth.</li>
+                <li>Sempre utilize um pano limpo e macio ligeiramente umedecido com água morna (apenas o bastante para fazer aderir a poeira), secando logo em seguida. Para manchas mais resistentes, use um pano limpo, umedecido com sabão neutro (não alcalino) e água. Após a limpeza, seque completamente com um pano macio.</li>
             </ul>
-
             <p>
-                <strong>Remember:</strong><br>
-                The accumulation of dust, grease, or moisture over time may change the characteristics of the product. For this reason, never forget to clean your furniture regularly!
+                Lembre-se:<br>
+                O acúmulo de poeira, gordura ou umidade, com o tempo, pode modificar a característica do produto. Por isso, não se esqueça de limpar os móveis regularmente!
             </p>
 
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>NEVER USE</strong></p>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>WHY</strong></p>
+                            <p align="center"><strong>PORQUE:</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">A wet cloth.</p>
+                            <p align="center">Pano encharcado.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">Excess accumulation of water may cause damage to the furniture.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">Dishwashing cloth.</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">May contain residue.</p>
+                            <p align="center">O acúmulo de água pode causar danos ao móvel.</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">A dry cloth.</p>
+                            <p align="center">Pano de louça.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">It does not clean and also wears out the furniture over time.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">Waxes.</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">May leave residue, causing stains on the furniture.</p>
+                            <p align="center">Pode conter resíduos.</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Detergents*, instant cleaners, degreasers, or products containing ammonia or soap-based detergents (abrasive cleaners).</p>
+                            <p align="center">Pano seco.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">These are chemicals that could damage the appearance and finish of the furniture.</p>
+                            <p align="center">Além de não limpar, com o tempo, desgasta o móvel.</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Hard or rough sponges and steel wool.</p>
+                            <p align="center">Ceras.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They can scratch or damage the furniture.</p>
+                            <p align="center">Pode deixar resíduos, causando manchas no móvel.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">Detergentes*, limpadores instantâneos, desengordurantes ou produtos à base de amônia e saponáceo.</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">São produtos químicos que podem danificar a aparência e o acabamento dos móveis.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">Esponjas duras, ásperas e palhas de aço.</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">Podem riscar e danificar os móveis.</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
             <br>
-            <p>*Only the use of neutral detergents is recommended.</p>
-
+            <p>
+                *É recomendável apenas o uso de detergentes neutros.
+            </p>
             <br>
             <p class="background-black color-white" style="padding: 20px;">
-                <strong>Avoid:</strong><br>
-                Sharp materials, as they may scratch the furniture.<br>
-                Products such as vinegar, salt, and lemon, which can cause damage to the furniture over time.<br>
-                Be careful!
+                <strong>Evite:</strong><br>
+                Cuidado com materiais pontiagudos, eles podem riscar o móvel. Produtos como vinagre, sal e limão podem causar danos nos móveis com o passar do tempo.<br>
+                Tome cuidado!
             </p>
-
             <br>
             <p>
-                <strong>Painted Pieces</strong><br><br>
+                <strong>Peças Pintadas</strong><br>
 
-                <strong>3.2.1 High-Shine Paint (Color Shine)</strong><br>
-                For cleaning and preservation, use a moist flannel cloth. To dry, use a dry flannel cloth, but remember to avoid excessive friction.<br><br>
+                Pintura Alto Brilho (Color Shine)<br>
+                Para a limpeza e conservação, utilize uma flanela úmida. Para secar, utilize uma flanela seca, mas lembre-se de evitar o atrito excessivo.<br>
+                <br>
 
-                We also advise using a small layer of silicone-based wax (such as polish for automotive use). This not only cleans but also provides a renewed appearance and a protective film layer. Apply a small amount with the help of a flannel cloth, then polish it with a wool cloth to achieve the proper shine.<br>
-                This process should only be performed on doors that have Color Shine painting and should be repeated every 90 days.<br><br>
+                Também é aconselhável o uso de uma pequena camada de cera à base de silicone (ex.: cera de uso automotivo). Essa cera, além de limpar, fornece uma aparência renovada e uma camada protetora. Passe uma pequena quantidade com a ajuda de uma flanela, e logo após lustre com um pano de lã para dar o devido brilho.<br>
+                Este processo deve ser feito somente nas portas que possuem Pintura Alto Brilho (Color Shine), devendo ser repetido a cada 90 dias.<br>
+                <br>
 
-                <strong>3.2.2 Satin Finish Paint (Satin Color)</strong><br>
-                Only use water and neutral detergent directly on an appropriate flannel cloth. After cleaning, dry completely using a dry flannel, always avoiding excessive friction.<br><br>
-
-                <strong>Be careful:</strong><br>
-                Excessive exposure to the sun can bring changes to the shade of color of the furniture and also make the paint dry up. Avoid it!
+                Pintura Acetinada/Fosca (Satin Color)<br>
+                Utilize apenas água e detergente neutro diretamente em uma flanela apropriada. Após a limpeza, seque completamente com uma flanela seca, sempre evitando o atrito excessivo.<br>
+                <br>
+                Fique atento:<br>
+                A exposição excessiva ao sol pode ocasionar mudanças na tonalidade do móvel, além de ressecar a pintura. Evite!
             </p>
+
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>NEVER USE:</strong></p>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>WHY:</strong></p>
+                            <p align="center"><strong>PORQUE:</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Abrasive cleaning products such as steel wool, soap-based detergents, alcohol, or others.</p>
+                            <p align="center">Produtos de limpeza abrasivos como esponja de aço, saponáceos, álcool e outros.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They could scratch and damage the finish.</p>
+                            <p align="center">Podem danificar o acabamento e riscar.</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <br>
-
             <p>
-                <strong>Glass and Mirrors</strong>
+                <strong>Vidros e Espelhos</strong>
             </p>
             <ul type="circle">
-                <li>To clean, use water and neutral detergent directly on a suitable cloth or paper towel.</li>
+                <li>Para a limpeza, utilize água e detergente neutro diretamente em um pano apropriado ou toalha de papel.</li>
             </ul>
 
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>NEVER USE:</strong></p>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>WHY:</strong></p>
+                            <p align="center"><strong>PORQUE:</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Dry cloth, steel wool, or any other abrasive object.</p>
+                            <p align="center">Pano seco, esponja de aço ou outro objeto abrasivo.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">Friction may damage the glass.</p>
+                            <p align="center">O atrito pode danificar o vidro.</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Any product sprayed directly onto the glass.</p>
+                            <p align="center">Qualquer produto pulverizado diretamente no vidro.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">It can cause damage to coatings and accessories if they come into contact with the furniture.</p>
+                            <p align="center">Pode causar danos nos revestimentos e acessórios caso entrem em contato com os móveis.</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <br>
-
             <p>
-                <strong>Handles</strong><br><br>
-                Use only a soft cloth moistened with water, and dry thoroughly afterward.
+                <strong>Puxadores</strong><br>
+                <br>
+                Utilize apenas um pano macio, umedecido com água. Em seguida, seque totalmente.
             </p>
 
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>NEVER USE:</strong></p>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>WHY:</strong></p>
+                            <p align="center"><strong>PORQUE:</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Cleaning products.</p>
+                            <p align="center">Produtos de limpeza.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They may stain or cause damage to the handles.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <p align="center">Abrasive products or objects.</p>
-                        </td>
-                        <td valign="top">
-                            <p align="center">They can scratch or damage the handles.</p>
+                            <p align="center">Podem manchar e causar danos aos puxadores.</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Alcohol, detergents, or solvents when cleaning metal handles.</p>
+                            <p align="center">Produtos ou objetos abrasivos</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They remove the protective enamel coating (when applied to the handle).</p>
+                            <p align="center">Podem riscar e causar danos ao material dos puxadores</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">Álcool, detergente ou solvente na limpeza dos puxadores em metal.</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">Removem a camada de verniz (quando aplicado sobre o puxador).</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <br>
-
             <p>
-                <strong>Hinges and Slides</strong>
+                <strong>Dobradiças e Corrediças</strong><br>
             </p>
             <ul type="circle">
-                <li>Use a soft cloth or a brush with soft bristles to remove dust.<br><br>
-                    <strong>Please note:</strong><br>
-                    In coastal regions with sea air, this process should be done every 30 days.
+                <li>Utilize um pano macio ou pincel de cerdas suaves para retirar a poeira.<br>
+                    <br>
+                    Fique atento:<br>
+                    Em regiões que possuem maresia, este processo deve ser feito a cada 30 dias.
                 </li>
                 <br>
-                <li>Products such as salt, lemon, and vinegar can accelerate the rusting of metal accessories and should be avoided.</li>
+                <li>Produtos como sal, limão e vinagre podem acelerar o processo de oxidação dos acessórios metálicos.</li>
             </ul>
 
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>NEVER USE:</strong></p>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>WHY:</strong></p>
+                            <p align="center"><strong>PORQUE:</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Cleaning products.</p>
+                            <p align="center">Produtos de limpeza.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">These metal components have protective layers, not visible to the touch, and should not be exposed to any physical or chemical interference.</p>
+                            <p align="center">Essas ferragens possuem camadas de proteção não perceptíveis ao contato direto e não devem receber interferência de quaisquer elementos/agentes físicos ou químicos.</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Abrasive products or objects.</p>
+                            <p align="center">Produtos ou objetos abrasivos</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They may scratch and cause damage to the materials used in hinges and slides.</p>
+                            <p align="center">Podem riscar e causar danos ao material das dobradiças e das corrediças.</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <br>
             <p class="background-black color-white" style="padding: 20px;">
-                <strong>AVOID:</strong><br>
-                The accumulation of dust, fat, or moisture on the hinges and slides may hinder their proper functioning and/or cause oxidation (rust).
+                <strong>Evite:</strong><br>
+                O acúmulo de poeira, gordura ou umidade sobre as dobradiças e corrediças podem prejudicar o seu bom funcionamento e/ou ocasionar oxidação (ferrugem).
             </p>
-
             <p>
-                <strong>Wire Products</strong><br>
+                <strong>Produtos Aramados</strong><br>
             </p>
             <ul type="circle">
-                <li>Cleaning should be carried out every 60 days. Use a cloth moistened with neutral detergent and water. After cleaning, dry completely with a dry cloth.</li>
-                <li>To enhance the shine and durability of the product, use silicone-based wax.</li>
-                <li>For chromed wire products, the cleaning process should be carried out every 30 days.</li>
+                <li>A limpeza deve ser realizada a cada 60 dias. Utilize um pano umedecido com detergente neutro e água. Após a limpeza, seque completamente com um pano seco.</li>
+                <li>Para ressaltar o brilho e durabilidade do produto, utilize a cera à base de silicone.</li>
+                <li>No caso de aramados cromados, este processo de limpeza deve ser realizado a cada 30 dias.</li>
             </ul>
 
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>NEVER USE:</strong></p>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>WHY:</strong></p>
+                            <p align="center"><strong>PORQUE:</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Solvents (alcohol and thinner), sanding files, rough or sharp materials (sponges).</p>
+                            <p align="center">Solventes (álcool e tiner), lixas, materiais ásperos ou cortantes (esponjas).</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They can scratch or damage the product and cause rusting.</p>
+                            <p align="center">Podem riscar ou danificar seu produto e provocar oxidação.</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <br>
-
             <p>
-                <strong>Please note:</strong><br>
-                In coastal regions with sea air, this process should be carried out every 30 days.<br>
-                Products such as salt, lemon, and vinegar can accelerate the oxidation process of chromed accessories and should therefore be avoided.
+                Fique atento:<br>
+                Em regiões que possuem maresia, este processo deve ser feito a cada 30 dias.<br>
+                Produtos como sal, limão e vinagre podem acelerar o processo de oxidação dos acessórios cromados.
             </p>
 
             <p>
-                <strong>Accessories in General</strong><br>
+                <strong>Acessórios em Geral</strong><br>
             </p>
             <p>
-                <strong>Stainless Steel and Enameled Parts</strong><br>
-                Stainless steel and enameled parts should be cleaned with a slightly moistened cloth and neutral soap or degreasing agents (provided they do not contain chlorine or chlorine-based compounds).
+                Peças de Inox e Esmaltados<br>
+                As peças de aço inox e esmaltados deverão ser limpos com pano levemente umedecido e sabão neutro ou com desengordurantes (desde que tenham cloro e seus derivados).<br>
             </p>
 
             <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
                 <tbody>
                     <tr>
                         <td>
-                            <p align="center"><strong>NEVER USE:</strong></p>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
                         </td>
                         <td>
-                            <p align="center"><strong>WHY:</strong></p>
+                            <p align="center"><strong>PORQUE:</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Accessories with chrome finish in humid environments and coastal regions.</p>
+                            <p align="center">Acessórios com acabamento cromado em ambientes úmidos e regiões litorâneas.</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They are prone to oxidation due to the action of water and sea air.</p>
+                            <p align="center">Estão sujeitos à ocorrência de oxidação pela ação da água e da maresia.</p>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            <p align="center">Abrasive products or objects.</p>
+                            <p align="center">Produtos ou objetos abrasivos</p>
                         </td>
                         <td valign="top">
-                            <p align="center">They may scratch and cause damage to the materials.</p>
+                            <p align="center">Podem riscar e causar danos ao material das dobradiças e das corrediças.</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <br>
-
             <p>
-                <strong>Remarks:</strong><br>
-                Special products developed for cleaning and preserving stainless steel and enameled materials may indeed be used.
+                Observação:<br>
+                Produtos especiais desenvolvidos para a limpeza e a conservação desses materiais em inox e esmaltados podem ser utilizados.
+            </p>
+            <p>
+                <strong>Lâmina natural de madeira</strong><br>
+            </p>
+            <p>
+                Para limpeza utilizar um pano limpo, macio, seco e sem fiapos. Em caso de limpeza pesada umedecer o pano com água e sabão neutro, secar a superfície logo após a limpeza.
+            </p>
+
+            <table border="1" cellspacing="0" cellpadding="0" width="100%" style="table-layout:fixed;">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p align="center"><strong>NÃO UTILIZAR</strong></p>
+                        </td>
+                        <td>
+                            <p align="center"><strong>PORQUE:</strong></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <p align="center">Produtos abrasivos, produtos de limpeza ou lustra móveis.</p>
+                        </td>
+                        <td valign="top">
+                            <p align="center">Pode alterar coloração, característica e acabamento do revestimento em lâmina natural de madeira</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <p>
+                <strong>Itens Revestidos</strong><br>
+            </p>
+            <p>
+                Itens revestidos podem sofrer alteração de cor quando expostos diretamente a luz solar e/ou artificial, principalmente os revestimentos de cores mais escuras.
+            </p>
+            <p class="background-black color-white" style="padding: 20px;">
+                <strong>Evite:</strong><br>
+                O contato com roupas escuras, como jeans, pode manchar permanente o revestimento.
+            </p>
+            <p>
+                Pele Sintética<br>
+                Para limpeza utilizar pano limpo, macio e seco. Em caso de sujeiras ocasionais retirar imediatamente o excesso com papel absorvente ou pano limpo e, em seguida, sem esfregar, passar um pano umedecido em água e sabão neutro. Deixar secar naturalmente a sombra.
+            </p>
+            <p>
+                Fique atento:<br>
+                Não utilizar equipamentos a vapor, nem produtos com álcool, alvejante, cloro ou abrasivos. Não realizar lavagem industrial ou impermeabilização.
+            </p>
+            <p>
+                Tecido Trama<br>
+                Utilizar escova ou pincel de cerdas macias. Em caso de sujeiras ocasionais retirar imediatamente o excesso com papel absorvente ou pano limpo e, em seguida, sem esfregar, passar um pano umedecido em água e sabão neutro. Não concentrar a limpeza apenas na área da mancha para não danificar as fibras, não retirar o pigmento dos tecidos com cor e não marcar. Deixar secar naturalmente a sombra.
+            </p>
+            <p>
+                Fique atento:<br>
+                Não utilizar equipamentos a vapor, nem produtos com álcool, alvejante, cloro ou abrasivos. Não realizar lavagem industrial ou impermeabilização.
             </p>
             <br>
 
             <ol start="4" type="1">
-                <li><strong>RAW MATERIALS</strong></li>
+                <li><strong>MATÉRIA-PRIMA</strong></li>
             </ol>
             <br>
             <ul type="circle">
-                <li>Furniture produced in MDF and MDP are shipped out by the factory without any kind of fungi, termites or pests in general. The wooden boards are subjected to special equipment which makes use of high temperatures (approximately 200 °C) and pressure within their manufacturing process, which assures that there are no pests of any kind in this product.</li>
-                <li>However, being products derived from wood, they could be attacked if they have any contact with products, materials or locations that are already infested.</li>
-                <li>If there is a track record showing presence of termites or any other pest, then we recommend the identification of the point of infestation and later elimination of termites and/or application of an appropriate pesticide in the rooms before the furniture is installed (always following the period of isolation of the environment for the start of assembly). We also recommend that the pesticide be applied every six months.</li>
-                <li>Regarding the proliferation of fungi, the environmental condition is a determining factor. Due to the fact that mold/mildew-causing fungi are present in atmospheric air, being their main dispersion route, they settle in environments that gather favorable conditions for their proliferation. When there is an occurrence of mold/mildew on furniture, it is necessary to first remove the contaminations in order to prevent the fungi from spreading to other furniture or rooms in the house, perform periodic cleaning and control the environmental conditions to avoid new infestation.</li>
+                <li>Os móveis fabricados em MDF e MDP são expedidos pela fábrica sem qualquer espécie de fungos, cupins ou pragas em geral. As chapas de madeira são submetidas a equipamentos que utilizam altas temperaturas (aproximadamente 200ºc) e pressão em seu processo de fabricação, o que garante a inexistência de qualquer espécie de praga no produto.</li>
+                <li>No entanto, por serem derivados da madeira, podem ser atacados, caso tenham contato com produtos, materiais ou locais já infestados.</li>
+                <li>Em caso de histórico de cupins, ou qualquer outra praga, recomendamos que seja feita a identificação do foco e posterior dedetização/descupinização nos ambientes antes da instalação dos móveis (respeitando o período de isolamento do ambiente para início da montagem). Também recomendamos a frequência semestral de dedetização.</li>
+                <li>Em relação à proliferação de fungos, a condição do ambiente é fator determinante. Devido ao fato de os fungos causadores do mofo/bolor estarem presentes no ar atmosférico, sendo esta sua principal via de dispersão, eles se instalam em ambientes que reúnam condições favoráveis para sua proliferação. Quando houver uma ocorrência de mofo/bolor em móveis é necessário, primeiramente remover as contaminações, a fim de evitar que os fungos se proliferem por outros móveis ou recintos da casa, efetuar limpeza periódica e controlar as condições do ambiente para evitar nova infestação.</li>
             </ul>
-
             <p>
-                Regarding the proliferation of fungus, the condition of the environment is a determining factor. Due to the fact that the fungus that cause mold / mildew are present in the atmospheric air, this being its main route of dispersion, they install themselves in environments that have favorable conditions for their proliferation. When there is an occurrence of mold / mildew in furniture, it is necessary to first remove the contamination, to prevent the fungus from proliferating by other furniture or enclosures in the house, perform periodic cleaning and control the conditions of the environment to prevent new infestation.
-            </p>
-
-            <p>
-                REMEMBER:<br>
-                Replacement of parts infested with termites is an action that does not eliminate the causes.<br>
-                As these are raw materials that soak up moisture, they should not be exposed to the excessive moisture or humidity.
+                Lembre-se:<br>
+                Substituir as peças infestadas por cupim é uma ação que não elimina as causas.<br>
+                Por se tratar de matéria-prima que absorve umidade, não deve ser exposta à ação excessiva da água.
             </p>
             <br>
 
             <ol start="5" type="1">
-                <li><strong>MISCELLANEOUS COMMENTS</strong></li>
+                <li><strong>SUSTENTABILIDADE</strong></li>
             </ol>
             <br>
-
             <ul type="circle">
-                <li>When using the furniture on a daily basis, some situations need to be avoided so that the useful life of the product may be extended.</li>
-                <li>Pay attention when choosing your cleaning products. Always check the chemical composition in order to identify compatibility with the materials used in furniture and accessories.</li>
-                <li>Should you have any doubts not covered by this Manual, then please contact the dealer where the products were purchased or our Customer Relations Center (Central de Relacionamento com o Consumidor - CRC) which is open from Monday to Friday, 9 a.m. to 5 p.m., using the toll-free telephone 0800 008 9000; you may also access the section on our website which is <strong><a href="https://dellanno.com" target="_blank">www.dellanno.com</a></strong>.</li>
+                <li>Na indústria, a preservação do meio ambiente se reflete na adoção de práticas sustentáveis em todas as etapas do processo de produção.</li>
+                <li>A matéria-prima é proveniente de plantações florestais certificadas, próprias ou de terceiros, ou adquiridas de fontes controladas.</li>
+                <li>As embalagens dos móveis da Unicasa são 95% feitas com material reciclável.</li>
+                <li>O índice de reaproveitamento da água chega a 100% através do tratamento de efluentes e da captação de água da chuva, que juntas são utilizados como reserva de incêndio e nos sanitários de toda a empresa.</li>
+                <li>O resíduo gerado no tratamento de efluentes é destinado a uma empresa da cidade vizinha de Veranópolis, produtora de fertilizantes orgânicos.</li>
+                <li>Os co-produtos gerados no processo produtivo — como a serragem, madeira, plástico e papelão — são reaproveitados por outros setores da economia. Demais resíduos não recicláveis são encaminhados para processo de blendagem e coprocessamento, processo de alta tecnologia que não agride o meio ambiente e não deixa passivos ambientais para a empresa.</li>
+                <li>Na área de energia, o óleo diesel foi substituído pelo GLP e a empresa possui telhas translúcidas que permitem a entrada de luz natural na planta fabril, diminuindo o consumo com iluminação.</li>
+                <li>Em 2020, a Unicasa utilizou a quantidade de 255.820 kg de embalagens plásticas circulares, produzidas a partir de matéria-prima reciclada, práticas sustentáveis e energia eólica, resultando em diversos benefícios ambientais e sociais. Dados do Certificado de Circularidade:
+                </li>
             </ul>
+            <br>
+            <div class="double--content">
+                <div class="content--50">
+                    <div class="columns" style="margin-bottom: 40px; flex-wrap: nowrap;">
+                        <img src="/files/manual-icon-1.png" class="lazy" style="margin: 0 20px;" alt=""> <span>
+                            Redução de <strong>511.640 kgCO2eq</strong><br>
+                            de <strong>Gases do efeito estufa.</strong>
+                        </span>
+                    </div>
+
+                    <div class="columns" style="margin-bottom: 40px; flex-wrap: nowrap;">
+                        <img src="/files/manual-icon-2.png" class="lazy" style="margin: 0 20px;" alt=""> <span>
+                            Redução de <strong>304.426 L</strong> de<br>
+                            <strong>Consumo de Petróleo.</strong>
+                        </span>
+                    </div>
+
+                    <div class="columns" style="margin-bottom: 40px; flex-wrap: nowrap;">
+                        <img src="/files/manual-icon-3.png" class="lazy" style="margin: 0 20px;" alt=""> <span>
+                            Redução de <strong>773.161 kW</strong> de<br>
+                            <strong>Consumo de energia elétrica.</strong>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="content--50">
+                    <div class="columns" style="margin-bottom: 40px; flex-wrap: nowrap;">
+                        <img src="/files/manual-icon-4.png" class="lazy" style="margin: 0 20px;" alt=""> <span>
+                            Redução de <strong>de 255.820 kg</strong><br>
+                            de <strong>Resíduos na natureza.</strong>
+                        </span>
+                    </div>
+
+                    <div class="columns" style="margin-bottom: 40px; flex-wrap: nowrap;">
+                        <img src="/files/manual-icon-5.png" class="lazy" style="margin: 0 20px;" alt=""> <span>
+                            Redução de <strong>2.019.011 L</strong><br>
+                            de <strong>Consumo de água no<br>
+                                total dos processos.</strong>
+                        </span>
+                    </div>
+
+                    <div class="columns" style="margin-bottom: 40px; flex-wrap: nowrap;">
+                        <img src="/files/manual-icon-6.png" class="lazy" style="margin: 0 20px;" alt=""> <span>
+                            <strong>2185 empregos</strong> diretos<br>
+                            e indiretos.
+                        </span>
+                    </div>
+                </div>
+            </div>
 
             <ol start="6" type="1">
-                <li><strong>CERTIFICATE</strong></li>
+                <li><strong>OBSERVAÇÕES GERAIS</strong></li>
             </ol>
             <br>
-            <p><strong>The UNICASA products have a guarantee against possible defects in Workmanship, a warranty which takes effect on the day when assembly is finalized.</strong></p>
-
-            <p><strong>WARRANTY PERIODS</strong></p>
-
-            <table>
-            <thead>
-                <tr>
-                <th>ITEM</th>
-                <th>WARRANTY</th>
-                <th>RESPONSIBILITY</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>Assembly and Adjustment</td>
-                <td>90 days</td>
-                <td>Resale</td>
-                </tr>
-                <tr>
-                <td>Project and Maintenance</td>
-                <td>90 days</td>
-                <td>Resale</td>
-                </tr>
-                <tr>
-                <td>Cabinets<sup>1</sup></td>
-                <td>1825 days (5 year)</td>
-                <td>Factory</td>
-                </tr>
-                <tr>
-                <td>Laccas<sup>2</sup></td>
-                <td>730 days (2 year)</td>
-                <td>Factory</td>
-                </tr>
-                <tr>
-                <td>Aluminium door with glass<sup>3</sup></td>
-                <td>365 days (1 year)</td>
-                <td>Factory</td>
-                </tr>
-                <tr>
-                <td>Handles</td>
-                <td>90 days<sup>4</sup></td>
-                <td>Factory</td>
-                </tr>
-                <tr>
-                <td>Hinges and Slides</td>
-                <td>90 days<sup>4</sup></td>
-                <td>Factory</td>
-                </tr>
-                <tr>
-                <td>Accessories in General</td>
-                <td>90 days<sup>4</sup></td>
-                <td>Factory</td>
-                </tr>
-            </tbody>
-            </table>
-
-            <ul>
-            <li><small><sup>1</sup> Boxes, doors, lids, panels and shelves made in MDF or MDP, which are part of the furniture considered.</small></li>
-            <li><small><sup>2</sup> The design and assembly of the structured are the responsibility of the dealer.</small></li>
-            <li><small><sup>3</sup> The contractual warranty shall not apply to natural wear and color variations resulting from exposure to the sun and other external agents.</small></li>
-            <li><small><sup>4</sup> The warranty period for the items produced by third-party suppliers may vary according to the internal policy of each supplier.</small></li>
-            </ul>
-
-            <br>
-
-            <p><strong>WARRANTY FOR APPARENT AND EASILY VISIBLE PROBLEMS:</strong></p>
-
-            <p>The Warranty is set of ninety (90) days for defects of workmanship, when such defects are apparent and easily visible, counting from the date of installation.</p>
-
-            <p><strong>LIMITATION OF WARRANTY:</strong></p>
-
-            <p><strong>THIS WARRANTY DOES NOT COVER THE FOLLOWING:</strong></p>
-
             <ul type="circle">
-            <li>Products not produced or commercialized by UNICASA INDÚSTRIA DE MÓVEIS S.A., including glass (except for those which are shipped with a metal door in aluminum), marble items, granite, stones in general, cubes, domestic appliances, upholstery and other accessories;</li>
-            <li>Normal wear resulting from normal use of the product;</li>
-            <li>The use of natural products may cause differences and variations between shades, design, characteristics, color, tones, grains and textures of products presented in catalogs and in showrooms and the products delivered for installation. Dell arno shall not be responsible for these differences and variations. Further, client also expressly understands and acknowledges that with the passage of time, wooden units may change their color from the color they were at initial installation. Dell arno shall not be responsible for such color changes;</li>
-            <li>Failure to comply with any information or recommendation of the "OWNER\'S MANUAL" and warranty certificate;</li>
-            <li>Damage caused by structural problems at the place of installation, including seepages of water, infestations by termites or by pests in general, appearance of mould, and others as they result from the installation environment;</li>
-            <li>Inappropriate use, lack of regular maintenance and cleaning, or also the use of cleaning products that are not recommended;</li>
-            <li>Defects arising from electric and hydraulic Installations;</li>
-            <li>Defects arising from projects, transport, installations (of furniture) and dismantling of the structure by persons who have not been accredited by the authorized dealers;</li>
-            <li>Placing of excessive weight on the furniture.</li>
-            </ul>
-
-            <p><strong>IMPORTANT:</strong></p>
-
-            <ul type="circle">
-            <li>Starting after the assembly has been finalized, respecting the time frames for each item as shown in the table of warranty time frames;</li>
-            <li>The manufacturer reserves the right to make any changes to the products, as deemed necessary or useful, without the loss of the essential characteristics;</li>
-            <li>The exercising of the rights of the client, as mentioned in this warranty certificate, shall only be valid if the facts showing the date of the assembly and the dealer where the product was acquired are duly shown, together with the official tax invoice (Nota Fiscal) of the purchase;</li>
-            <li>Services involving items outside the normal product range shall mean a longer time frame for planning (please check with the dealer);</li>
-            <li>Any other information can be found on the Internet at <a href="https://dellanno.com" target="_blank"><strong>dellanno.com</strong></a>.</li>
+                <li>No uso diário dos móveis, algumas situações devem ser evitadas a fim de prolongar a vida útil do produto.</li>
+                <li>Atenção ao escolher os produtos de limpeza. Sempre verifique a sua composição química a fim de identificar a compatibilidade com os materiais dos móveis e dos acessórios.</li>
+                <li>Em caso de dúvidas não previstas neste manual, entre em contato com a revenda onde os produtos foram adquiridos ou com nossa Central de Relacionamento com o Consumidor (CRC) disponível de segunda à sexta-feira, exceto feriados, das 9h às 17h, pelo telefone 0800 721 4104 ou acesse a seção no site <strong><a href="https://dellanno.com.br">www.dellanno.com.br</a></strong>.</li>
             </ul>';
 
         return Inertia::render('Manual', [

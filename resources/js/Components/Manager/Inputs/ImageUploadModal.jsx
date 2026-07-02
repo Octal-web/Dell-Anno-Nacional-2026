@@ -330,6 +330,8 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
     const [dropTarget, setDropTarget] = useState(null);
     const [dropZoneActive, setDropZoneActive] = useState(false);
     const [selected, setSelected] = useState(null);
+    const [search, setSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const fileInputRef = useRef();
 
     const currentPath = folderChain[folderChain.length - 1].id;
@@ -364,8 +366,26 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
         }
     }, [currentPath, loadFiles, activeTab]);
 
+    useEffect(() => {
+        if (activeTab === 'files') {
+            loadFiles(currentPath);
+            setSelected(null);
+            setSearch('');
+        }
+    }, [currentPath, loadFiles, activeTab]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [search]);
+
     const navigateTo = (index) => {
         setFolderChain((prev) => prev.slice(0, index + 1));
+
+        setSearch('');
+        setDebouncedSearch('');
     };
 
     const openDir = (file) => {
@@ -437,7 +457,9 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
     };
 
     const dirs = files.filter((f) => f.isDir);
-    const fileItems = files.filter((f) => !f.isDir);
+    const fileItems = files
+        .filter((f) => !f.isDir)
+        .filter((f) => f.name.toLowerCase().includes(debouncedSearch.toLowerCase()));
 
     const tabs = [
         {
@@ -632,6 +654,34 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
                             </div>
                         </div>
 
+                        <div className="px-4 py-2 border-b border-gray-100">
+                            <div className="relative">
+                                <svg viewBox="0 0 20 20" fill="currentColor"
+                                    className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                                    <path fillRule="evenodd"
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clipRule="evenodd" />
+                                </svg>
+                                <input
+                                    type="text"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Buscar arquivo na pasta atual…"
+                                    className="w-full text-xs pl-8 pr-3 py-1.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                />
+                                {search && (
+                                    <button type="button" onClick={() => setSearch('')}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                        <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                                            <path fillRule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clipRule="evenodd" />
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
                         <DropZone
                             onDrop={handleFileDrop}
                             highlight={dropZoneActive}
@@ -698,7 +748,7 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
                                                 <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-2 py-1.5">
                                                     Pastas
                                                 </p>
-                                                <div className="grid grid-cols-1 gap-0.5">
+                                                <div className="grid grid-cols-2 gap-0.5">
                                                     {dirs.map((file) => (
                                                         <div
                                                             key={file.id}
@@ -819,84 +869,63 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
                                                 <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-2 py-1.5">
                                                     Arquivos
                                                 </p>
-                                                <div className="grid grid-cols-1 gap-0.5">
+                                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 p-1">
                                                     {fileItems.map((file) => (
                                                         <div
                                                             key={file.id}
                                                             draggable
-                                                            onDragStart={() =>
-                                                                setDraggingFile(
-                                                                    file,
-                                                                )
-                                                            }
-                                                            onDoubleClick={() =>
-                                                                handleDoubleClick(
-                                                                    file,
-                                                                )
-                                                            }
-                                                            onClick={() =>
-                                                                setSelected(
-                                                                    file.id,
-                                                                )
-                                                            }
-                                                            onContextMenu={(
-                                                                e,
-                                                            ) => {
+                                                            onDragStart={() => setDraggingFile(file)}
+                                                            onDoubleClick={() => handleDoubleClick(file)}
+                                                            onClick={() => setSelected(file.id)}
+                                                            onContextMenu={(e) => {
                                                                 e.preventDefault();
-                                                                setContextMenu({
-                                                                    x: e.clientX,
-                                                                    y: e.clientY,
-                                                                    file,
-                                                                });
+                                                                setContextMenu({ x: e.clientX, y: e.clientY, file });
                                                             }}
-                                                            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all group
-                                ${selected === file.id ? "bg-neutral-50 ring-1 ring-blue-200" : "hover:bg-gray-50"}
-                              `}
+                                                            className={`flex flex-col items-center gap-1.5 p-2 rounded-xl cursor-pointer transition-all group relative
+                                                                ${selected === file.id ? 'bg-blue-50 ring-1 ring-blue-300' : 'hover:bg-gray-50'}`}
                                                         >
-                                                            <FileIcon
-                                                                file={file}
-                                                                thumbUrl={
-                                                                    file.thumbUrl
-                                                                }
-                                                            />
-                                                            <div className="flex-1 min-w-0">
-                                                                <p className="text-sm text-gray-800 font-medium truncate">
-                                                                    {file.name}
-                                                                </p>
-                                                                {file.size && (
-                                                                    <p className="text-xs text-gray-400">
-                                                                        {formatSize(
-                                                                            file.size,
-                                                                        )}
-                                                                    </p>
+                                                            <div className="w-full aspect-square rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                                                                {file.thumbUrl ? (
+                                                                    <img
+                                                                        src={file.thumbUrl}
+                                                                        alt={file.name}
+                                                                        className="w-full h-full object-cover"
+                                                                        onError={(e) => (e.target.style.display = 'none')}
+                                                                    />
+                                                                ) : (
+                                                                    <FileIcon file={file} />
                                                                 )}
                                                             </div>
-                                                            {isImage(
-                                                                file.name,
-                                                            ) && (
+
+                                                            <p className="text-xs text-gray-700 font-medium w-full text-center truncate leading-tight px-1"
+                                                                title={file.name}>
+                                                                {file.name}
+                                                            </p>
+
+                                                            {isImage(file.name) && (
                                                                 <button
                                                                     type="button"
-                                                                    onClick={(
-                                                                        e,
-                                                                    ) => {
+                                                                    onClick={(e) => {
                                                                         e.stopPropagation();
-                                                                        onImageSelect(
-                                                                            joinPath(
-                                                                                "/files",
-                                                                                currentPath,
-                                                                                file.name,
-                                                                            ),
-                                                                        );
+                                                                        onImageSelect(joinPath('/files', currentPath, file.name));
                                                                     }}
-                                                                    className="opacity-0 group-hover:opacity-100 text-xs text-white bg-black hover:bg-neutral-700 px-2.5 py-1 rounded-lg transition-all shadow-sm"
+                                                                    className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 bg-black/40 flex items-center justify-center transition-all"
                                                                 >
-                                                                    Selecionar
+                                                                    <span className="text-xs text-white font-semibold bg-black/60 px-2.5 py-1 rounded-lg">
+                                                                        Selecionar
+                                                                    </span>
                                                                 </button>
                                                             )}
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
+                                        )}
+
+                                        {fileItems.length === 0 && search && (
+                                            <p className="text-xs text-gray-400 px-2 py-3 text-center">
+                                                Nenhum arquivo encontrado para "{search}"
+                                            </p>
                                         )}
                                     </div>
                                 )}

@@ -36,6 +36,13 @@ const ImageEditModal = ({ node, onConfirm, onClose }) => {
         );
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (src) handleConfirm();
+        }
+    };
+
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -44,7 +51,6 @@ const ImageEditModal = ({ node, onConfirm, onClose }) => {
             <div className="bg-white shadow-xl w-full max-w-md p-6 animate-fade-in-down [animation-duration:_0.1s]">
                 <h3 className="text-base font-semibold text-gray-800 mb-5">Propriedades da imagem</h3>
 
-                {/* Preview */}
                 {src && (
                     <div className="mb-4 rounded-lg border border-gray-100 bg-gray-50 flex items-center justify-center overflow-hidden h-36">
                         <img
@@ -55,7 +61,6 @@ const ImageEditModal = ({ node, onConfirm, onClose }) => {
                     </div>
                 )}
 
-                {/* URL + Finder */}
                 <div className="mb-3">
                     <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">URL da imagem</label>
                     <div className="flex gap-2">
@@ -65,6 +70,7 @@ const ImageEditModal = ({ node, onConfirm, onClose }) => {
                             onChange={(e) => setSrc(e.target.value)}
                             placeholder="https://exemplo.com/imagem.jpg"
                             className="flex-1 text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            onKeyDown={handleKeyDown}
                             autoFocus
                         />
                         <button
@@ -86,11 +92,11 @@ const ImageEditModal = ({ node, onConfirm, onClose }) => {
                         value={alt}
                         onChange={(e) => setAlt(e.target.value)}
                         placeholder="Descrição da imagem"
+                        onKeyDown={handleKeyDown}
                         className="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
-                {/* Width */}
                 <div className="mb-5">
                     <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Largura (px ou %)</label>
                     <input
@@ -98,6 +104,7 @@ const ImageEditModal = ({ node, onConfirm, onClose }) => {
                         value={width}
                         onChange={(e) => setWidth(e.target.value)}
                         placeholder="Ex: 400 ou 100%"
+                        onKeyDown={handleKeyDown}
                         className="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
@@ -656,7 +663,7 @@ export const InputTipTapEditor = ({ title, name, toolbar = [], value, idioma, on
                 <div ref={editorWrapperRef} className="p-3 min-h-40 overflow-auto max-h-screen">
                     <EditorContent
                         editor={editor}
-                        className="[&_.ProseMirror]:min-h-[8.5em] [&_p]:text-sm [&_h1]:text-4xl [&_h2]:text-3xl [&_h3]:text-2xl [&_h4]:text-xl [&_h5]:text-base [&_th]:border [&_td]:border [&_ul]:list-inside [&_li]:list-disc [&_ul>li>p]:contents [&_a]:underline [&_a]:text-blue-500 [&_.ProseMirror-focused]:outline-none [&_img]:cursor-pointer"
+                        className="[&_.ProseMirror]:min-h-[8.5em] [&_p]:text-sm [&_h1]:text-4xl [&_h2]:text-3xl [&_h3]:text-2xl [&_h4]:text-xl [&_h5]:text-base [&_th]:border [&_td]:border [&_ul]:list-inside [&_ul_li]:list-disc [&_ul>li>p]:inline [&_ul>li>p]:my-0 [&_ol]:list-inside [&_ol_li]:list-decimal [&_ol>li>p]:inline [&_ol>li>p]:my-0 [&_a]:underline [&_a]:text-blue-500 [&_.ProseMirror-focused]:outline-none [&_img]:cursor-pointer"
                     />
                 </div>
 
