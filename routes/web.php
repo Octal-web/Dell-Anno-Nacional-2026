@@ -20,8 +20,10 @@ use App\Http\Controllers\CatalogosController;
 use App\Http\Controllers\PoliticasController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\LandingPagesController;
+use App\Http\Controllers\SitemapController;
 
 use App\Http\Controllers\Manager\UsuariosController;
+use App\Http\Controllers\Manager\PaginasController as ManagerPaginasController;
 use App\Http\Controllers\Manager\ConteudosController as ManagerConteudosController;
 use App\Http\Controllers\Manager\ImagensController as ManagerImagensController;
 use App\Http\Controllers\Manager\FinderController as ManagerFinderController;
@@ -54,10 +56,14 @@ use App\Http\Controllers\Manager\PoliticasController as ManagerPoliticasControll
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home.index');
-    Route::post('/cidades/carregar', [CidadesController::class, 'carregar'])->name('Cidades.carregar');    
+    Route::post('/cidades/carregar', [CidadesController::class, 'carregar'])->name('Cidades.carregar');
+
+    Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
+
+    Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
     Route::get('/brand', [InstitucionalController::class, 'index'])->name('Institucional.index');
-    
+
     Route::get('/produtos', [ProdutosController::class, 'index'])->name('Produtos.index');
     Route::get('/produtos/{slug}', [ProdutosController::class, 'produto'])->name('Produtos.produto');
     // Route::get('/produtos/{slug}/more', [ProdutosController::class, 'colecoes'])->name('Produtos.colecoes');
@@ -65,7 +71,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/lojas', [LojasController::class, 'index'])->name('Lojas.index');
     Route::get('/lojas/{slug}', [LojasController::class, 'loja'])->name('Lojas.loja');
-    
+
     Route::get('/get-inspired', [InspiracaoController::class, 'index'])->name('Inspiracao.index');
 
     Route::get('/lojas-projetos', [LojasProjetosController::class, 'index'])->name('Lojas.Projetos.index');
@@ -76,13 +82,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/frame', [BlogController::class, 'index'])->name('Blog.index');
     Route::get('/frame/{slug}', [BlogController::class, 'post'])->name('Blog.post');
-    
-    Route::get('/smartmaterials', [SmartMaterialsController::class, 'index'])->name('SmartMaterials.index');
-    Route::get('/smartmaterials/{slug}', [SmartMaterialsController::class, 'loja'])->name('SmartMaterials.loja');
-    
+
     Route::get('/acabamentos', [AcabamentosController::class, 'index'])->name('Acabamentos.index');
     Route::get('/acabamentos/{slug}', [AcabamentosController::class, 'acabamento'])->name('Acabamentos.acabamento');
-    
+
     Route::get('/mostras-de-decoracao', [MostrasController::class, 'index'])->name('Mostras.index');
     Route::get('/mostras-de-decoracao/{slug}/', [MostrasController::class, 'mostra'])->name('Mostras.mostra');
     Route::get('/mostras-de-decoracao/{slug}/{ano}', [MostrasController::class, 'ano'])->name('Mostras.mostra.ano');
@@ -112,7 +115,7 @@ Route::prefix('/manager')->group(function() {
 
     Route::post('/usuarios/logout', [UsuariosController::class, 'logout'])->name('Manager.Usuarios.logout');
 
-    Route::group(['middleware' => ['auth']], function() {
+    Route::group(['middleware' => ['auth']], function () {
         Route::post('/paginas/editar/{id}', [ManagerPaginasController::class, 'editarAction'])->name('Manager.Paginas.editar');
 
         Route::post('/conteudos/editar/{id}', [ManagerConteudosController::class, 'editarAction'])->name('Manager.Conteudos.editar');
@@ -120,7 +123,7 @@ Route::prefix('/manager')->group(function() {
 
         Route::get('/imagens/{id}', [ManagerImagensController::class, 'conteudo'])->name('Manager.Imagens.conteudo');
         Route::post('/imagens/conteudo/adicionar/{id}', [ManagerImagensController::class, 'novo'])->name('Manager.Imagens.novo');
-        
+
         Route::post('/imagens/conteudo/ordenar/{id}', [ManagerImagensController::class, 'ordenar'])->name('Manager.Imagens.ordenar');
         Route::post('/imagens/conteudo/visibilidade/{id}', [ManagerImagensController::class, 'visibilidade'])->name('Manager.Imagens.visibilidade');
         Route::post('/imagens/conteudo/excluir/{id}', [ManagerImagensController::class, 'excluir'])->name('Manager.Imagens.excluir');
@@ -136,7 +139,7 @@ Route::prefix('/manager')->group(function() {
         Route::get('/home', [ManagerHomeController::class, 'index'])->name('Manager.Home.index');
 
         Route::post('/home/atualizar/dados', [ManagerHomeController::class, 'atualizarInfo'])->name('Manager.Home.atualizarInfo');
-        
+
         Route::post('/slides/ordenar', [ManagerSlidesController::class, 'ordenar'])->name('Manager.Slides.ordenar');
         Route::post('/slides/visibilidade/{id}', [ManagerSlidesController::class, 'visibilidade'])->name('Manager.Slides.visibilidade');
         Route::post('/slides/excluir/{id}', [ManagerSlidesController::class, 'excluir'])->name('Manager.Slides.excluir');
@@ -156,7 +159,7 @@ Route::prefix('/manager')->group(function() {
         Route::post('/campanhas/adicionar', [ManagerCampanhasController::class, 'novo'])->name('Manager.Campanhas.novo');
         Route::get('/campanhas/editar/{id}', [ManagerCampanhasController::class, 'editar'])->name('Manager.Campanhas.editar');
         Route::post('/campanhas/editar/{id}', [ManagerCampanhasController::class, 'atualizar'])->name('Manager.Campanhas.atualizar');
-        
+
 
         Route::post('/destaques/ordenar', [ManagerDestaquesController::class, 'ordenar'])->name('Manager.Destaques.ordenar');
         Route::post('/destaques/visibilidade/{id}', [ManagerDestaquesController::class, 'visibilidade'])->name('Manager.Destaques.visibilidade');
@@ -167,10 +170,10 @@ Route::prefix('/manager')->group(function() {
         Route::get('/destaques/editar/{id}', [ManagerDestaquesController::class, 'editar'])->name('Manager.Destaques.editar');
         Route::post('/destaques/editar/{id}', [ManagerDestaquesController::class, 'atualizar'])->name('Manager.Destaques.atualizar');
         Route::get('/destaques/baixar-video/{id}', [ManagerDestaquesController::class, 'baixarVideo'])->name('Manager.Destaques.baixarVideo');
-        
+
 
         Route::get('/institucional', [ManagerInstitucionalController::class, 'index'])->name('Manager.Institucional.index');
-        
+
         Route::post('/acontecimentos/ordenar', [ManagerAcontecimentosController::class, 'ordenar'])->name('Manager.Acontecimentos.ordenar');
         Route::post('/acontecimentos/visibilidade/{id}', [ManagerAcontecimentosController::class, 'visibilidade'])->name('Manager.Acontecimentos.visibilidade');
         Route::post('/acontecimentos/excluir/{id}', [ManagerAcontecimentosController::class, 'excluir'])->name('Manager.Acontecimentos.excluir');
@@ -180,7 +183,7 @@ Route::prefix('/manager')->group(function() {
         Route::get('/acontecimentos/editar/{id}', [ManagerAcontecimentosController::class, 'editar'])->name('Manager.Acontecimentos.editar');
         Route::post('/acontecimentos/editar/{id}', [ManagerAcontecimentosController::class, 'atualizar'])->name('Manager.Acontecimentos.atualizar');
 
-        
+
         Route::post('/etapas/ordenar', [ManagerEtapasController::class, 'ordenar'])->name('Manager.Etapas.ordenar');
         Route::post('/etapas/visibilidade/{id}', [ManagerEtapasController::class, 'visibilidade'])->name('Manager.Etapas.visibilidade');
         Route::post('/etapas/excluir/{id}', [ManagerEtapasController::class, 'excluir'])->name('Manager.Etapas.excluir');
@@ -192,7 +195,7 @@ Route::prefix('/manager')->group(function() {
 
 
         Route::get('/produtos', [ManagerProdutosController::class, 'index'])->name('Manager.Produtos.index');
-        
+
         Route::post('/produtos/ordenar', [ManagerProdutosController::class, 'ordenar'])->name('Manager.Produtos.ordenar');
         Route::post('/produtos/visibilidade/{id}', [ManagerProdutosController::class, 'visibilidade'])->name('Manager.Produtos.visibilidade');
         Route::post('/produtos/excluir/{id}', [ManagerProdutosController::class, 'excluir'])->name('Manager.Produtos.excluir');
@@ -201,11 +204,11 @@ Route::prefix('/manager')->group(function() {
         Route::post('/produtos/adicionar', [ManagerProdutosController::class, 'novo'])->name('Manager.Produtos.novo');
         Route::get('/produtos/editar/{id}', [ManagerProdutosController::class, 'editar'])->name('Manager.Produtos.editar');
         Route::post('/produtos/editar/{id}', [ManagerProdutosController::class, 'atualizar'])->name('Manager.Produtos.atualizar');
-        
+
 
         Route::get('/produtos/imagens/{id}', [ManagerImagensProdutosController::class, 'index'])->name('Manager.Produtos.Imagens.index');
         Route::post('/produtos/imagens/adicionar/{id}', [ManagerImagensProdutosController::class, 'novo'])->name('Manager.Produtos.Imagens.novo');
-        
+
         Route::post('/produtos/imagens/cortar/{id}', [ManagerImagensProdutosController::class, 'cortar'])->name('Manager.Produtos.Imagens.cortar');
         Route::post('/produtos/imagens/ordenar/{id}', [ManagerImagensProdutosController::class, 'ordenar'])->name('Manager.Produtos.Imagens.ordenar');
         Route::post('/produtos/imagens/visibilidade/{id}', [ManagerImagensProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Imagens.visibilidade');
@@ -213,7 +216,7 @@ Route::prefix('/manager')->group(function() {
 
 
         Route::get('/produtos/ambientes/{id}', [ManagerAmbientesProdutosController::class, 'index'])->name('Manager.Produtos.Ambientes.index');
-        
+
         Route::post('/produtos/ambientes/ordenar', [ManagerAmbientesProdutosController::class, 'ordenar'])->name('Manager.Produtos.Ambientes.ordenar');
         Route::post('/produtos/ambientes/visibilidade/{id}', [ManagerAmbientesProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Ambientes.visibilidade');
         Route::post('/produtos/ambientes/excluir/{id}', [ManagerAmbientesProdutosController::class, 'excluir'])->name('Manager.Produtos.Ambientes.excluir');
@@ -223,7 +226,7 @@ Route::prefix('/manager')->group(function() {
         Route::get('/produtos/ambientes/editar/{id}', [ManagerAmbientesProdutosController::class, 'editar'])->name('Manager.Produtos.Ambientes.editar');
         Route::post('/produtos/ambientes/editar/{id}', [ManagerAmbientesProdutosController::class, 'atualizar'])->name('Manager.Produtos.Ambientes.atualizar');
 
-        
+
         Route::post('/produtos/projetos/ordenar', [ManagerProjetosProdutosController::class, 'ordenar'])->name('Manager.Produtos.Projetos.ordenar');
         Route::post('/produtos/projetos/visibilidade/{id}', [ManagerProjetosProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Projetos.visibilidade');
         Route::post('/produtos/projetos/excluir/{id}', [ManagerProjetosProdutosController::class, 'excluir'])->name('Manager.Produtos.Projetos.excluir');
@@ -232,19 +235,19 @@ Route::prefix('/manager')->group(function() {
         Route::post('/produtos/projetos/adicionar/{id}', [ManagerProjetosProdutosController::class, 'novo'])->name('Manager.Produtos.Projetos.novo');
         Route::get('/produtos/projetos/editar/{id}', [ManagerProjetosProdutosController::class, 'editar'])->name('Manager.Produtos.Projetos.editar');
         Route::post('/produtos/projetos/editar/{id}', [ManagerProjetosProdutosController::class, 'atualizar'])->name('Manager.Produtos.Projetos.atualizar');
-        
+
 
         Route::get('/produtos/projetos/imagens/{id}', [ManagerImagensProjetosProdutosController::class, 'index'])->name('Manager.Produtos.Projetos.Imagens.index');
         Route::post('/produtos/projetos/imagens/adicionar/{id}', [ManagerImagensProjetosProdutosController::class, 'novo'])->name('Manager.Produtos.Projetos.Imagens.novo');
-        
+
         Route::post('/produtos/projetos/imagens/cortar/{id}', [ManagerImagensProjetosProdutosController::class, 'cortar'])->name('Manager.Produtos.Projetos.Imagens.cortar');
         Route::post('/produtos/projetos/imagens/ordenar/{id}', [ManagerImagensProjetosProdutosController::class, 'ordenar'])->name('Manager.Produtos.Projetos.Imagens.ordenar');
         Route::post('/produtos/projetos/imagens/visibilidade/{id}', [ManagerImagensProjetosProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Projetos.Imagens.visibilidade');
         Route::post('/produtos/projetos/imagens/excluir/{id}', [ManagerImagensProjetosProdutosController::class, 'excluir'])->name('Manager.Produtos.Projetos.Imagens.excluir');
 
-        
+
         Route::get('/lojas', [ManagerLojasController::class, 'index'])->name('Manager.Lojas.index');
-        
+
         Route::post('/lojas/ordenar', [ManagerLojasController::class, 'ordenar'])->name('Manager.Lojas.ordenar');
         Route::post('/lojas/visibilidade/{id}', [ManagerLojasController::class, 'visibilidade'])->name('Manager.Lojas.visibilidade');
         Route::post('/lojas/excluir/{id}', [ManagerLojasController::class, 'excluir'])->name('Manager.Lojas.excluir');
@@ -255,9 +258,9 @@ Route::prefix('/manager')->group(function() {
         Route::post('/lojas/editar/{id}', [ManagerLojasController::class, 'atualizar'])->name('Manager.Lojas.atualizar');
         Route::get('/lojas/baixar-video/{id}', [ManagerLojasController::class, 'baixarVideo'])->name('Manager.Lojas.baixarVideo');
 
-        
+
         Route::get('/showrooms', [ManagerShowroomsController::class, 'index'])->name('Manager.Showrooms.index');
-        
+
         Route::post('/showrooms/ordenar', [ManagerShowroomsController::class, 'ordenar'])->name('Manager.Showrooms.ordenar');
         Route::post('/showrooms/visibilidade/{id}', [ManagerShowroomsController::class, 'visibilidade'])->name('Manager.Showrooms.visibilidade');
         Route::post('/showrooms/excluir/{id}', [ManagerShowroomsController::class, 'excluir'])->name('Manager.Showrooms.excluir');
@@ -270,14 +273,14 @@ Route::prefix('/manager')->group(function() {
 
         Route::get('/showrooms/imagens/{id}', [ManagerImagensShowroomsController::class, 'index'])->name('Manager.Showrooms.Imagens.index');
         Route::post('/showrooms/imagens/adicionar/{id}', [ManagerImagensShowroomsController::class, 'novo'])->name('Manager.Showrooms.Imagens.novo');
-        
+
         Route::post('/showrooms/imagens/ordenar/{id}', [ManagerImagensShowroomsController::class, 'ordenar'])->name('Manager.Showrooms.Imagens.ordenar');
         Route::post('/showrooms/imagens/visibilidade/{id}', [ManagerImagensShowroomsController::class, 'visibilidade'])->name('Manager.Showrooms.Imagens.visibilidade');
         Route::post('/showrooms/imagens/excluir/{id}', [ManagerImagensShowroomsController::class, 'excluir'])->name('Manager.Showrooms.Imagens.excluir');
 
-        
+
         Route::get('/lojas/projetos', [ManagerLojasProjetosController::class, 'index'])->name('Manager.Lojas.Projetos.index');
-        
+
         Route::post('/lojas/projetos/ordenar', [ManagerLojasProjetosController::class, 'ordenar'])->name('Manager.Lojas.Projetos.ordenar');
         Route::post('/lojas/projetos/visibilidade/{id}', [ManagerLojasProjetosController::class, 'visibilidade'])->name('Manager.Lojas.Projetos.visibilidade');
         Route::post('/lojas/projetos/excluir/{id}', [ManagerLojasProjetosController::class, 'excluir'])->name('Manager.Lojas.Projetos.excluir');
@@ -287,19 +290,19 @@ Route::prefix('/manager')->group(function() {
         Route::get('/lojas/projetos/editar/{id}', [ManagerLojasProjetosController::class, 'editar'])->name('Manager.Lojas.Projetos.editar');
         Route::post('/lojas/projetos/editar/{id}', [ManagerLojasProjetosController::class, 'atualizar'])->name('Manager.Lojas.Projetos.atualizar');
         Route::get('/lojas/projetos/baixar-video/{id}/', [ManagerLojasProjetosController::class, 'baixarVideo'])->name('Manager.Lojas.Projetos.baixarVideo');
-        
+
 
         Route::get('/lojas/projetos/imagens/{id}', [ManagerImagensLojasProjetosController::class, 'index'])->name('Manager.Lojas.Projetos.Imagens.index');
         Route::post('/lojas/projetos/imagens/adicionar/{id}', [ManagerImagensLojasProjetosController::class, 'novo'])->name('Manager.Lojas.Projetos.Imagens.novo');
-        
+
         Route::post('/lojas/projetos/imagens/cortar/{id}', [ManagerImagensLojasProjetosController::class, 'cortar'])->name('Manager.Lojas.Projetos.Imagens.cortar');
         Route::post('/lojas/projetos/imagens/ordenar/{id}', [ManagerImagensLojasProjetosController::class, 'ordenar'])->name('Manager.Lojas.Projetos.Imagens.ordenar');
         Route::post('/lojas/projetos/imagens/visibilidade/{id}', [ManagerImagensLojasProjetosController::class, 'visibilidade'])->name('Manager.Lojas.Projetos.Imagens.visibilidade');
         Route::post('/lojas/projetos/imagens/excluir/{id}', [ManagerImagensLojasProjetosController::class, 'excluir'])->name('Manager.Lojas.Projetos.Imagens.excluir');
 
-        
+
         Route::get('/mostras', [ManagerMostrasController::class, 'index'])->name('Manager.Mostras.index');
-        
+
         Route::post('/mostras/ordenar', [ManagerMostrasController::class, 'ordenar'])->name('Manager.Mostras.ordenar');
         Route::post('/mostras/visibilidade/{id}', [ManagerMostrasController::class, 'visibilidade'])->name('Manager.Mostras.visibilidade');
         Route::post('/mostras/excluir/{id}', [ManagerMostrasController::class, 'excluir'])->name('Manager.Mostras.excluir');
@@ -315,9 +318,6 @@ Route::prefix('/manager')->group(function() {
         Route::get('/contato/visualizar/{id}', [ManagerContatoController::class, 'visualizar'])->name('Manager.Contato.visualizar');
         Route::post('/contato/excluir/{id}', [ManagerContatoController::class, 'excluir'])->name('Manager.Contato.excluir');
 
-        Route::get('/orcamentos/visualizar/{id}', [ManagerOrcamentosController::class, 'visualizar'])->name('Manager.Orcamentos.visualizar');
-        Route::post('/orcamentos/excluir/{id}', [ManagerOrcamentosController::class, 'excluir'])->name('Manager.Orcamentos.excluir');
-
         
         Route::get('/acabamentos', [ManagerAcabamentosController::class, 'index'])->name('Manager.Acabamentos.index');
 
@@ -330,7 +330,7 @@ Route::prefix('/manager')->group(function() {
         Route::get('/acabamentos/editar/{id}', [ManagerAcabamentosController::class, 'editar'])->name('Manager.Acabamentos.editar');
         Route::post('/acabamentos/editar/{id}', [ManagerAcabamentosController::class, 'atualizar'])->name('Manager.Acabamentos.atualizar');
 
-        
+
         Route::get('/blog', [ManagerBlogController::class, 'index'])->name('Manager.Blog.index');
 
         Route::post('/posts/ordenar', [ManagerPostsController::class, 'ordenar'])->name('Manager.Posts.ordenar');
@@ -364,7 +364,7 @@ Route::prefix('/manager')->group(function() {
         Route::get('/catalogos/editar/{id}', [ManagerCatalogosController::class, 'editar'])->name('Manager.Catalogos.editar');
         Route::post('/catalogos/editar/{id}', [ManagerCatalogosController::class, 'atualizar'])->name('Manager.Catalogos.atualizar');
         Route::get('/catalogos/baixar-arquivo/{id}', [ManagerCatalogosController::class, 'baixarArquivo'])->name('Manager.Catalogos.baixarArquivo');
-        
+
 
         Route::post('/catalogos/categorias/ordenar', [ManagerCatalogosCategoriasController::class, 'ordenar'])->name('Manager.Catalogos.Categorias.ordenar');
         Route::post('/catalogos/categorias/visibilidade/{id}', [ManagerCatalogosCategoriasController::class, 'visibilidade'])->name('Manager.Catalogos.Categorias.visibilidade');

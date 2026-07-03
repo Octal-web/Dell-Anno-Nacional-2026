@@ -159,11 +159,11 @@ class LojasProjetosController extends Controller
             $response = $projeto_loja_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/stores/projects/thumbs/'), $showroom->imagem);
-                $image = $request->file('img_banner')->move(public_path('content/stores/projects/banner/'), $showroom->banner);
+                $image = $request->file('img')->move(public_path('content/stores/projects/thumbs/'), $projeto_loja->imagem);
+                $image = $request->file('img_banner')->move(public_path('content/stores/projects/banner/'), $projeto_loja->banner);
                 
                 if ($request->file('vid') && $request->file('vid')->getError() == 0) {
-                    $video = $request->file('vid')->move(public_path('content/stores/projects/video/'), $showroom->video);
+                    $video = $request->file('vid')->move(public_path('content/stores/projects/video/'), $projeto_loja->video);
                 }
 
                 return to_route('Manager.Lojas.Projetos.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
