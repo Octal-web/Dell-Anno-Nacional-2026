@@ -23,6 +23,7 @@ use App\Http\Controllers\LandingPagesController;
 use App\Http\Controllers\SitemapController;
 
 use App\Http\Controllers\Manager\UsuariosController;
+use App\Http\Controllers\Manager\PaginasController as ManagerPaginasController;
 use App\Http\Controllers\Manager\ConteudosController as ManagerConteudosController;
 use App\Http\Controllers\Manager\ImagensController as ManagerImagensController;
 use App\Http\Controllers\Manager\FinderController as ManagerFinderController;
@@ -81,9 +82,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/frame', [BlogController::class, 'index'])->name('Blog.index');
     Route::get('/frame/{slug}', [BlogController::class, 'post'])->name('Blog.post');
-
-    Route::get('/smartmaterials', [SmartMaterialsController::class, 'index'])->name('SmartMaterials.index');
-    Route::get('/smartmaterials/{slug}', [SmartMaterialsController::class, 'loja'])->name('SmartMaterials.loja');
 
     Route::get('/acabamentos', [AcabamentosController::class, 'index'])->name('Acabamentos.index');
     Route::get('/acabamentos/{slug}', [AcabamentosController::class, 'acabamento'])->name('Acabamentos.acabamento');
