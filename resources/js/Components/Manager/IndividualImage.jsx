@@ -61,7 +61,7 @@ export const IndividualImage = ({ individualContent, imagensPath, imagensClass, 
                                 onChange={handleCheckboxChange}
                                 className="sr-only peer"
                             />
-                            <div className="relative w-6 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-0 peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-[8px] rtl:peer-checked:after:-translate-x-[5px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-green-600"></div>
+                            <div className="relative w-6 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-[8px] rtl:peer-checked:after:-translate-x-[5px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-green-600"></div>
                         </label>
                     </li>
                     

@@ -18,6 +18,7 @@ const Page = () => {
     ];
     
     const contentFairs = {
+        addParametros: ['Casacor', 'Casas Conceito', 'outras mostras'],
         nome: ['Mostras', 'mostra'],
         controller: 'Mostras',
         imagens: true,
