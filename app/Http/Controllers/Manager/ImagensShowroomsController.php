@@ -10,10 +10,6 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Response;
-
-use DeepCopy\DeepCopy;
 
 class ImagensShowroomsController extends Controller
 {

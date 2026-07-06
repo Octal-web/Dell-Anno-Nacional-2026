@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produto;
-use App\Models\ImagemProduto;
+use App\Models\MostraCidade;
+use App\Models\ImagemMostraCidade;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use Carbon\Carbon;
 
-class ImagensProdutosController extends Controller
+class ImagensMostrasCidadesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,16 +20,40 @@ class ImagensProdutosController extends Controller
      */
     public function index($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Produtos.index'));
+            return Inertia::location(route('Manager.Mostras.index'));
         }
 
-        $produto = Produto::query()
+        $mostraCidade = MostraCidade::query()
             ->where([
                 'excluido' => NULL,
                 'id' => $id
             ])
             ->with([
-                'imagens' => function ($q) {
+                'mostrasCidadesIdiomas' => function ($q) {
+                    $q->where([
+                        'excluido' => NULL
+                    ]);
+                },
+                'mostraAno' => function ($q) {
+                    $q->where([
+                        'excluido' => NULL
+                    ])
+                    ->with([
+                        'mostra' => function ($q) {
+                            $q->where([
+                                'excluido' => NULL
+                            ])
+                            ->with([
+                                'mostrasIdiomas' => function ($q) {
+                                    $q->where([
+                                        'excluido' => NULL
+                                    ]);
+                                }
+                            ]);
+                        }
+                    ]);
+                },
+                'imagensMostrasCidades' => function ($q) {
                     $q->where([
                         'excluido' => NULL
                     ])
@@ -40,24 +64,25 @@ class ImagensProdutosController extends Controller
             ])
             ->first();
 
-        if(!$produto) {
-            return Inertia::location(route('Manager.Produtos.index'));
+        if(!$mostraCidade) {
+            return Inertia::location(route('Manager.Mostras.index'));
         }
 
-        $produtoData = [
-            'id' => $produto->id,
-            'nome' => $produto->produtosIdiomas[0]->nome,
-            'imagens' => $produto->imagens->map(function ($img) {
+        $mostraCidadeData = [
+            'id' => $mostraCidade->id,
+            'cidade' => $mostraCidade->mostrasCidadesIdiomas->isNotEmpty() ? $mostraCidade->mostrasCidadesIdiomas[0]->cidade : null,
+            'mostra_ano_id' => $mostraCidade->mostra_ano_id,
+            'imagens' => $mostraCidade->imagensMostrasCidades->map(function ($img) {
                 return [
                     'id' => $img->id,
                     'visivel' => $img->visivel ? true : false,
-                    'imagem' => asset('content/products/gallery/' . $img->imagem),
+                    'imagem' => asset('content/fairs/gallery/' . $img->imagem),
                 ];
             })->values()->all(),
         ];
 
-        return Inertia::render('Manager/Produtos/Imagens/index', [
-            'produto' => $produtoData,
+        return Inertia::render('Manager/Mostras/Imagens/index', [
+            'mostraCidade' => $mostraCidadeData,
         ]);
     }
 
@@ -69,28 +94,28 @@ class ImagensProdutosController extends Controller
      */
     public function novo(Request $request, $id) {
         if ($request->ajax()) {
-            $produto = Produto::query()
+            $mostraCidade = mostraCidade::query()
                 ->where([
                     'excluido' => NULL,
                     'id' => $id
                 ])
                 ->first();
 
-            if (!$produto) {
-                return Inertia::location(route('Manager.Produtos.index'));
+            if (!$mostraCidade) {
+                return Inertia::location(route('Manager.Mostras.index'));
             }
 
             foreach ($request->file('images') as $image) {
-                $imagem = new ImagemProduto;
+                $imagem = new ImagemMostraCidade;
 
                 $imagem->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($image['img']->extension());
 
-                $imagem->produto_id = $produto->id;
+                $imagem->mostra_cidade_id = $mostraCidade->id;
 
                 $response = $imagem->save();
 
                 if ($response) {
-                    $image['img']->move(public_path('content/products/gallery/'), $imagem->imagem);
+                    $image['img']->move(public_path('content/fairs/gallery/'), $imagem->imagem);
                 } else {
                     return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Erro ao salvar imagem']);
                 }
@@ -115,7 +140,7 @@ class ImagensProdutosController extends Controller
                 return $request->header('referer');
             }
 
-            $exclusao = ImagemProduto::query()
+            $exclusao = ImagemMostraCidade::query()
                 ->where([
                     'excluido' => NULL,
                     'id' => $id
@@ -145,7 +170,7 @@ class ImagensProdutosController extends Controller
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
 
-            $response = ImagemProduto::query()
+            $response = ImagemMostraCidade::query()
                 ->where([
                     'id' => $id,
                     'excluido' => NULL
@@ -183,7 +208,7 @@ class ImagensProdutosController extends Controller
 
             if ($request->odr && is_array($request->odr)) {
                 foreach ($request->odr as $key => $value) {
-                    $registro = ImagemProduto::query()
+                    $registro = ImagemMostraCidade::query()
                         ->where([
                             'excluido' => NULL,
                             'id' => $value

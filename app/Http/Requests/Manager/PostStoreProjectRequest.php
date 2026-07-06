@@ -34,9 +34,6 @@ class PostStoreProjectRequest extends FormRequest
             'produtos' => 'required|string|max:320',
             'creditos' => 'required|string|max:320',
 
-            'titulo_pagina' => 'required|string|max:120',
-            'descricao_pagina' => 'required|string|max:320',
-
             'img' => inertia()->getShared('action') === 'novo'
                 ? 'required|image|mimes:png,jpg|max:4096'
                 : 'nullable|image|mimes:png,jpg|max:4096',

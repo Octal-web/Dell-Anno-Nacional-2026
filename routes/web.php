@@ -45,6 +45,8 @@ use App\Http\Controllers\Manager\ImagensShowroomsController as ManagerImagensSho
 use App\Http\Controllers\Manager\LojasProjetosController as ManagerLojasProjetosController;
 use App\Http\Controllers\Manager\ImagensLojasProjetosController as ManagerImagensLojasProjetosController;
 use App\Http\Controllers\Manager\MostrasController as ManagerMostrasController;
+use App\Http\Controllers\Manager\MostrasCidadesController as ManagerMostrasCidadesController;
+use App\Http\Controllers\Manager\ImagensMostrasCidadesController as ManagerImagensMostrasCidadesController;
 use App\Http\Controllers\Manager\ContatoController as ManagerContatoController;
 use App\Http\Controllers\Manager\AcabamentosController as ManagerAcabamentosController;
 use App\Http\Controllers\Manager\BlogController as ManagerBlogController;
@@ -311,6 +313,34 @@ Route::prefix('/manager')->group(function() {
         Route::post('/mostras/adicionar', [ManagerMostrasController::class, 'novo'])->name('Manager.Mostras.novo');
         Route::get('/mostras/editar/{id}', [ManagerMostrasController::class, 'editar'])->name('Manager.Mostras.editar');
         Route::post('/mostras/editar/{id}', [ManagerMostrasController::class, 'atualizar'])->name('Manager.Mostras.atualizar');
+        Route::post('/mostras/editar-ano/{id}', [ManagerMostrasController::class, 'atualizarAno'])->name('Manager.Mostras.atualizarAno');
+
+        Route::get('/mostras/cidades/{id}', [ManagerMostrasCidadesController::class, 'index'])->name('Manager.Mostras.Cidades.index');
+
+        Route::post('/mostras/cidades/ordenar', [ManagerMostrasCidadesController::class, 'ordenar'])->name('Manager.Mostras.Cidades.ordenar');
+        Route::post('/mostras/cidades/visibilidade/{id}', [ManagerMostrasCidadesController::class, 'visibilidade'])->name('Manager.Mostras.Cidades.visibilidade');
+        Route::post('/mostras/cidades/excluir/{id}', [ManagerMostrasCidadesController::class, 'excluir'])->name('Manager.Mostras.Cidades.excluir');
+
+        Route::get('/mostras/cidades/adicionar/{id}', [ManagerMostrasCidadesController::class, 'adicionar'])->name('Manager.Mostras.Cidades.adicionar');
+        Route::post('/mostras/cidades/adicionar/{id}', [ManagerMostrasCidadesController::class, 'novo'])->name('Manager.Mostras.Cidades.novo');
+        Route::get('/mostras/cidades/editar/{id}', [ManagerMostrasCidadesController::class, 'editar'])->name('Manager.Mostras.Cidades.editar');
+        Route::post('/mostras/cidades/editar/{id}', [ManagerMostrasCidadesController::class, 'atualizar'])->name('Manager.Mostras.Cidades.atualizar');
+
+        Route::get('/mostras/cidades/imagens/{id}', [ManagerImagensMostrasCidadesController::class, 'index'])->name('Manager.Mostras.Cidades.Imagens.index');
+        Route::post('/mostras/cidades/imagens/adicionar/{id}', [ManagerImagensMostrasCidadesController::class, 'novo'])->name('Manager.Mostras.Cidades.Imagens.novo');
+
+        Route::post('/mostras/cidades/imagens/cortar/{id}', [ManagerImagensMostrasCidadesController::class, 'cortar'])->name('Manager.Mostras.Cidades.Imagens.cortar');
+        Route::post('/mostras/cidades/imagens/ordenar/{id}', [ManagerImagensMostrasCidadesController::class, 'ordenar'])->name('Manager.Mostras.Cidades.Imagens.ordenar');
+        Route::post('/mostras/cidades/imagens/visibilidade/{id}', [ManagerImagensMostrasCidadesController::class, 'visibilidade'])->name('Manager.Mostras.Cidades.Imagens.visibilidade');
+        Route::post('/mostras/cidades/imagens/excluir/{id}', [ManagerImagensMostrasCidadesController::class, 'excluir'])->name('Manager.Mostras.Cidades.Imagens.excluir');
+
+
+        Route::get('/showrooms/imagens/{id}', [ManagerImagensMostrasCidadesController::class, 'index'])->name('Manager.Mostras.Cidades.Imagens.index');
+        Route::post('/showrooms/imagens/adicionar/{id}', [ManagerImagensMostrasCidadesController::class, 'novo'])->name('Manager.Mostras.Cidades.Imagens.novo');
+
+        Route::post('/showrooms/imagens/ordenar/{id}', [ManagerImagensMostrasCidadesController::class, 'ordenar'])->name('Manager.Mostras.Cidades.Imagens.ordenar');
+        Route::post('/showrooms/imagens/visibilidade/{id}', [ManagerImagensMostrasCidadesController::class, 'visibilidade'])->name('Manager.Mostras.Cidades.Imagens.visibilidade');
+        Route::post('/showrooms/imagens/excluir/{id}', [ManagerImagensMostrasCidadesController::class, 'excluir'])->name('Manager.Mostras.Cidades.Imagens.excluir');
 
 
         Route::get('/contato', [ManagerContatoController::class, 'index'])->name('Manager.Contato.index');

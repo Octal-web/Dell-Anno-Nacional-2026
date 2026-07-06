@@ -21,7 +21,7 @@ class MostraCidade extends Model {
         return $this->hasMany(MostraCidadeIdioma::class);
     }
 
-    public function ImagensMostrasCidades()
+    public function imagensMostrasCidades()
     {
         return $this->hasMany(ImagemMostraCidade::class);
     }

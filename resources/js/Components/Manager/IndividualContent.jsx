@@ -61,7 +61,7 @@ export const IndividualContent = ({ individualContent, imagensPath, imagensClass
                             className="sr-only peer"
                             disabled={loading}
                         />
-                        <div className={`relative w-9 h-5 ${loading ? 'opacity-50' : ''} bg-gray-200 peer-focus:outline-none peer-focus:ring-0 peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600`} />
+                        <div className={`relative w-9 h-5 ${loading ? 'opacity-50' : ''} bg-gray-200 peer-focus:outline-none peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600`} />
                     </label>
                     <span className="font-medium text-gray-700 line-clamp-1 ml-3" dangerouslySetInnerHTML={{ __html: individualContent.titulo ? individualContent.titulo : individualContent.nome }} />
                 </div>
