@@ -232,7 +232,7 @@ class MostrasController extends Controller
                     'nome' => $cidade->mostrasCidadesIdiomas->isNotEmpty() ? $cidade->mostrasCidadesIdiomas[0]->nome : null,
                     'cidade' => $cidade->mostrasCidadesIdiomas->isNotEmpty() ? $cidade->mostrasCidadesIdiomas[0]->cidade : null,
                     'descricao' => $cidade->mostrasCidadesIdiomas->isNotEmpty() ? $cidade->mostrasCidadesIdiomas[0]->descricao : null,
-                    'imagens' => $cidade->ImagensMostrasCidades->map(function($imagem) {
+                    'imagens' => $cidade->imagensMostrasCidades->map(function($imagem) {
                         return [
                             'id' => $imagem->id,
                             'imagem' => rafator('content/fairs/gallery/' . $imagem->imagem),
