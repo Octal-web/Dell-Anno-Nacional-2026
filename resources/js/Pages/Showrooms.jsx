@@ -16,7 +16,7 @@ const Page = () => {
 
             <ShowroomsLoadMore
                 initialData={initialShowrooms}
-                endMessage="end of results"
+                endMessage="Fim dos resultados"
                 rootMargin="200px"
             >
                 {({ data, loading, hasMore }) => (
