@@ -27,7 +27,7 @@ export const MenuItem = ({ id, label, icon, href, subMenu, isOpen, onToggle, con
                 </button>
                 <div
                     ref={submenuRef}
-                    className={`submenu overflow-hidden transition-max-height duration-300 ease-in-out ${isOpen ? 'max-h-40' : 'max-h-0'}`}
+                    className={`submenu overflow-hidden transition-max-height duration-300 ease-in-out ${isOpen ? 'max-h-52' : 'max-h-0'}`}
                 >
                     <ul>
                         {subMenu.map((subItem, index) => (
