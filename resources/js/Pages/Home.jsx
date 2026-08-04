@@ -16,8 +16,6 @@ const Page = () => {
         <DefaultLayout>
             <HomeSlides slides={slides} />
 
-            <HomeCampaigns campaigns={campanhas} />
-
             <HomeHighlights highlights={destaques.slice(0, 2)} />
 
             <HomeHighlights highlights={destaques.slice(2)} />
@@ -25,6 +23,8 @@ const Page = () => {
             <HomeProducts content={conteudos[0]} products={produtos} />
 
             <HomePosts content={conteudos[1]} posts={posts} />
+
+            <HomeCampaigns campaigns={campanhas} />
         </DefaultLayout>
     );
 };
