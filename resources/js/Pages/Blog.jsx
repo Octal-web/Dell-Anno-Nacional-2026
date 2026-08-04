@@ -52,7 +52,7 @@ const Page = () => {
             <BlogPostsLoadMore
                 initialData={filteredPosts}
                 selectedCategory={selectedCategory}
-                endMessage="end of results"
+                endMessage="Fim dos resultados"
                 rootMargin="200px"
             >
                 {({ data, loading, hasMore }) => (
