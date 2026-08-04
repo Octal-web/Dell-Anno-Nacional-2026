@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\Cidade;
+use App\Models\Estado;
 
 class CidadesController extends Controller
 {
@@ -14,8 +15,9 @@ class CidadesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function carregar(Request $request) {
-        if($request->ajax()){
+    public function carregar(Request $request)
+    {
+        if ($request->ajax()) {
             $request->validate([
                 'estado_id' => 'required|exists:estados,id',
             ]);
@@ -34,10 +36,32 @@ class CidadesController extends Controller
                 ->values();
 
             return response()->json([
-                'cidades' => $cidades
+                'cidades' => $cidades,
             ]);
+        } else {
+            return Inertia::location(route('Home.index'));
         }
-        else {
+    }
+
+    public function estados(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $estados = Estado::query()
+                ->orderBy('nome', 'ASC')
+                ->get()
+                ->map(function ($estado) {
+                    return [
+                        'value' => $estado->id,
+                        'uf' => $estado->uf,
+                        'label' => $estado->nome,
+                    ];
+                });
+
+            return response()->json([
+                'estados' => $estados,
+            ]);
+        } else {
             return Inertia::location(route('Home.index'));
         }
     }
