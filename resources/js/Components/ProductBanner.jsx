@@ -47,7 +47,7 @@ export const ProductBanner = ({ products, content }) => {
                     <div className="flex items-center justify-evenly">
                         {products.map((product, index) => (
                             <Link key={index} href={route('Produtos.produto', {slug: product.slug})} className="group relative font-secondary text-xl text-white font-light transition-all duration-300 hover:opacity-70">
-                                <span className="inline-block transition-all duration-300 group-hover:-translate-x-2">//</span>
+                                <span className="inline-block transition-all duration-300 group-hover:-translate-x-2"></span>
                                 {product.nome}
                             </Link>
                         ))}
