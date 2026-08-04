@@ -2,7 +2,7 @@ import { HomeCampaignSlides } from './HomeCampaignSlides';
 
 export const HomeCampaigns = ({ campaigns }) => {
     return (
-        <section className="pt-20 md:pt-30 2xl:mt-20">
+        <section className="py-20 md:py-30 2xl:my-20">
             <div className="container max-w-large">
                 {/* <Reveal direction="bottom" scale={true}>
                     <h2 className="text-3xl md:text-4xl 2xl:text-[45px] text-center font-light uppercase tracking-wide leading-snug mb-6 2xl:mb-10">
