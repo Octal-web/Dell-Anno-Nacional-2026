@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { usePage, Link, Head } from "@inertiajs/react";
 
 import Lenis from "@studio-freight/lenis";
@@ -11,8 +11,14 @@ const DefaultLayout = ({ children }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [isAtTop, setIsAtTop] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
-    const { controller, action, pagina, notifyCookie, rejectCookie } =
-        usePage().props;
+    const {
+        controller,
+        action,
+        pagina,
+        notifyCookie,
+        rejectCookie,
+        lojasSchema: lojas,
+    } = usePage().props;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [trackingEnabled, setTrackingEnabled] = useState(false);
     const lenisRef = useRef(null);
@@ -96,6 +102,61 @@ const DefaultLayout = ({ children }) => {
     //     }, 100);
     // }, [notifyCookie, trackingEnabled]);
 
+    const localBusinessSchema = useMemo(
+        () => ({
+            "@context": "https://schema.org",
+            "@type": ["LocalBusiness", "FurnitureStore"],
+            name: pagina.tituloCompartilhamento,
+            description: pagina.descricaoCompartilhamento,
+            url: window.location.origin,
+            logo: {
+                "@type": "ImageObject",
+                url: `${window.location.origin}/site/img/logo.svg`,
+            },
+            priceRange: "$$",
+            address: lojas.map((s) => ({
+                "@type": "PostalAddress",
+                addressLocality: s.cidade,
+                addressRegion: s.estado,
+                addressCountry: s.pais,
+                streetAddress: s.endereco?.replace("\r\n", ", "),
+            })),
+            contactPoint: lojas.map((s) => ({
+                "@type": "ContactPoint",
+                contactType: "customer service",
+                areaServed: s.cidade,
+                telephone: s.contato?.split("|")[0]?.split(":")[1]?.trim(),
+            })),
+            additionalProperty: lojas.map((s) => ({
+                "@type": "PropertyValue",
+                name: "Opening Hours",
+                value: s.horario_atendimento.replace(/\r?\n/g, "; "),
+            })),
+        }),
+        [],
+    );
+
+    const organizationSchema = useMemo(
+        () => ({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: pagina.tituloCompartilhamento,
+            url: window.location.origin,
+            logo: {
+                "@type": "ImageObject",
+                url: `${window.location.origin}/site/img/logo.svg`,
+            },
+            email: "atendimento@dellanno.com.br",
+            contactPoint: lojas.map((s) => ({
+                "@type": "ContactPoint",
+                addressRegion: s.estado,
+                addressCountry: s.pais,
+                telephone: s.contato?.split("|")[0]?.split(":")[1]?.trim(),
+            })),
+        }),
+        [],
+    );
+
     const menuItems = [
         { name: "Sobre", route: "Institucional.index", external: false },
         {
@@ -149,6 +210,14 @@ const DefaultLayout = ({ children }) => {
                 <meta name="author" content="Octal Web" />
 
                 <link rel="icon" href={`/favicon.ico`} type="image/x-icon" />
+
+                <script type="application/ld+json">
+                    {JSON.stringify(localBusinessSchema)}
+                </script>
+
+                <script type="application/ld+json">
+                    {JSON.stringify(organizationSchema)}
+                </script>
             </Head>
             <header
                 className={`header fixed top-0 left-0 right-0 bg-white z-[20] transition-all duration-300 ease-in-out ${isVisible ? "translate-y-0 shadow-2xl shadow-black/10" : "-translate-y-full"}`}
@@ -300,7 +369,7 @@ const DefaultLayout = ({ children }) => {
                                             href={route("Institucional.index")}
                                             className="block font-secondary text-white text-sm font-light leading-none transition-all opacity-70 hover:opacity-100"
                                         >
-                                            Brand
+                                            Sobre
                                         </Link>
                                     </li>
 
@@ -338,7 +407,7 @@ const DefaultLayout = ({ children }) => {
                                             href={route("Inspiracao.index")}
                                             className="block font-secondary text-white text-sm font-light leading-none transition-all opacity-70 hover:opacity-100"
                                         >
-                                            Get Inspired
+                                            Explore
                                         </Link>
                                     </li>
 
