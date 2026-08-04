@@ -13,11 +13,13 @@ const LetterReveal = ({ text, className, element = "div" }) => {
 
         gsap.fromTo(
             letterRefs.current,
-            { opacity: 0, x: 20, rotate: -5 },
+            {
+                opacity: 0,
+                y: 12,
+            },
             {
                 opacity: 1,
-                x: 0,
-                rotate: 0,
+                y: 0,
                 duration: 0.5,
                 ease: "power2.out",
                 stagger: 0.02,
@@ -34,11 +36,19 @@ const LetterReveal = ({ text, className, element = "div" }) => {
     const Tag = element;
 
     return (
-        <Tag ref={containerRef} className={className} style={{ overflow: "hidden" }}>
+        <Tag
+            ref={containerRef}
+            className={className}
+            style={{ overflow: "hidden" }}
+        >
             {text.split(" ").map((word, wi) => (
                 <span
                     key={wi}
-                    style={{ display: "inline-block", whiteSpace: "nowrap", marginRight: "0.25em" }}
+                    style={{
+                        display: "inline-block",
+                        whiteSpace: "nowrap",
+                        marginRight: "0.25em",
+                    }}
                 >
                     {word.split("").map((char, ci) => (
                         <span
