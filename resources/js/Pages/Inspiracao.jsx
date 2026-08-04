@@ -13,7 +13,7 @@ const Page = () => {
         <DefaultLayout>
             <InspirationBanner content={conteudos[0]} />
 
-            <InspirationLinks />
+            <InspirationLinks content={[conteudos[1], conteudos[2], conteudos[3]]} />
         </DefaultLayout>
     );
 };
