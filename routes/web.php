@@ -55,10 +55,12 @@ use App\Http\Controllers\Manager\PostsCategoriasController as ManagerPostsCatego
 use App\Http\Controllers\Manager\CatalogosController as ManagerCatalogosController;
 use App\Http\Controllers\Manager\CatalogosCategoriasController as ManagerCatalogosCategoriasController;
 use App\Http\Controllers\Manager\PoliticasController as ManagerPoliticasController;
+use App\Http\Controllers\Manager\InspiracaoController as ManagerInspiracaoController;
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home.index');
     Route::post('/cidades/carregar', [CidadesController::class, 'carregar'])->name('Cidades.carregar');
+    Route::get('/estados/carregar', [CidadesController::class, 'estados'])->name('Cidades.estados');
 
     Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
@@ -111,7 +113,7 @@ Route::get('/loja/{slug}/contato/concluido/{token}', [LandingPagesController::cl
 Route::get('/loja/{slug}/politica-de-privacidade', [LandingPagesController::class, 'politicaDePrivacidade'])->name('LandingPage.politicaDePrivacidade');
 Route::get('/loja/{slug}/politica-de-cookies', [LandingPagesController::class, 'politicaDeCookies'])->name('LandingPage.politicaDeCookies');
 
-Route::prefix('/manager')->group(function() {
+Route::prefix('/manager')->group(function () {
     Route::get('/', [UsuariosController::class, 'login'])->name('Manager.Usuarios.login');
     Route::post('/', ['as' => 'login', 'uses' => 'App\Http\Controllers\Manager\UsuariosController@authenticate']);
 
@@ -260,6 +262,7 @@ Route::prefix('/manager')->group(function() {
         Route::post('/lojas/editar/{id}', [ManagerLojasController::class, 'atualizar'])->name('Manager.Lojas.atualizar');
         Route::get('/lojas/baixar-video/{id}', [ManagerLojasController::class, 'baixarVideo'])->name('Manager.Lojas.baixarVideo');
 
+        Route::get('/inspiracao', [ManagerInspiracaoController::class, 'index'])->name('Manager.Inspiracao.index');
 
         Route::get('/showrooms', [ManagerShowroomsController::class, 'index'])->name('Manager.Showrooms.index');
 
@@ -348,7 +351,7 @@ Route::prefix('/manager')->group(function() {
         Route::get('/contato/visualizar/{id}', [ManagerContatoController::class, 'visualizar'])->name('Manager.Contato.visualizar');
         Route::post('/contato/excluir/{id}', [ManagerContatoController::class, 'excluir'])->name('Manager.Contato.excluir');
 
-        
+
         Route::get('/acabamentos', [ManagerAcabamentosController::class, 'index'])->name('Manager.Acabamentos.index');
 
         Route::post('/acabamentos/ordenar', [ManagerAcabamentosController::class, 'ordenar'])->name('Manager.Acabamentos.ordenar');

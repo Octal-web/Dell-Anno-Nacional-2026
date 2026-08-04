@@ -14,7 +14,7 @@ export const FairYearYears = ({ slides, currentYear }) => {
     return (
         <section className="pt-16">
             <div className="container max-w-large">
-                <p className="mb-6 md:mb-8 font-secondary font-bold text-center sm:leading-loose">selecione o ano:</p>
+                <p className="mb-6 md:mb-8 font-secondary font-bold text-center sm:leading-loose">Selecione o ano:</p>
                 <div className="relative border-b border-neutral-300 pb-4 px-10">
                     <div className="max-w-[1350px] mx-auto">
                         <Swiper
