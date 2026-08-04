@@ -14,7 +14,7 @@ export const InspirationLinks = ({ content }) => {
                             />
                         </div>
                         <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light text-center uppercase tracking-wide">
-                            // {content[0].titulo}
+                            {content[0].titulo}
                         </h3>
                     </Link>
 
@@ -30,7 +30,7 @@ export const InspirationLinks = ({ content }) => {
                             />
                         </div>
                         <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light text-center uppercase tracking-wide">
-                            // {content[1].titulo}
+                            {content[1].titulo}
                         </h3>
                     </Link>
 
@@ -43,7 +43,7 @@ export const InspirationLinks = ({ content }) => {
                             />
                         </div>
                         <h3 className="text-xl md:text-2xl 2xl:text-[30px] font-light text-center uppercase tracking-wide">
-                            // {content[2].titulo}
+                            {content[2].titulo}
                         </h3>
                     </Link>
                 </div>

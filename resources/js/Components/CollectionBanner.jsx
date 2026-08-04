@@ -37,7 +37,7 @@ export const CollectionBanner = ({ product }) => {
             <div className="absolute inset-0 bg-black opacity-50" />
             <div className="relative container max-w-large">
                 <div className="pt-24 pb-10">
-                    <h1 className="text-4xl md:text-5xl 2xl:text-[55px] text-white font-light text-center uppercase tracking-wide mb-6 md:mb-10">// {product.nome}</h1>
+                    <h1 className="text-4xl md:text-5xl 2xl:text-[55px] text-white font-light text-center uppercase tracking-wide mb-6 md:mb-10"> {product.nome}</h1>
                     <p className="font-secondary text-white font-light text-center sm:tracking-wide whitespace-pre-line max-w-[1080px] mx-auto mb-10">{product.descricao}</p>
                 </div>
             </div>
