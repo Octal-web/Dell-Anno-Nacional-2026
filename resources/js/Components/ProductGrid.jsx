@@ -28,7 +28,7 @@ export const ProductGrid = ({ product }) => {
         <>
             <section className="pt-8 md:pt-12 2xl:pt-20">
                 <div className="container max-w-x-large">
-                    <h1 className="text-4xl md:text-5xl 2xl:text-[55px] text-center font-light uppercase tracking-wide leading-snug mb-6">// {product.nome}</h1>
+                    <h1 className="text-4xl md:text-5xl 2xl:text-[55px] text-center font-light uppercase tracking-wide leading-snug mb-6">{product.nome}</h1>
                     <p className="font-secondary text-center whitespace-pre-line">{product.descricao}</p>
                 </div>
             </section>
