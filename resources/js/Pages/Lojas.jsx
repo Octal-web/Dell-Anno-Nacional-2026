@@ -51,6 +51,9 @@ const Page = () => {
         });
     };
 
+    const isBrasil =
+        getInitialRegion() === "brasil" || getInitialRegion() === null;
+
     return (
         <DefaultLayout>
             <StoresText content={conteudos[0]} />
@@ -69,6 +72,7 @@ const Page = () => {
                 loading={loading}
                 setStores={setStores}
                 setLoading={setLoading}
+                isBrasil={isBrasil}
             />
 
             <ProductsForm content={chamadaForm} />
