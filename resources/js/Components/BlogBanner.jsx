@@ -53,7 +53,7 @@ export const BlogBanner = ({ content, categories, selectedCategory, onCategoryCh
                 }}
             >
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <h1 className="text-4xl md:text-5xl 2xl:text-[55px] text-white font-light uppercase sm:tracking-wide sm:leading-snug whitespace-nowrap">// {content.titulo}</h1>
+                    <h1 className="text-4xl md:text-5xl 2xl:text-[55px] text-white font-light uppercase sm:tracking-wide sm:leading-snug whitespace-nowrap">{content.titulo}</h1>
                 </div>
             </section>
 
