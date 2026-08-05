@@ -17,7 +17,8 @@ class MostrasController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index() {
+    public function index()
+    {
         $idioma = inertia()->getShared('idioma');
 
         $mostras = Mostra::query()
@@ -29,9 +30,9 @@ class MostrasController extends Controller
                 'mostrasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
                 'mostrasAnos' => function ($q) {
                     $q->where([
@@ -41,14 +42,14 @@ class MostrasController extends Controller
                 }
             ])
             ->get()
-            ->map(function($mostra) {
+            ->map(function ($mostra) {
                 return [
                     'id' => $mostra->id,
                     'imagem' => asset('content/fairs/thumbs/' . $mostra->imagem),
                     'nome' => $mostra->mostrasIdiomas->isNotEmpty() ? $mostra->mostrasIdiomas[0]->nome : null,
                     'descricao' => $mostra->mostrasIdiomas->isNotEmpty() ? $mostra->mostrasIdiomas[0]->descricao : null,
                     'slug' => $mostra->slug,
-                    'anos' => $mostra->mostrasAnos->map(function($ano) {
+                    'anos' => $mostra->mostrasAnos->map(function ($ano) {
                         return [
                             'id' => $ano->id,
                             'ano' => $ano->ano,
@@ -56,19 +57,20 @@ class MostrasController extends Controller
                     }),
                 ];
             });
-        
+
         return Inertia::render('Mostras', [
             'mostras' => $mostras,
         ]);
     }
 
-    public function mostra($slug = null) {
+    public function mostra($slug = null)
+    {
         return Inertia::location(route('Mostras.index'));
-        
+
         if (!$slug) {
             return Inertia::location(route('Mostras.index'));
         }
-        
+
         $idioma = inertia()->getShared('idioma');
 
         $mostra = Mostra::query()
@@ -81,22 +83,22 @@ class MostrasController extends Controller
                 'mostrasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
                 'blocos' => function ($q) use ($idioma) {
                     $q->where([
                         'excluido' => NULL,
                         'visivel' => true
                     ])
-                    ->with('mostrasBlocosIdiomas', function ($q) use ($idioma) {
-                        $q->whereHas('idiomas', function ($r) use ($idioma) {
-                            $r->where('codigo', $idioma)
-                            ->orWhere('padrao', true);
-                        })
-                        ->orderBy('idioma_id', 'DESC');
-                    });
+                        ->with('mostrasBlocosIdiomas', function ($q) use ($idioma) {
+                            $q->whereHas('idiomas', function ($r) use ($idioma) {
+                                $r->where('codigo', $idioma)
+                                    ->orWhere('padrao', true);
+                            })
+                                ->orderBy('idioma_id', 'DESC');
+                        });
                 }
             ])
             ->first();
@@ -109,7 +111,7 @@ class MostrasController extends Controller
             'id' => $mostra->id,
             'slug' => $mostra->slug,
             'nome' => $mostra->mostrasIdiomas->isNotEmpty() ? $mostra->mostrasIdiomas[0]->nome : null,
-            'blocos' => $mostra->blocos->map(function($bloco) {
+            'blocos' => $mostra->blocos->map(function ($bloco) {
                 return [
                     'id' => $bloco->id,
                     'imagem' => rafator('content/fairs/gallery/' . $bloco->imagem),
@@ -117,7 +119,7 @@ class MostrasController extends Controller
                 ];
             }),
         ];
-        
+
         $todosMostras = Mostra::query()
             ->where([
                 'excluido' => NULL,
@@ -127,15 +129,15 @@ class MostrasController extends Controller
                 'mostrasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($mostraItem) {
+            ->map(function ($mostraItem) {
                 return [
                     'id' => $mostraItem->id,
                     'slug' => $mostraItem->slug,
@@ -143,7 +145,7 @@ class MostrasController extends Controller
                     'nome' => $mostraItem->mostrasIdiomas->isNotEmpty() ? $mostraItem->mostrasIdiomas[0]->nome : null
                 ];
             });
-        
+
         $pagina = new Pagina;
 
         $pagina->titulo = $mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';
@@ -166,12 +168,13 @@ class MostrasController extends Controller
             'todosMostras' => $todosMostras
         ]);
     }
-    
-    public function ano($slug = null, $ano = null) {
+
+    public function ano($slug = null, $ano = null)
+    {
         if (!$slug || !$ano) {
             return Inertia::location(route('Mostras.index'));
         }
-        
+
         $idioma = inertia()->getShared('idioma');
 
         $ano = MostraAno::query()
@@ -193,26 +196,34 @@ class MostrasController extends Controller
                         'excluido' => NULL,
                         'visivel' => true
                     ])
-                    ->with('mostrasIdiomas', function ($q) use ($idioma) {
-                        $q->whereHas('idiomas', function ($r) use ($idioma) {
-                            $r->where('codigo', $idioma)
-                            ->orWhere('padrao', true);
-                        })
-                        ->orderBy('idioma_id', 'DESC');
-                    });
+                        ->with('mostrasIdiomas', function ($q) use ($idioma) {
+                            $q->whereHas('idiomas', function ($r) use ($idioma) {
+                                $r->where('codigo', $idioma)
+                                    ->orWhere('padrao', true);
+                            })
+                                ->orderBy('idioma_id', 'DESC');
+                        });
                 },
                 'mostrasCidades' => function ($q) use ($idioma) {
                     $q->where([
                         'excluido' => NULL,
                         'visivel' => true
                     ])
-                    ->with('mostrasCidadesIdiomas', function ($q) use ($idioma) {
-                        $q->whereHas('idiomas', function ($r) use ($idioma) {
-                            $r->where('codigo', $idioma)
-                            ->orWhere('padrao', true);
-                        })
-                        ->orderBy('idioma_id', 'DESC');
-                    });
+                        ->with([
+                            'mostrasCidadesIdiomas' => function ($q) use ($idioma) {
+                                $q->whereHas('idiomas', function ($r) use ($idioma) {
+                                    $r->where('codigo', $idioma)
+                                        ->orWhere('padrao', true);
+                                })
+                                    ->orderBy('idioma_id', 'DESC');
+                            },
+                            'imagensMostrasCidades' => function ($q) {
+                                $q->where([
+                                    'excluido' => NULL,
+                                    'visivel' => true,
+                                ]);
+                            }
+                        ]);
                 }
             ])
             ->first();
@@ -226,13 +237,13 @@ class MostrasController extends Controller
             'ano' => $ano->ano,
             'nome' => $ano->mostra->mostrasIdiomas->isNotEmpty() ? $ano->mostra->mostrasIdiomas[0]->nome : null,
             'descricao' => $ano->mostra->mostrasIdiomas->isNotEmpty() ? $ano->mostra->mostrasIdiomas[0]->descricao_pagina : null,
-            'cidades' => $ano->mostrasCidades->map(function($cidade) {
+            'cidades' => $ano->mostrasCidades->map(function ($cidade) {
                 return [
                     'id' => $cidade->id,
                     'nome' => $cidade->mostrasCidadesIdiomas->isNotEmpty() ? $cidade->mostrasCidadesIdiomas[0]->nome : null,
                     'cidade' => $cidade->mostrasCidadesIdiomas->isNotEmpty() ? $cidade->mostrasCidadesIdiomas[0]->cidade : null,
                     'descricao' => $cidade->mostrasCidadesIdiomas->isNotEmpty() ? $cidade->mostrasCidadesIdiomas[0]->descricao : null,
-                    'imagens' => $cidade->imagensMostrasCidades->map(function($imagem) {
+                    'imagens' => $cidade->imagensMostrasCidades->map(function ($imagem) {
                         return [
                             'id' => $imagem->id,
                             'imagem' => rafator('content/fairs/gallery/' . $imagem->imagem),
@@ -241,7 +252,7 @@ class MostrasController extends Controller
                 ];
             }),
         ];
-        
+
         $todosAnos = MostraAno::query()
             ->where([
                 'excluido' => NULL,
@@ -257,14 +268,14 @@ class MostrasController extends Controller
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($anoItem) {
+            ->map(function ($anoItem) {
                 return [
                     'id' => $anoItem->id,
                     'ano' => $anoItem->ano,
                     'slug' => $anoItem->mostra->slug,
                 ];
             });
-        
+
         $pagina = new Pagina;
 
         $pagina->titulo = $ano->mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';

@@ -1,1 +1,0 @@
-import{j as e}from"./app-BmKtuvGs.js";const c=({text:i,className:s,element:n="div"})=>{const t=n;return e.jsx(t,{className:s,children:i.split(" ").map((l,a)=>e.jsx("span",{style:{display:"inline-block",whiteSpace:"nowrap",marginRight:"0.25em"},children:l.split("").map((p,r)=>e.jsx("span",{style:{display:"inline-block"},children:p},r))},a))})};export{c as L};

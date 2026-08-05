@@ -12,7 +12,7 @@ use App\Models\Idioma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Manager\PostProductRequest;
-
+use App\Services\ImageCompressor;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
@@ -27,7 +27,8 @@ class ProdutosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $idioma = inertia()->getShared('idioma');
 
         $produtos = Produto::query()
@@ -39,13 +40,13 @@ class ProdutosController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($produto) {
+            ->map(function ($produto) {
                 return [
                     'id' => $produto->id,
                     'visivel' => $produto->visivel,
@@ -64,7 +65,8 @@ class ProdutosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar() {
+    public function adicionar()
+    {
         return Inertia::render('Manager/Produtos/adicionar');
     }
 
@@ -74,13 +76,14 @@ class ProdutosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostProductRequest $request) {
-        if($request->ajax()){
+    public function novo(PostProductRequest $request, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $idioma = inertia()->getShared('idioma');
-            
+
             $produto = new Produto;
             $produto_idioma = new ProdutoIdioma;
-            
+
             $slugBase = Str::slug($request['titulo']);
             $slug = $slugBase;
 
@@ -109,26 +112,28 @@ class ProdutosController extends Controller
             $response = $produto_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/products/thumbs/'), $produto->imagem);
-                $image = $request->file('img_banner')->move(public_path('content/products/banner/'), $produto->banner);
+                $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/products/thumbs/' . $produto->imagem));
+
+                $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/products/banner/' . $produto->banner));
 
                 return to_route('Manager.Produto.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
             }
         }
     }
 
-    
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Produtos.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -143,21 +148,21 @@ class ProdutosController extends Controller
             ])
             ->with([
                 'produtosIdiomas' => function ($q) use ($idioma) {
-                    $q->when($idioma, function ($r) use($idioma) {
-                        $r->whereHas('idiomas', function($query) use($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
                             $query->where('codigo', $idioma);
                         });
                     })
-                    ->when(!$idioma, function ($r) {
-                        $r->whereHas('idiomas', function($query) {
-                            $query->where('padrao', true);
+                        ->when(!$idioma, function ($r) {
+                            $r->whereHas('idiomas', function ($query) {
+                                $query->where('padrao', true);
+                            });
                         });
-                    });
                 }
             ])
             ->first();
 
-        if(!$produto) {
+        if (!$produto) {
             return Inertia::location(route('Manager.Produtos.index'));
         }
 
@@ -172,7 +177,7 @@ class ProdutosController extends Controller
             'titulo_pagina' => count($produto->produtosIdiomas) ? $produto->produtosIdiomas[0]->titulo_pagina : null,
             'descricao_pagina' => count($produto->produtosIdiomas) ? $produto->produtosIdiomas[0]->descricao_pagina : null,
         ];
-        
+
         return Inertia::render('Manager/Produtos/editar', [
             'idiomas' => $idiomas,
             'idioma' => $idioma,
@@ -187,8 +192,9 @@ class ProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostProductRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostProductRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $produto = Produto::query()
                 ->where([
                     'excluido' => null,
@@ -203,13 +209,13 @@ class ProdutosController extends Controller
                     'excluido' => null,
                     'produto_id' => $produto->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -237,7 +243,7 @@ class ProdutosController extends Controller
                 $copier = new DeepCopy();
                 $produtoOriginal = $copier->copy($produto);
             }
-            
+
             $slug = $produto->slug;
 
             if (!$request->query('lang')) {
@@ -260,7 +266,7 @@ class ProdutosController extends Controller
             if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
                 $produto->banner = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_banner')->extension());
             }
-            
+
             $produto->slug = $slug;
 
             $produto_idioma->nome = $request->nome;
@@ -276,16 +282,16 @@ class ProdutosController extends Controller
                     if ($produto->imagem && isset($produtoOriginal) && File::exists('content/products/thumbs/' . $produtoOriginal->imagem)) {
                         File::delete('content/products/thumbs/' . $produtoOriginal->imagem);
                     }
-                    
-                    $image = $request->file('img')->move(public_path('content/products/thumbs/'), $produto->imagem);
+
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/products/thumbs/' . $produto->imagem));
                 }
 
                 if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
                     if ($produto->banner && isset($produtoOriginal) && File::exists('content/products/banner/' . $produtoOriginal->banner)) {
                         File::delete('content/products/banner/' . $produtoOriginal->banner);
                     }
-                    
-                    $image = $request->file('img_banner')->move(public_path('content/products/banner/'), $produto->banner);
+
+                    $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/products/banner/' . $produto->banner));
                 }
 
                 return to_route('Manager.Produtos.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
@@ -302,8 +308,9 @@ class ProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -332,8 +339,9 @@ class ProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -348,14 +356,13 @@ class ProdutosController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -370,8 +377,9 @@ class ProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {

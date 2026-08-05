@@ -12,7 +12,7 @@ use App\Models\Idioma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Manager\PostShowroomRequest;
-
+use App\Services\ImageCompressor;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -27,7 +27,8 @@ class ShowroomsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $idioma = inertia()->getShared('idioma');
 
         $showrooms = Showroom::query()
@@ -39,13 +40,13 @@ class ShowroomsController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($showroom) {
+            ->map(function ($showroom) {
                 return [
                     'id' => $showroom->id,
                     'visivel' => $showroom->visivel,
@@ -64,7 +65,8 @@ class ShowroomsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar() {
+    public function adicionar()
+    {
         $lojas = Loja::query()
             ->where([
                 'excluido' => NULL,
@@ -76,7 +78,7 @@ class ShowroomsController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
@@ -115,10 +117,11 @@ class ShowroomsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostShowroomRequest $request) {
-        if($request->ajax()){
+    public function novo(PostShowroomRequest $request,  ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $idioma = inertia()->getShared('idioma');
-            
+
             $showroom = new Showroom;
             $showroom_idioma = new ShowroomIdioma;
 
@@ -131,10 +134,10 @@ class ShowroomsController extends Controller
                 $slug = $slugBase . '-' . $count;
                 $count++;
             }
-            
+
             $showroom->slug = $slug;
             $showroom->loja_id = $request->loja_id ?? null;
-            
+
             $showroom->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
             $showroom->banner = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_banner')->extension());
 
@@ -152,8 +155,8 @@ class ShowroomsController extends Controller
             $response = $showroom_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/showrooms/thumbs/'), $showroom->imagem);
-                $image = $request->file('img_banner')->move(public_path('content/showrooms/banner/'), $showroom->banner);
+                $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/showrooms/thumbs/' . $showroom->imagem));
+                $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/showrooms/banner/' . $showroom->banner));
 
                 return to_route('Manager.Showrooms.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
             }
@@ -166,11 +169,12 @@ class ShowroomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Showrooms.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -185,21 +189,21 @@ class ShowroomsController extends Controller
             ])
             ->with([
                 'showroomsIdiomas' => function ($q) use ($idioma) {
-                    $q->when($idioma, function ($r) use($idioma) {
-                        $r->whereHas('idiomas', function($query) use($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
                             $query->where('codigo', $idioma);
                         });
                     })
-                    ->when(!$idioma, function ($r) {
-                        $r->whereHas('idiomas', function($query) {
-                            $query->where('padrao', true);
+                        ->when(!$idioma, function ($r) {
+                            $r->whereHas('idiomas', function ($query) {
+                                $query->where('padrao', true);
+                            });
                         });
-                    });
                 }
             ])
             ->first();
 
-        if(!$showroom) {
+        if (!$showroom) {
             return Inertia::location(route('Manager.Showrooms.index'));
         }
 
@@ -216,7 +220,7 @@ class ShowroomsController extends Controller
             'titulo_pagina' => count($showroom->showroomsIdiomas) ? $showroom->showroomsIdiomas[0]->titulo_pagina : null,
             'descricao_pagina' => count($showroom->showroomsIdiomas) ? $showroom->showroomsIdiomas[0]->descricao_pagina : null,
         ];
-        
+
         $lojas = Loja::query()
             ->where([
                 'excluido' => NULL,
@@ -228,7 +232,7 @@ class ShowroomsController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
@@ -271,8 +275,9 @@ class ShowroomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostShowroomRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostShowroomRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $showroom = Showroom::query()
                 ->where([
                     'excluido' => null,
@@ -287,13 +292,13 @@ class ShowroomsController extends Controller
                     'excluido' => null,
                     'showroom_id' => $showroom->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -362,16 +367,16 @@ class ShowroomsController extends Controller
                     if ($showroom->imagem && isset($showroomOriginal) && File::exists('content/showrooms/thumbs/' . $showroomOriginal->imagem)) {
                         File::delete('content/showrooms/thumbs/' . $showroomOriginal->imagem);
                     }
-                    
-                    $image = $request->file('img')->move(public_path('content/showrooms/thumbs/'), $showroom->imagem);
+
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/showrooms/thumbs/' . $showroom->imagem));
                 }
-                
+
                 if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
                     if ($showroom->banner && isset($showroomOriginal) && File::exists('content/showrooms/banner/' . $showroomOriginal->banner)) {
                         File::delete('content/showrooms/banner/' . $showroomOriginal->banner);
                     }
-                    
-                    $image = $request->file('img_banner')->move(public_path('content/showrooms/banner/'), $showroom->banner);
+
+                    $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/showrooms/banner/' . $showroom->banner));
                 }
 
                 return to_route('Manager.Showrooms.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
@@ -388,8 +393,9 @@ class ShowroomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -418,8 +424,9 @@ class ShowroomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -434,14 +441,13 @@ class ShowroomsController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -456,8 +462,9 @@ class ShowroomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {
