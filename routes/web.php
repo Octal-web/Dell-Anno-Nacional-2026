@@ -339,12 +339,12 @@ Route::prefix('/manager')->group(function () {
         Route::post('/mostras/cidades/imagens/excluir/{id}', [ManagerImagensMostrasCidadesController::class, 'excluir'])->name('Manager.Mostras.Cidades.Imagens.excluir');
 
 
-        Route::get('/showrooms/imagens/{id}', [ManagerImagensMostrasCidadesController::class, 'index'])->name('Manager.Mostras.Cidades.Imagens.index');
-        Route::post('/showrooms/imagens/adicionar/{id}', [ManagerImagensMostrasCidadesController::class, 'novo'])->name('Manager.Mostras.Cidades.Imagens.novo');
+        // Route::get('/showrooms/imagens/{id}', [ManagerImagensMostrasCidadesController::class, 'index'])->name('Manager.Mostras.Cidades.Imagens.index');
+        // Route::post('/showrooms/imagens/adicionar/{id}', [ManagerImagensMostrasCidadesController::class, 'novo'])->name('Manager.Mostras.Cidades.Imagens.novo');
 
-        Route::post('/showrooms/imagens/ordenar/{id}', [ManagerImagensMostrasCidadesController::class, 'ordenar'])->name('Manager.Mostras.Cidades.Imagens.ordenar');
-        Route::post('/showrooms/imagens/visibilidade/{id}', [ManagerImagensMostrasCidadesController::class, 'visibilidade'])->name('Manager.Mostras.Cidades.Imagens.visibilidade');
-        Route::post('/showrooms/imagens/excluir/{id}', [ManagerImagensMostrasCidadesController::class, 'excluir'])->name('Manager.Mostras.Cidades.Imagens.excluir');
+        // Route::post('/showrooms/imagens/ordenar/{id}', [ManagerImagensMostrasCidadesController::class, 'ordenar'])->name('Manager.Mostras.Cidades.Imagens.ordenar');
+        // Route::post('/showrooms/imagens/visibilidade/{id}', [ManagerImagensMostrasCidadesController::class, 'visibilidade'])->name('Manager.Mostras.Cidades.Imagens.visibilidade');
+        // Route::post('/showrooms/imagens/excluir/{id}', [ManagerImagensMostrasCidadesController::class, 'excluir'])->name('Manager.Mostras.Cidades.Imagens.excluir');
 
 
         Route::get('/contato', [ManagerContatoController::class, 'index'])->name('Manager.Contato.index');
