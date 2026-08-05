@@ -11,7 +11,7 @@ use App\Models\Idioma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Manager\PostPostRequest;
-
+use App\Services\ImageCompressor;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
@@ -26,7 +26,8 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar() {
+    public function adicionar()
+    {
         $idioma = inertia()->getShared('idioma');
 
         $categorias = PostCategoria::query()
@@ -38,13 +39,13 @@ class PostsController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($post) {
+            ->map(function ($post) {
                 return [
                     'value' => $post->id,
                     'label' => $post->postsCategoriasIdiomas->isNotEmpty() ? $post->postsCategoriasIdiomas[0]->nome : null,
@@ -62,12 +63,21 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostPostRequest $request) {
-        if($request->ajax()){
+    public function novo(PostPostRequest $request, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $idioma = inertia()->getShared('idioma');
 
             $post = new Post;
             $post_idioma = new PostIdioma;
+
+            if ($request->file('img') && $request->file('img')->getError() == 0) {
+                $post->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
+            }
+
+            if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
+                $post->banner = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_banner')->extension());
+            }
 
             $slugBase = Str::slug($request['titulo']);
             $slug = $slugBase;
@@ -82,6 +92,7 @@ class PostsController extends Controller
             $post->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
             $post->slug = $slug;
             $post->post_categoria_id = $request->post_categoria_id;
+            $post->publicado = $request->publicado ? Carbon::parse($request->publicado)->format('Y-m-d H:i') : null;
 
             $response = $post->save();
 
@@ -90,6 +101,8 @@ class PostsController extends Controller
             $post_idioma->conteudo = $request->conteudo;
             $post_idioma->titulo_pagina = $request->titulo_pagina;
             $post_idioma->descricao_pagina = $request->descricao_pagina;
+            $post_idioma->titulo_compartilhamento = $request->titulo_compartilhamento;
+            $post_idioma->descricao_compartilhamento = $request->descricao_compartilhamento;
 
             $post_idioma->post_id = $post->id;
             $post_idioma->idioma_id = $idioma->id;
@@ -97,7 +110,13 @@ class PostsController extends Controller
             $response = $post_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/posts/thumbs/'), $post->imagem);
+                if ($request->file('img') && $request->file('img')->getError() == 0) {
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/posts/thumbs/' . $post->imagem));
+                }
+
+                if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
+                    $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/posts/banner/' . $post->banner));
+                }
 
                 return to_route('Manager.Blog.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
             }
@@ -110,7 +129,8 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Home.index'));
         }
@@ -129,21 +149,21 @@ class PostsController extends Controller
             ])
             ->with([
                 'postsIdiomas' => function ($q) use ($idioma) {
-                    $q->when($idioma, function ($r) use($idioma) {
-                        $r->whereHas('idiomas', function($query) use($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
                             $query->where('codigo', $idioma);
                         });
                     })
-                    ->when(!$idioma, function ($r) {
-                        $r->whereHas('idiomas', function($query) {
-                            $query->where('padrao', true);
+                        ->when(!$idioma, function ($r) {
+                            $r->whereHas('idiomas', function ($query) {
+                                $query->where('padrao', true);
+                            });
                         });
-                    });
                 },
             ])
             ->first();
 
-        if(!$post) {
+        if (!$post) {
             return Inertia::location(route('Manager.Blog.index'));
         }
 
@@ -156,13 +176,13 @@ class PostsController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($post) {
+            ->map(function ($post) {
                 return [
                     'value' => $post->id,
                     'label' => $post->postsCategoriasIdiomas->isNotEmpty() ? $post->postsCategoriasIdiomas[0]->nome : null,
@@ -175,13 +195,16 @@ class PostsController extends Controller
         $post = [
             'id' => $post->id,
             'post_categoria_id' => $post->post_categoria_id,
-            'publicado' => $post->publicado ? Carbon::parse($post->publicado)->format('Y-m-d\TH:i') : null,
+            'publicado' => $post->publicado ? Carbon::parse($post->publicado)->format('Y-m-d H:i') : null,
             'imagem' => asset('content/posts/thumbs/' . $post->imagem),
+            'banner' => asset('content/posts/banner/' . $post->banner),
             'titulo' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->titulo : null,
             'previa' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->previa : null,
             'conteudo' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->conteudo : null,
             'titulo_pagina' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->titulo_pagina : null,
-            'descricao_pagina' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->descricao_pagina : null
+            'descricao_pagina' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->descricao_pagina : null,
+            'titulo_compartilhamento' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->titulo_compartilhamento : null,
+            'descricao_compartilhamento' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->descricao_compartilhamento : null
         ];
 
         return Inertia::render('Manager/Posts/editar', [
@@ -199,8 +222,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostPostRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostPostRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $post = Post::query()
                 ->where([
                     'excluido' => null,
@@ -215,13 +239,13 @@ class PostsController extends Controller
                     'excluido' => null,
                     'post_id' => $post->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -269,25 +293,42 @@ class PostsController extends Controller
                 $post->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
             }
 
+            if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
+                $post->banner = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_banner')->extension());
+            }
+
             $post->slug = $slug;
             $post->post_categoria_id = $request->post_categoria_id;
-            
+            $post->publicado = $request->publicado ? Carbon::parse($request->publicado)->format('Y-m-d H:i') : null;
+
             $post_idioma->titulo = $request->titulo;
             $post_idioma->previa = $request->previa;
             $post_idioma->conteudo = $request->conteudo;
             $post_idioma->titulo_pagina = $request->titulo_pagina;
             $post_idioma->descricao_pagina = $request->descricao_pagina;
+            $post_idioma->titulo_compartilhamento = $request->titulo_compartilhamento;
+            $post_idioma->descricao_compartilhamento = $request->descricao_compartilhamento;
 
             $response = $post->save();
             $response = $post_idioma->save();
 
             if ($response) {
                 if ($request->file('img') && $request->file('img')->getError() == 0) {
+
                     if ($post->imagem && isset($postOriginal) && File::exists('content/posts/thumbs/' . $postOriginal->imagem)) {
                         File::delete('content/posts/thumbs/' . $postOriginal->imagem);
                     }
 
-                    $image = $request->file('img')->move(public_path('content/posts/thumbs/'), $post->imagem);
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/posts/thumbs/' . $post->imagem));
+                }
+
+                if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
+
+                    if ($post->banner && isset($postOriginal) && File::exists('content/posts/banner/' . $postOriginal->banner)) {
+                        File::delete('content/posts/banner/' . $postOriginal->banner);
+                    }
+
+                    $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/posts/banner/' . $post->banner));
                 }
 
                 return to_route('Manager.Blog.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
@@ -304,8 +345,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -334,8 +376,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -350,14 +393,13 @@ class PostsController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -372,8 +414,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {
