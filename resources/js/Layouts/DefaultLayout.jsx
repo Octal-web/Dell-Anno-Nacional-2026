@@ -260,7 +260,7 @@ const DefaultLayout = ({ children }) => {
                                         className="block max-w-50 lg:max-w-80 md:hidden mx-auto mb-20 -mt-16"
                                     />
 
-                                    <ul className="flex flex-col md:flex-row items-center md:justify-center gap-6 md:gap-2 xl:gap-10 relative lg:mr-5 2xl:mr-0">
+                                    <ul className="flex flex-col md:flex-row items-center md:justify-center gap-6 md:gap-2 xl:gap-4 2xl:gap-10 relative lg:mr-5 2xl:mr-0">
                                         {menuItems.map((item, index) => (
                                             <MenuItem
                                                 key={index}
