@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cidade;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\Loja;
 use App\Models\Conteudo;
+use App\Models\Estado;
 use App\Models\ImagemShowroom;
 use App\Models\ImagemProjetoLoja;
 use App\Models\FaseProjeto;
@@ -19,7 +21,8 @@ class LojasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $idioma = inertia()->getShared('idioma');
 
         $paises = [30];
@@ -44,15 +47,15 @@ class LojasController extends Controller
                 'lojasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($loja) {
+            ->map(function ($loja) {
                 return [
                     'id' => $loja->id,
                     'slug' => $loja->slug,
@@ -64,7 +67,7 @@ class LojasController extends Controller
                     'contato' => $loja->lojasIdiomas->isNotEmpty() ? $loja->lojasIdiomas[0]->contato : null
                 ];
             });
-        
+
         $chamadaForm = Conteudo::query()
             ->where([
                 'excluido' => NULL,
@@ -74,9 +77,9 @@ class LojasController extends Controller
                 'conteudosIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->first();
@@ -95,7 +98,8 @@ class LojasController extends Controller
         ]);
     }
 
-    public function loja($slug = null) {
+    public function loja($slug = null)
+    {
         $idioma = inertia()->getShared('idioma');
 
         $loja = Loja::query()
@@ -109,24 +113,24 @@ class LojasController extends Controller
                 'lojasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
                 'projetos' => function ($q) use ($idioma) {
                     $q->where([
                         'excluido' => NULL,
                         'visivel' => true
                     ])
-                    ->with('projetosLojasIdiomas', function ($query) use ($idioma) {
-                        $query->whereHas('idiomas', function ($r) use ($idioma) {
-                            $r->where('codigo', $idioma)
-                            ->orWhere('padrao', true);
+                        ->with('projetosLojasIdiomas', function ($query) use ($idioma) {
+                            $query->whereHas('idiomas', function ($r) use ($idioma) {
+                                $r->where('codigo', $idioma)
+                                    ->orWhere('padrao', true);
+                            })
+                                ->orderBy('idioma_id', 'DESC');
                         })
-                        ->orderBy('idioma_id', 'DESC');
-                    })
-                    ->orderBy('ordem', 'ASC')
-                    ->orderBy('id', 'DESC');
+                        ->orderBy('ordem', 'ASC')
+                        ->orderBy('id', 'DESC');
                 }
             ])
             ->first();
@@ -146,8 +150,8 @@ class LojasController extends Controller
             })
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
-            ->get()   
-            ->map(function($img) {
+            ->get()
+            ->map(function ($img) {
                 return [
                     'id' => $img->id,
                     'imagem' => rafator('content/showrooms/gallery/' . $img->imagem),
@@ -167,7 +171,7 @@ class LojasController extends Controller
             'imagem_showroom' => rafator('content/stores/showroom/' . $loja->imagem_showroom),
             'video_showroom' => $loja->video_showroom ? rafator('content/stores/showroom/video/' . $loja->video_showroom) : null,
             'logo' => rafator('content/stores/logo/' . $loja->logo),
-            'projetos' => $loja->projetos->map(function($projeto) {
+            'projetos' => $loja->projetos->map(function ($projeto) {
                 return [
                     'id' => $projeto->id,
                     'slug' => $projeto->slug,
@@ -176,7 +180,7 @@ class LojasController extends Controller
                 ];
             }),
         ];
-        
+
         $todasLojas = Loja::query()
             ->where([
                 'excluido' => NULL,
@@ -186,15 +190,15 @@ class LojasController extends Controller
                 'lojasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($loja) {
+            ->map(function ($loja) {
                 return [
                     'id' => $loja->id,
                     'slug' => $loja->slug,
@@ -215,15 +219,15 @@ class LojasController extends Controller
                 'fasesProjetosIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($fase) {
+            ->map(function ($fase) {
                 return [
                     'id' => $fase->id,
                     'imagem' => rafator('content/stages/thumbs/' . $fase->imagem),
@@ -231,7 +235,7 @@ class LojasController extends Controller
                     'descricao' => $fase->fasesProjetosIdiomas->isNotEmpty() ? $fase->fasesProjetosIdiomas[0]->descricao : null
                 ];
             });
-        
+
         $chamadaForm = Conteudo::query()
             ->where([
                 'excluido' => NULL,
@@ -241,9 +245,9 @@ class LojasController extends Controller
                 'conteudosIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->first();
@@ -255,7 +259,7 @@ class LojasController extends Controller
                 'texto' => $chamadaForm->conteudosIdiomas->isNotEmpty() ? $chamadaForm->conteudosIdiomas[0]->texto : null,
             ];
         }
-        
+
         $pagina = new Pagina;
 
         $pagina->titulo = $loja->lojasIdiomas[0]->titulo_pagina . ' | Dell Anno';
@@ -280,5 +284,103 @@ class LojasController extends Controller
             'imagensShowroom' => $imagensShowroom,
             'fasesProjetos' => $fasesProjetos
         ]);
+    }
+
+    public function estados(Request $request)
+    {
+        if ($request->ajax()) {
+            $idioma = inertia()->getShared('idioma');
+
+            $lojasUf = Loja::query()
+                ->where([
+                    'visivel' => true,
+                    'excluido' => null
+                ])
+                ->with([
+                    'lojasIdiomas' => function ($q) use ($idioma) {
+                        $q->whereHas('idiomas', function ($r) use ($idioma) {
+                            $r->where('codigo', $idioma)
+                                ->orWhere('padrao', true);
+                        })
+                            ->orderBy('idioma_id', 'DESC');
+                    }
+                ])
+                ->get()
+                ->map(function ($loja) {
+                    return $loja->lojasIdiomas->isNotEmpty() ? $loja->lojasIdiomas[0]->estado : null;
+                })
+                ->values()
+                ->all();
+
+            $estados = Estado::query()
+                ->whereIn('uf', $lojasUf)
+                ->orderBy('nome', 'ASC')
+                ->get()
+                ->map(function ($estado) {
+                    return [
+                        'value' => $estado->id,
+                        'uf' => $estado->uf,
+                        'label' => $estado->nome,
+                    ];
+                });
+
+            return response()->json([
+                'estados' => $estados,
+            ]);
+        } else {
+            return Inertia::location(route('Home.index'));
+        }
+    }
+
+    public function cidades(Request $request)
+    {
+        if ($request->ajax()) {
+            $request->validate([
+                'estado_id' => 'required|exists:estados,id',
+            ]);
+
+            $idioma = inertia()->getShared('idioma');
+
+            $lojasCidades = Loja::query()
+                ->where([
+                    'visivel' => true,
+                    'excluido' => null
+                ])
+                ->with([
+                    'lojasIdiomas' => function ($q) use ($idioma) {
+                        $q->whereHas('idiomas', function ($r) use ($idioma) {
+                            $r->where('codigo', $idioma)
+                                ->orWhere('padrao', true);
+                        })
+                            ->orderBy('idioma_id', 'DESC');
+                    }
+                ])
+                ->get()
+                ->map(function ($loja) {
+                    return $loja->lojasIdiomas->isNotEmpty() ? $loja->lojasIdiomas[0]->cidade : null;
+                })
+                ->values()
+                ->all();
+
+            $cidades = Cidade::query()
+                ->where('estado_id', $request->estado_id)
+                ->whereIn('nome', $lojasCidades)
+                ->select('id', 'nome')
+                ->orderBy('nome')
+                ->get()
+                ->map(function ($cidade) {
+                    return [
+                        'value' => $cidade->id,
+                        'label' => $cidade->nome,
+                    ];
+                })
+                ->values();
+
+            return response()->json([
+                'cidades' => $cidades,
+            ]);
+        } else {
+            return Inertia::location(route('Home.index'));
+        }
     }
 };
