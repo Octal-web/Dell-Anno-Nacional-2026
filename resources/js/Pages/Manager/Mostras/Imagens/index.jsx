@@ -64,7 +64,7 @@ const Page = () => {
 
     useEffect(() => {
         if (isUpdated) {
-            post(route('Manager.mostraCidades.Imagens.ordenar', {id: mostraCidade.id}), {
+            post(route('Manager.Mostras.Cidades.Imagens.ordenar', {id: mostraCidade.id}), {
                 preserveScroll: true,
             });
             setIsUpdated(false);
@@ -96,7 +96,7 @@ const Page = () => {
                         >
                             {state.map((image, index) => (
                                 <div key={index} className="relative h-full pb-12">
-                                    <IndividualImage key={index} individualContent={image} controller="mostraCidades.Imagens" crop={false} />
+                                    <IndividualImage key={index} individualContent={image} controller="Mostras.Cidades.Imagens" crop={false} />
                                 </div>
                             ))}
                         </ReactSortable>
