@@ -6,6 +6,8 @@ use App\Models\Cidade;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use Illuminate\Support\Str;
+
 use App\Models\Loja;
 use App\Models\Conteudo;
 use App\Models\Estado;
@@ -369,8 +371,10 @@ class LojasController extends Controller
                 ->orderBy('nome')
                 ->get()
                 ->map(function ($cidade) {
+                    $slug = Str::slug($cidade->nome);
+
                     return [
-                        'value' => $cidade->id,
+                        'value' => $slug,
                         'label' => $cidade->nome,
                     ];
                 })
