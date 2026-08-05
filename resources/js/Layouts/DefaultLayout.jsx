@@ -260,7 +260,7 @@ const DefaultLayout = ({ children }) => {
                                         className="block max-w-50 lg:max-w-80 md:hidden mx-auto mb-20 -mt-16"
                                     />
 
-                                    <ul className="flex flex-col md:flex-row items-center md:justify-center gap-6 md:gap-2 xl:gap-10 relative lg:mr-5 2xl:mr-0">
+                                    <ul className="flex flex-col md:flex-row items-center md:justify-center gap-6 md:gap-2 xl:gap-4 2xl:gap-10 relative lg:mr-5 2xl:mr-0">
                                         {menuItems.map((item, index) => (
                                             <MenuItem
                                                 key={index}
@@ -290,14 +290,12 @@ const DefaultLayout = ({ children }) => {
                                         >
                                             {/* <Link href={route('Orcamentos.index')} className="lg:mx-4 border border-neutral-800 bg-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" >Design Consultation</Link> */}
 
-                                            <a
-                                                href="https://tradeprogramdellanno.com/"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            <Link
+                                                href={route('Contato.index')}
                                                 className="lg:mx-4 border border-neutral-800 bg-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white uppercase"
                                             >
                                                 Solicite orçamento
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </nav>

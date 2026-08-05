@@ -4,6 +4,7 @@ import { usePage, router } from '@inertiajs/react';
 import DefaultLayout from '@/Layouts/DefaultLayout';
 
 import { BlogBanner } from '@/Components/BlogBanner';
+import { BlogPostsHighlights } from '@/Components/BlogPostsHighlights';
 import { BlogPostsList } from '@/Components/BlogPostsList';
 import BlogPostsLoadMore from '@/Components/BlogPostsLoadMore';
 
@@ -48,6 +49,8 @@ const Page = () => {
                 selectedCategory={selectedCategory}
                 onCategoryChange={handleCategoryChange}
             />
+
+            <BlogPostsHighlights data={[initialPosts.data[0], initialPosts.data[1], initialPosts.data[2]]} />
 
             <BlogPostsLoadMore
                 initialData={filteredPosts}
