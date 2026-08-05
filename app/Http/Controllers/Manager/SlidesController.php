@@ -10,7 +10,7 @@ use App\Models\Idioma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Manager\PostSlideRequest;
-
+use App\Services\ImageCompressor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -24,7 +24,8 @@ class SlidesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar($tipo) {
+    public function adicionar($tipo)
+    {
         if (!$tipo || !in_array($tipo, ['imagem', 'video'])) {
             return Inertia::location(route('Manager.Home.index'));
         }
@@ -47,14 +48,15 @@ class SlidesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostSlideRequest $request, $tipo) {
-        if($request->ajax()){
+    public function novo(PostSlideRequest $request, $tipo, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             if (!$tipo || !in_array($tipo, ['imagem', 'video'])) {
                 return Inertia::location(route('Manager.Home.index'));
             }
 
             $idioma = inertia()->getShared('idioma');
-            
+
             $slide = new Slide;
             $slide_idioma = new SlideIdioma;
 
@@ -84,8 +86,9 @@ class SlidesController extends Controller
 
             if ($response) {
                 if ($tipo == 'imagem') {
-                    $image = $request->file('img')->move(public_path('content/slides/d/'), $slide->imagem);
-                    $image = $request->file('img_mobile')->move(public_path('content/slides/m/'), $slide->imagem_mobile);
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/slides/d/' . $slide->imagem));
+
+                    $compressor->compressOrFallback($request->file('img_mobile')->getRealPath(), public_path('content/slides/m/' . $slide->imagem_mobile));
                 } else if ($tipo == 'video') {
                     $video = $request->file('vid')->move(public_path('content/slides/videos/d/'), $slide->video);
                     $video = $request->file('vid_mobile')->move(public_path('content/slides/videos/m/'), $slide->video_mobile);
@@ -101,11 +104,12 @@ class SlidesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Home.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -120,21 +124,21 @@ class SlidesController extends Controller
             ])
             ->with([
                 'slidesIdiomas' => function ($q) use ($idioma) {
-                    $q->when($idioma, function ($r) use($idioma) {
-                        $r->whereHas('idiomas', function($query) use($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
                             $query->where('codigo', $idioma);
                         });
                     })
-                    ->when(!$idioma, function ($r) {
-                        $r->whereHas('idiomas', function($query) {
-                            $query->where('padrao', true);
+                        ->when(!$idioma, function ($r) {
+                            $r->whereHas('idiomas', function ($query) {
+                                $query->where('padrao', true);
+                            });
                         });
-                    });
                 },
             ])
             ->first();
 
-        if(!$slide) {
+        if (!$slide) {
             return Inertia::location(route('Manager.Home.index'));
         }
 
@@ -153,7 +157,7 @@ class SlidesController extends Controller
             $slideData['imagem'] = rafator('content/slides/d/' . $slide->imagem);
             $slideData['imagem_mobile'] = rafator('content/slides/m/' . $slide->imagem_mobile);
         }
-        
+
         return Inertia::render('Manager/Slides/editar', [
             'idiomas' => $idiomas,
             'idioma' => $idioma,
@@ -168,8 +172,9 @@ class SlidesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostSlideRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostSlideRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $slide = Slide::query()
                 ->where([
                     'excluido' => null,
@@ -184,13 +189,13 @@ class SlidesController extends Controller
                     'excluido' => null,
                     'slide_id' => $slide->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -251,14 +256,14 @@ class SlidesController extends Controller
                         if ($slide->imagem && isset($slideOriginal) && File::exists(public_path('content/slides/d/' . $slideOriginal->imagem))) {
                             File::delete(public_path('content/slides/d/' . $slideOriginal->imagem));
                         }
-                        $request->file('img')->move(public_path('content/slides/d/'), $slide->imagem);
+                        $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/slides/d/' . $slide->imagem));
                     }
 
                     if ($request->file('img_mobile') && $request->file('img_mobile')->isValid()) {
                         if ($slide->imagem_mobile && isset($slideOriginal) && File::exists(public_path('content/slides/m/' . $slideOriginal->imagem_mobile))) {
                             File::delete(public_path('content/slides/m/' . $slideOriginal->imagem_mobile));
                         }
-                        $request->file('img_mobile')->move(public_path('content/slides/m/'), $slide->imagem_mobile);
+                        $compressor->compressOrFallback($request->file('img_mobile')->getRealPath(), public_path('content/slides/m/' . $slide->imagem_mobile));
                     }
                 }
 
@@ -280,7 +285,6 @@ class SlidesController extends Controller
 
                 return to_route('Manager.Home.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
             }
-
         }
 
         return to_route('Manager.Home.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
@@ -293,8 +297,9 @@ class SlidesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -323,8 +328,9 @@ class SlidesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
@@ -339,14 +345,13 @@ class SlidesController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -361,8 +366,9 @@ class SlidesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {
@@ -397,7 +403,8 @@ class SlidesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function baixarVideo($id, $video) {
+    public function baixarVideo($id, $video)
+    {
         if (!$id || !$video || !in_array($video, ['desktop', 'mobile'])) {
             return redirect()->route('Manager.Home.index');
         }

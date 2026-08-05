@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\ProjetoLoja;
 use App\Models\ImagemProjetoLoja;
-
+use App\Services\ImageCompressor;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -18,7 +18,8 @@ class ImagensLojasProjetosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id) {
+    public function index($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Lojas.Projetos.index'));
         }
@@ -33,20 +34,20 @@ class ImagensLojasProjetosController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
                 'imagens' => function ($q) {
                     $q->where([
                         'excluido' => NULL
                     ])
-                    ->orderBy('ordem', 'ASC')
-                    ->orderBy('id', 'DESC'); 
+                        ->orderBy('ordem', 'ASC')
+                        ->orderBy('id', 'DESC');
                 }
 
             ])
             ->first();
 
-        if(!$projeto) {
+        if (!$projeto) {
             return Inertia::location(route('Manager.Lojas.Projetos.index'));
         }
 
@@ -74,7 +75,8 @@ class ImagensLojasProjetosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(Request $request, $id) {
+    public function novo(Request $request, $id, ImageCompressor $compressor)
+    {
         if ($request->ajax()) {
             $projeto = ProjetoLoja::query()
                 ->where([
@@ -97,8 +99,9 @@ class ImagensLojasProjetosController extends Controller
                 $response = $imagem->save();
 
                 if ($response) {
-                    $image['img_alt']->move(public_path('content/stores/projects/gallery/s/'), $imagem->imagem);
-                    $image['img']->move(public_path('content/stores/projects/gallery/b/'), $imagem->imagem);
+                    $compressor->compressOrFallback($image['img_alt']->getRealPath(), public_path('content/stores/projects/gallery/s/' . $imagem->imagem));
+
+                    $compressor->compressOrFallback($image['img']->getRealPath(), public_path('content/stores/projects/gallery/b/' . $imagem->imagem));
                 } else {
                     return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Erro ao salvar imagem']);
                 }
@@ -117,7 +120,7 @@ class ImagensLojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function cortar(Request $request, $id)
+    public function cortar(Request $request, $id, ImageCompressor $compressor)
     {
         if ($request->ajax()) {
             if (!$id) {
@@ -142,7 +145,7 @@ class ImagensLojasProjetosController extends Controller
                     @unlink($path);
                 }
 
-                $request->file('img')->move(public_path('content/stores/projects/gallery/s/'), $imagem->imagem);
+                $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/stores/projects/gallery/s/' . $imagem->imagem));
 
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Imagem cortada com sucesso!']);
             }
@@ -160,8 +163,9 @@ class ImagensLojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -190,8 +194,9 @@ class ImagensLojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -206,14 +211,13 @@ class ImagensLojasProjetosController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -228,8 +232,9 @@ class ImagensLojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {

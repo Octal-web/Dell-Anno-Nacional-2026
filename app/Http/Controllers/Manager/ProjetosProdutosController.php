@@ -12,7 +12,7 @@ use App\Models\Idioma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Manager\PostProjectRequest;
-
+use App\Services\ImageCompressor;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
@@ -27,11 +27,12 @@ class ProjetosProdutosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar($id) {
+    public function adicionar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Produtos.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -50,31 +51,31 @@ class ProjetosProdutosController extends Controller
                         'excluido' => null,
                         'visivel' => true
                     ])
-                    ->with([
-                        'produtosIdiomas' => function ($qi) use ($idioma) {
-                            $qi->whereHas('idiomas', function ($ri) use ($idioma) {
-                                $ri->where('codigo', $idioma)
-                                   ->orWhere('padrao', true);
-                            })
-                            ->orderBy('idioma_id', 'DESC');
-                        }
-                    ]);
+                        ->with([
+                            'produtosIdiomas' => function ($qi) use ($idioma) {
+                                $qi->whereHas('idiomas', function ($ri) use ($idioma) {
+                                    $ri->where('codigo', $idioma)
+                                        ->orWhere('padrao', true);
+                                })
+                                    ->orderBy('idioma_id', 'DESC');
+                            }
+                        ]);
                 },
                 'ambientesIdiomas' => function ($q) {
                     $q->whereHas('idiomas', function ($r) {
                         $r->where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
             ])
             ->get()
-            ->groupBy(function($ambiente) {
+            ->groupBy(function ($ambiente) {
                 return $ambiente->produto ? $ambiente->produto->produtosIdiomas[0]?->nome : 'Sem produto';
             })
-            ->map(function($ambientesPorProduto, $produtoNome) {
+            ->map(function ($ambientesPorProduto, $produtoNome) {
                 return [
                     'label' => $produtoNome,
-                    'options' => $ambientesPorProduto->map(function($ambiente) {
+                    'options' => $ambientesPorProduto->map(function ($ambiente) {
                         return [
                             'value' => $ambiente->id,
                             'label' => $ambiente->ambientesIdiomas->isNotEmpty()
@@ -98,8 +99,9 @@ class ProjetosProdutosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostProjectRequest $request) {
-        if($request->ajax()){
+    public function novo(PostProjectRequest $request, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $idioma = inertia()->getShared('idioma');
 
             $ambiente = Ambiente::with('ambientesIdiomas')
@@ -111,7 +113,7 @@ class ProjetosProdutosController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 })
                 ->first();
 
@@ -121,7 +123,7 @@ class ProjetosProdutosController extends Controller
                     'message' => 'Ambiente inválido ou sem tradução disponível.'
                 ], 422);
             }
-            
+
             $projeto = new Projeto;
             $projeto_idioma = new ProjetoIdioma;
 
@@ -134,9 +136,9 @@ class ProjetosProdutosController extends Controller
             $slug = "{$slugBase}-" . ($count + 1);
 
             $projeto->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
-            
+
             $projeto->slug = $slug;
-            
+
             $projeto->ambiente_id = $request->ambiente_id;
 
             $response = $projeto->save();
@@ -150,7 +152,7 @@ class ProjetosProdutosController extends Controller
             $response = $projeto_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/projects/thumbs/'), $projeto->imagem);
+                $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/projects/thumbs/' . $projeto->imagem));
 
                 return to_route('Manager.Produtos.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
             }
@@ -163,11 +165,12 @@ class ProjetosProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Produtos.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -185,12 +188,12 @@ class ProjetosProdutosController extends Controller
                     $query->whereHas('idiomas', function ($secr) {
                         $secr->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
             ])
             ->first();
 
-        if(!$projeto) {
+        if (!$projeto) {
             return Inertia::location(route('Manager.Produtos.index'));
         }
 
@@ -203,7 +206,7 @@ class ProjetosProdutosController extends Controller
             'detalhes' => count($projeto->projetosIdiomas) ? $projeto->projetosIdiomas[0]->detalhes : null,
             'conteudo' => count($projeto->projetosIdiomas) ? $projeto->projetosIdiomas[0]->conteudo : null,
         ];
-        
+
         $ambientes = Ambiente::query()
             ->where([
                 'excluido' => null,
@@ -215,31 +218,31 @@ class ProjetosProdutosController extends Controller
                         'excluido' => null,
                         'visivel' => true
                     ])
-                    ->with([
-                        'produtosIdiomas' => function ($qi) use ($idioma) {
-                            $qi->whereHas('idiomas', function ($ri) use ($idioma) {
-                                $ri->where('codigo', $idioma)
-                                   ->orWhere('padrao', true);
-                            })
-                            ->orderBy('idioma_id', 'DESC');
-                        }
-                    ]);
+                        ->with([
+                            'produtosIdiomas' => function ($qi) use ($idioma) {
+                                $qi->whereHas('idiomas', function ($ri) use ($idioma) {
+                                    $ri->where('codigo', $idioma)
+                                        ->orWhere('padrao', true);
+                                })
+                                    ->orderBy('idioma_id', 'DESC');
+                            }
+                        ]);
                 },
                 'ambientesIdiomas' => function ($q) {
                     $q->whereHas('idiomas', function ($r) {
                         $r->where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
             ])
             ->get()
-            ->groupBy(function($ambiente) {
+            ->groupBy(function ($ambiente) {
                 return $ambiente->produto ? $ambiente->produto->produtosIdiomas[0]?->nome : 'Sem produto';
             })
-            ->map(function($ambientesPorProduto, $produtoNome) {
+            ->map(function ($ambientesPorProduto, $produtoNome) {
                 return [
                     'label' => $produtoNome,
-                    'options' => $ambientesPorProduto->map(function($ambiente) {
+                    'options' => $ambientesPorProduto->map(function ($ambiente) {
                         return [
                             'value' => $ambiente->id,
                             'label' => $ambiente->ambientesIdiomas->isNotEmpty()
@@ -266,8 +269,9 @@ class ProjetosProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostProjectRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostProjectRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $projeto = Projeto::query()
                 ->where([
                     'excluido' => null,
@@ -282,13 +286,13 @@ class ProjetosProdutosController extends Controller
                     'excluido' => null,
                     'projeto_id' => $projeto->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -333,8 +337,8 @@ class ProjetosProdutosController extends Controller
                     if ($projeto->imagem && isset($projetoOriginal) && File::exists('content/projects/thumbs/' . $projetoOriginal->imagem)) {
                         File::delete('content/projects/thumbs/' . $projetoOriginal->imagem);
                     }
-                    
-                    $image = $request->file('img')->move(public_path('content/projects/thumbs/'), $projeto->imagem);
+
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/showrooms/thumbs/' . $projeto->imagem));
                 }
 
                 return to_route('Manager.Produtos.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
@@ -351,8 +355,9 @@ class ProjetosProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -381,8 +386,9 @@ class ProjetosProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -397,14 +403,13 @@ class ProjetosProdutosController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -419,7 +424,8 @@ class ProjetosProdutosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
+    public function ordenar(Request $request)
+    {
         if ($request->ajax()) {
             $erros = [];
 
@@ -440,16 +446,16 @@ class ProjetosProdutosController extends Controller
                                 $query->where([
                                     'excluido' => null
                                 ])
-                                ->orderBy('ordem', 'ASC')
-                                ->orderBy('id', 'DESC')
-                                ->with([
-                                    'ambientesIdiomas' => function ($r) {
-                                        $r->whereHas('idiomas', function ($i) {
-                                            $i->where('padrao', true);
-                                        })
-                                        ->orderBy('idioma_id', 'DESC');
-                                    },
-                                ]);
+                                    ->orderBy('ordem', 'ASC')
+                                    ->orderBy('id', 'DESC')
+                                    ->with([
+                                        'ambientesIdiomas' => function ($r) {
+                                            $r->whereHas('idiomas', function ($i) {
+                                                $i->where('padrao', true);
+                                            })
+                                                ->orderBy('idioma_id', 'DESC');
+                                        },
+                                    ]);
                             },
                         ])
                         ->first();
