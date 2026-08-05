@@ -290,14 +290,12 @@ const DefaultLayout = ({ children }) => {
                                         >
                                             {/* <Link href={route('Orcamentos.index')} className="lg:mx-4 border border-neutral-800 bg-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" >Design Consultation</Link> */}
 
-                                            <a
-                                                href="https://tradeprogramdellanno.com/"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            <Link
+                                                href={route('Contato.index')}
                                                 className="lg:mx-4 border border-neutral-800 bg-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white uppercase"
                                             >
                                                 Solicite orçamento
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </nav>
@@ -563,13 +561,13 @@ const DefaultLayout = ({ children }) => {
                 <div className="py-1 border-t border-t-white border-opacity-30">
                     <div className="container max-w-x-large">
                         <div className="grid grid-cols-1 md:grid-cols-3 max-md:gap-1 items-center md:h-20 py-4 md:py-0">
-                            <div className="text-white text-xs sm:text-sm font-light max-md:text-center opacity-70 mb-5 md:mb-0 2xl:whitespace-nowrap tracking-tight">
+                            <div className="text-white text-xs sm:text-sm font-light max-md:text-center opacity-70 mb-5 md:mb-0 2xl:whitespace-nowrap tracking-tight flex flex-col 2xl:flex-row gap-1 2xl:gap-0">
                                 <a href="tel:08007214104">
                                     Central de Relacionamento com o Cliente 0800
                                     721 4104
                                 </a>
 
-                                <span className="px-2">|</span>
+                                <span className="px-2 hidden 2xl:block">|</span>
                                 <a href="tel:0800211122">
                                     Canal de Ética 0800 211 122
                                 </a>
