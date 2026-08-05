@@ -18,16 +18,17 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $idioma = inertia()->getShared('idioma');
 
         $posts = Post::query()
             ->where([
                 'excluido' => NULL,
             ])
-            ->where(function($q) {
+            ->where(function ($q) {
                 $q->where('visivel', true)
-                  ->orWhere('publicado', '>=', Carbon::now());
+                    ->orWhere('publicado', '>=', Carbon::now());
             })
             ->when(request()->has('categoria'), function ($query) {
                 $query->whereHas('categoria', function ($q) {
@@ -38,31 +39,31 @@ class BlogController extends Controller
                 'postsIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 },
                 'categoria' => function ($q) use ($idioma) {
                     $q->where([
                         'excluido' => null,
                         'visivel' => true
                     ])
-                    ->with([
-                        'postsCategoriasIdiomas' => function ($sub) use ($idioma) {
-                            $sub->whereHas('idiomas', function ($r) use ($idioma) {
-                                $r->where('codigo', $idioma)
-                                  ->orWhere('padrao', true);
-                            })
-                            ->orderBy('idioma_id', 'DESC');
-                        }
-                    ]);
+                        ->with([
+                            'postsCategoriasIdiomas' => function ($sub) use ($idioma) {
+                                $sub->whereHas('idiomas', function ($r) use ($idioma) {
+                                    $r->where('codigo', $idioma)
+                                        ->orWhere('padrao', true);
+                                })
+                                    ->orderBy('idioma_id', 'DESC');
+                            }
+                        ]);
                 }
             ])
             ->orderBy('publicado', 'DESC')
             ->orderBy('ordem', 'ASC')
             ->paginate(12);
 
-        $posts->getCollection()->transform(function($post) {
+        $posts->getCollection()->transform(function ($post) {
             return [
                 'id' => $post->id,
                 'imagem' => asset('content/posts/thumbs/' . $post->imagem),
@@ -84,15 +85,15 @@ class BlogController extends Controller
                 'postsCategoriasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($categoria) {
+            ->map(function ($categoria) {
                 return [
                     'id' => $categoria->id,
                     'nome' => $categoria->postsCategoriasIdiomas->isNotEmpty() ? $categoria->postsCategoriasIdiomas[0]->nome : null,
@@ -116,7 +117,8 @@ class BlogController extends Controller
      * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function post($slug) {
+    public function post($slug)
+    {
         if (!$slug) {
             return Inertia::location(route('Blog.index'));
         }
@@ -128,22 +130,22 @@ class BlogController extends Controller
                 'excluido' => null,
                 'slug' => $slug
             ])
-            ->where(function($q) {
+            ->where(function ($q) {
                 $q->where('visivel', true)
-                  ->orWhere('publicado', '>=', Carbon::now());
+                    ->orWhere('publicado', '>=', Carbon::now());
             })
             ->with([
                 'postsIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->first();
 
-        if(!$post) {
+        if (!$post) {
             return Inertia::location(route('Blog.index'));
         }
 
@@ -170,7 +172,7 @@ class BlogController extends Controller
             'previa' => $post->postsIdiomas->isNotEmpty() ? $post->postsIdiomas[0]->previa : null,
             'conteudo' => $post->postsIdiomas->isNotEmpty() ? $post->postsIdiomas[0]->conteudo : null,
             'categoria' => $post->categoria->postsCategoriasIdiomas->isNotEmpty() ? $post->categoria->postsCategoriasIdiomas[0]->nome : null,
-            'data' => $post->publicado->format('d/m/Y') ?? $post->criado->format('d/m/Y'),
+            'data' => $post->publicado?->format('d/m/Y') ?? $post->criado->format('d/m/Y'),
             'slug' => $post->slug,
         ];
 
@@ -179,14 +181,14 @@ class BlogController extends Controller
                 'excluido' => NULL,
                 ['slug', '!=', $slug]
             ])
-            ->where(function($q) {
+            ->where(function ($q) {
                 $q->where('visivel', true)
-                  ->orWhere('publicado', '>=', Carbon::now());
+                    ->orWhere('publicado', '>=', Carbon::now());
             })
             ->inRandomOrder()
             ->limit(3)
             ->get()
-            ->map(function($post) {
+            ->map(function ($post) {
                 return [
                     'id' => $post->id,
                     'imagem' => asset('content/posts/thumbs/' . $post->imagem),
@@ -205,5 +207,4 @@ class BlogController extends Controller
             'posts' => $posts
         ]);
     }
-
 }
