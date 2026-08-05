@@ -25,7 +25,7 @@ const Page = () => {
         nome: ["Posts", "post"],
         controller: "Posts",
         imagens: true,
-        imgClass: "",
+        imgClass: "h-50",
         editavel: true,
         conteudos: posts,
     };
