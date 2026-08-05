@@ -60,7 +60,6 @@ use App\Http\Controllers\Manager\InspiracaoController as ManagerInspiracaoContro
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home.index');
     Route::post('/cidades/carregar', [CidadesController::class, 'carregar'])->name('Cidades.carregar');
-    Route::get('/estados/carregar', [CidadesController::class, 'estados'])->name('Cidades.estados');
 
     Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
@@ -75,6 +74,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/lojas', [LojasController::class, 'index'])->name('Lojas.index');
     Route::get('/lojas/{slug}', [LojasController::class, 'loja'])->name('Lojas.loja');
+    Route::get('/lojas/estados/carregar', [LojasController::class, 'estados'])->name('Lojas.estados');
+    Route::post('/lojas/cidades/carregar', [LojasController::class, 'cidades'])->name('Lojas.cidades');
 
     Route::get('/get-inspired', [InspiracaoController::class, 'index'])->name('Inspiracao.index');
 
@@ -96,8 +97,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/design-consultation', [OrcamentosController::class, 'index'])->name('Orcamentos.index');
 
-    Route::get('contato', [ContatoController::class, 'index'])->name('Contato.index');
-    Route::post('/contato/enviar', [ContatoController::class, 'enviar'])->name('Contato.enviar');
+    Route::get('/solicite-seu-projeto', [ContatoController::class, 'index'])->name('Contato.index');
+    Route::post('/solicite-seu-projeto/enviar', [ContatoController::class, 'enviar'])->name('Contato.enviar');
 
     Route::get('/catalogos', [CatalogosController::class, 'index'])->name('Catalogos.index');
     Route::get('/catalogos/download/{id}', [CatalogosController::class, 'download'])->name('Catalogos.download');
