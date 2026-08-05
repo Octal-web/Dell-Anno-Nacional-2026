@@ -12,7 +12,7 @@ use App\Models\Idioma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Manager\PostStoreProjectRequest;
-
+use App\Services\ImageCompressor;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -27,7 +27,8 @@ class LojasProjetosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $idioma = inertia()->getShared('idioma');
 
         $projetos = ProjetoLoja::query()
@@ -39,13 +40,13 @@ class LojasProjetosController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($projeto) {
+            ->map(function ($projeto) {
                 return [
                     'id' => $projeto->id,
                     'visivel' => $projeto->visivel,
@@ -57,14 +58,15 @@ class LojasProjetosController extends Controller
         return Inertia::render('Manager/Lojas/Projetos/index', [
             'projetos' => $projetos
         ]);
-    }   
+    }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar() {
+    public function adicionar()
+    {
         $lojas = Loja::query()
             ->where([
                 'excluido' => NULL,
@@ -76,7 +78,7 @@ class LojasProjetosController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
@@ -115,10 +117,11 @@ class LojasProjetosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostStoreProjectRequest $request) {
-        if($request->ajax()){
+    public function novo(PostStoreProjectRequest $request, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $idioma = inertia()->getShared('idioma');
-            
+
             $projeto_loja = new ProjetoLoja;
             $projeto_loja_idioma = new ProjetoLojaIdioma;
 
@@ -131,13 +134,13 @@ class LojasProjetosController extends Controller
                 $slug = $slugBase . '-' . $count;
                 $count++;
             }
-            
+
             $projeto_loja->slug = $slug;
             $projeto_loja->loja_id = $request->loja_id ?? null;
 
             $projeto_loja->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
             $projeto_loja->banner = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_banner')->extension());
-            
+
             if ($request->file('vid') && $request->file('vid')->getError() == 0) {
                 $projeto_loja->video = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('vid')->extension());
             }
@@ -159,9 +162,9 @@ class LojasProjetosController extends Controller
             $response = $projeto_loja_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/stores/projects/thumbs/'), $projeto_loja->imagem);
-                $image = $request->file('img_banner')->move(public_path('content/stores/projects/banner/'), $projeto_loja->banner);
-                
+                $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/products/banner/' . $projeto_loja->banner));
+                $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/stores/projects/thumbs/' . $projeto_loja->imagem));
+
                 if ($request->file('vid') && $request->file('vid')->getError() == 0) {
                     $video = $request->file('vid')->move(public_path('content/stores/projects/video/'), $projeto_loja->video);
                 }
@@ -177,11 +180,12 @@ class LojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Lojas.Projetos.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -196,21 +200,21 @@ class LojasProjetosController extends Controller
             ])
             ->with([
                 'projetosLojasIdiomas' => function ($q) use ($idioma) {
-                    $q->when($idioma, function ($r) use($idioma) {
-                        $r->whereHas('idiomas', function($query) use($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
                             $query->where('codigo', $idioma);
                         });
                     })
-                    ->when(!$idioma, function ($r) {
-                        $r->whereHas('idiomas', function($query) {
-                            $query->where('padrao', true);
+                        ->when(!$idioma, function ($r) {
+                            $r->whereHas('idiomas', function ($query) {
+                                $query->where('padrao', true);
+                            });
                         });
-                    });
                 }
             ])
             ->first();
 
-        if(!$projeto) {
+        if (!$projeto) {
             return Inertia::location(route('Manager.Lojas.Projetos.index'));
         }
 
@@ -231,7 +235,7 @@ class LojasProjetosController extends Controller
             'titulo_pagina' => count($projeto->projetosLojasIdiomas) ? $projeto->projetosLojasIdiomas[0]->titulo_pagina : null,
             'descricao_pagina' => count($projeto->projetosLojasIdiomas) ? $projeto->projetosLojasIdiomas[0]->descricao_pagina : null,
         ];
-        
+
         $lojas = Loja::query()
             ->where([
                 'excluido' => NULL,
@@ -243,7 +247,7 @@ class LojasProjetosController extends Controller
                     $q->whereHas('idiomas', function ($r) {
                         $r->Where('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
@@ -286,8 +290,9 @@ class LojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostStoreProjectRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostStoreProjectRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $projeto_loja = ProjetoLoja::query()
                 ->where([
                     'excluido' => null,
@@ -302,13 +307,13 @@ class LojasProjetosController extends Controller
                     'excluido' => null,
                     'projeto_loja_id' => $projeto_loja->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -385,23 +390,22 @@ class LojasProjetosController extends Controller
                     if ($projeto_loja->imagem && isset($projeto_lojaOriginal) && File::exists('content/stores/projects/thumbs/' . $projeto_lojaOriginal->imagem)) {
                         File::delete('content/stores/projects/thumbs/' . $projeto_lojaOriginal->imagem);
                     }
-                    
-                    $image = $request->file('img')->move(public_path('content/stores/projects/thumbs/'), $projeto_loja->imagem);
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/stores/projects/thumbs/' . $projeto_loja->imagem));
                 }
-                
+
                 if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
                     if ($projeto_loja->banner && isset($projeto_lojaOriginal) && File::exists('content/stores/projects/banner/' . $projeto_lojaOriginal->banner)) {
                         File::delete('content/stores/projects/banner/' . $projeto_lojaOriginal->banner);
                     }
-                    
-                    $image = $request->file('img_banner')->move(public_path('content/stores/projects/banner/'), $projeto_loja->banner);
+
+                    $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/products/banner/' . $projeto_loja->banner));
                 }
 
                 if ($request->file('vid') && $request->file('vid')->getError() == 0) {
                     if ($projeto_loja->video && isset($projeto_lojaOriginal) && File::exists('content/stores/projects/video/' . $projeto_lojaOriginal->video)) {
                         File::delete('content/stores/projects/video/' . $projeto_lojaOriginal->video);
                     }
-                    
+
                     $image = $request->file('vid')->move(public_path('content/stores/projects/video/'), $projeto_loja->video);
                 }
 
@@ -419,8 +423,9 @@ class LojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -449,8 +454,9 @@ class LojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -465,14 +471,13 @@ class LojasProjetosController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -487,8 +492,9 @@ class LojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {
@@ -515,7 +521,7 @@ class LojasProjetosController extends Controller
 
         return redirect()->back();
     }
-    
+
     /**
      * Download the file of the specified resource.
      *
@@ -523,7 +529,8 @@ class LojasProjetosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function baixarVideo($id) {
+    public function baixarVideo($id)
+    {
         if (!$id) {
             return redirect()->route('Manager.Lojas.Produtos.index');
         }
