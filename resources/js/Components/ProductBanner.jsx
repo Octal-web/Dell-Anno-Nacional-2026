@@ -30,7 +30,7 @@ export const ProductBanner = ({ products, content }) => {
         <>
             <section
                 ref={productBgRef}
-                className="relative h-[280px] max-[430px]:bg-[length:auto_120%] max-[570px]:bg-[length:200%] sm:bg-[length:170%] bg-[60%] xl:bg-[length:100%]"
+                className="relative h-[230px] 2xl:h-[280px] max-[430px]:bg-[length:auto_120%] max-[570px]:bg-[length:200%] sm:bg-[length:170%] bg-[60%] xl:bg-[length:100%]"
                 style={{
                     backgroundImage: `url(${content.imagem})`,
                 }}
