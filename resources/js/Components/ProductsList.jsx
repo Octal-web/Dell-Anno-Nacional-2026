@@ -7,7 +7,7 @@ export const ProductsList = ({ content, products }) => {
             <section className="pt-8 md:pt-12 2xl:pt-20">
                 <div className="container max-w-x-large">
                     <div className="flex-col md:flex-row flex items-center gap-10 md:gap-20">
-                        <h1 className="text-4xl md:text-5xl 2xl:text-[55px] font-light uppercase sm:tracking-wide leading-snug whitespace-nowrap">/ {content.titulo}</h1>
+                        <h1 className="text-4xl md:text-5xl 2xl:text-[55px] font-light uppercase sm:tracking-wide leading-snug whitespace-nowrap">{content.titulo}</h1>
                         <p className="font-secondary font-light max-md:text-justify whitespace-pre-line">{content.texto}</p>
                     </div>
                 </div>
