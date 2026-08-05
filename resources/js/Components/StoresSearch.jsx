@@ -19,7 +19,7 @@ export const StoresSearch = ({
     useEffect(() => {
         const fetchStates = async () => {
             try {
-                const response = await axios.get(route("Cidades.estados"));
+                const response = await axios.get(route("Lojas.estados"));
 
                 const data = await response.data;
 
@@ -44,7 +44,7 @@ export const StoresSearch = ({
 
         const fetchCities = async (stateId) => {
             try {
-                const response = await axios.post(route("Cidades.carregar"), {
+                const response = await axios.post(route("Lojas.cidades"), {
                     estado_id: stateId.value,
                 });
 
