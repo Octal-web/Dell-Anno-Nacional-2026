@@ -75,7 +75,7 @@ export const StoresSearch = ({
 
         if (selectedCity) {
             filtered = filtered.filter(
-                (store) => store.cidade === selectedCity.label,
+                (store) => store.slug === selectedCity.value,
             );
         }
 
