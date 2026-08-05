@@ -38,7 +38,7 @@ const LetterReveal = ({ text, className, element = "div" }) => {
         <Tag
             // ref={containerRef}
             className={className}
-            style={{ overflow: "hidden" }}
+            // style={{ overflow: "hidden" }}
         >
             {text.split(" ").map((word, wi) => (
                 <span
