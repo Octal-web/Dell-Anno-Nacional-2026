@@ -83,7 +83,7 @@ const Page = () => {
                 tipo: "imagem",
                 crop: true,
                 largura: 700,
-                altura: 1080,
+                altura: 950,
                 imagem: postItem.imagem,
             },
             {
