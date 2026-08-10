@@ -26,7 +26,8 @@ class DestaquesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar() {
+    public function adicionar()
+    {
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -43,10 +44,11 @@ class DestaquesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostHighlightRequest $request, ImageCompressor $compressor) {
-        if($request->ajax()){
+    public function novo(PostHighlightRequest $request, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $idioma = inertia()->getShared('idioma');
-            
+
             $destaque = new Destaque;
             $destaque_idioma = new DestaqueIdioma;
 
@@ -77,7 +79,7 @@ class DestaquesController extends Controller
                 if ($request->file('img') && $request->file('img')->getError() == 0) {
                     $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/highlights/thumbs/' . $destaque->imagem));
                 }
-                
+
                 if ($request->file('vid') && $request->file('vid')->getError() == 0) {
                     $video = $request->file('vid')->move(public_path('content/highlights/video/'), $destaque->video);
                 }
@@ -93,11 +95,12 @@ class DestaquesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Home.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -112,21 +115,21 @@ class DestaquesController extends Controller
             ])
             ->with([
                 'destaquesIdiomas' => function ($q) use ($idioma) {
-                    $q->when($idioma, function ($r) use($idioma) {
-                        $r->whereHas('idiomas', function($query) use($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
                             $query->where('codigo', $idioma);
                         });
                     })
-                    ->when(!$idioma, function ($r) {
-                        $r->whereHas('idiomas', function($query) {
-                            $query->where('padrao', true);
+                        ->when(!$idioma, function ($r) {
+                            $r->whereHas('idiomas', function ($query) {
+                                $query->where('padrao', true);
+                            });
                         });
-                    });
                 },
             ])
             ->first();
 
-        if(!$destaque) {
+        if (!$destaque) {
             return Inertia::location(route('Manager.Home.index'));
         }
 
@@ -158,8 +161,9 @@ class DestaquesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostHighlightRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostHighlightRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $destaque = Destaque::query()
                 ->where([
                     'excluido' => null,
@@ -174,13 +178,13 @@ class DestaquesController extends Controller
                     'excluido' => null,
                     'destaque_id' => $destaque->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -235,7 +239,7 @@ class DestaquesController extends Controller
 
                     $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/highlights/thumbs/' . $destaque->imagem));
                 }
-                
+
                 if ($request->file('vid') && $request->file('vid')->getError() == 0) {
                     if ($destaque->video && isset($destaqueOriginal) && File::exists('content/highlights/video/' . $destaqueOriginal->video)) {
                         File::delete('content/highlights/video/' . $destaqueOriginal->video);
@@ -258,8 +262,9 @@ class DestaquesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -288,8 +293,9 @@ class DestaquesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -304,14 +310,13 @@ class DestaquesController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -326,8 +331,9 @@ class DestaquesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {
@@ -354,7 +360,7 @@ class DestaquesController extends Controller
 
         return redirect()->back();
     }
-    
+
     /**
      * Download the file of the specified resource.
      *
@@ -362,7 +368,8 @@ class DestaquesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function baixarVideo($id) {
+    public function baixarVideo($id)
+    {
         if (!$id) {
             return redirect()->route('Manager.Home.index');
         }

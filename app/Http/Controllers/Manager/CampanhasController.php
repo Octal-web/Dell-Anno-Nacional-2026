@@ -11,7 +11,7 @@ use App\Models\Idioma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Manager\PostCampaignRequest;
-
+use App\Services\ImageCompressor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -25,7 +25,8 @@ class CampanhasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function adicionar() {
+    public function adicionar()
+    {
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -42,15 +43,16 @@ class CampanhasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostCampaignRequest $request) {
-        if($request->ajax()){
+    public function novo(PostCampaignRequest $request, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $idioma = inertia()->getShared('idioma');
-            
+
             $campanha = new Campanha;
             $campanha_idioma = new CampanhaIdioma;
 
             $campanha->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
-            
+
             // $campanha->ano = $request->ano;
             $campanha->link = $request->link;
 
@@ -65,7 +67,8 @@ class CampanhasController extends Controller
             $response = $campanha_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/campaigns/thumbs/'), $campanha->imagem);
+
+                $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/campaigns/thumbs/' . $campanha->imagem));
 
                 return to_route('Manager.Home.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
             }
@@ -78,11 +81,12 @@ class CampanhasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id) {
+    public function editar($id)
+    {
         if (!$id) {
             return Inertia::location(route('Manager.Home.index'));
         }
-        
+
         $idiomas = Idioma::query()
             ->orderBy('padrao', 'DESC')
             ->orderBy('id', 'DESC')
@@ -97,21 +101,21 @@ class CampanhasController extends Controller
             ])
             ->with([
                 'campanhasIdiomas' => function ($q) use ($idioma) {
-                    $q->when($idioma, function ($r) use($idioma) {
-                        $r->whereHas('idiomas', function($query) use($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
                             $query->where('codigo', $idioma);
                         });
                     })
-                    ->when(!$idioma, function ($r) {
-                        $r->whereHas('idiomas', function($query) {
-                            $query->where('padrao', true);
+                        ->when(!$idioma, function ($r) {
+                            $r->whereHas('idiomas', function ($query) {
+                                $query->where('padrao', true);
+                            });
                         });
-                    });
                 },
             ])
             ->first();
 
-        if(!$campanha) {
+        if (!$campanha) {
             return Inertia::location(route('Manager.Home.index'));
         }
 
@@ -140,8 +144,9 @@ class CampanhasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostCampaignRequest $request, $id) {
-        if($request->ajax()){
+    public function atualizar(PostCampaignRequest $request, $id, ImageCompressor $compressor)
+    {
+        if ($request->ajax()) {
             $campanha = Campanha::query()
                 ->where([
                     'excluido' => null,
@@ -156,13 +161,13 @@ class CampanhasController extends Controller
                     'excluido' => null,
                     'campanha_id' => $campanha->id
                 ])
-                ->when($idioma, function ($q) use($idioma) {
-                    $q->whereHas('idiomas', function($query) use($idioma) {
+                ->when($idioma, function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($query) use ($idioma) {
                         $query->where('codigo', $idioma);
                     });
                 })
                 ->when(!$idioma, function ($q) {
-                    $q->whereHas('idiomas', function($query) {
+                    $q->whereHas('idiomas', function ($query) {
                         $query->where('padrao', true);
                     });
                 })
@@ -197,7 +202,7 @@ class CampanhasController extends Controller
             if ($request->file('img') && $request->file('img')->getError() == 0) {
                 $campanha->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
             }
-            
+
             $campanha_idioma->titulo = $request->titulo;
             $campanha_idioma->descricao = $request->descricao;
 
@@ -210,7 +215,7 @@ class CampanhasController extends Controller
                         File::delete('content/campaigns/thumbs/' . $campanhaOriginal->imagem);
                     }
 
-                    $image = $request->file('img')->move(public_path('content/campaigns/thumbs/'), $campanha->imagem);
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/campaigns/thumbs/' . $campanha->imagem));
                 }
 
                 return to_route('Manager.Home.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
@@ -227,8 +232,9 @@ class CampanhasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
+    public function excluir(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return $request->header('referer');
             }
@@ -257,8 +263,9 @@ class CampanhasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function visibilidade(Request $request, $id) {
-        if ($request->ajax()){
+    public function visibilidade(Request $request, $id)
+    {
+        if ($request->ajax()) {
             if (!$id) {
                 return redirect()->back()->with(['type' => 'error', 'message' => 'Registro não encontrado!']);
             }
@@ -273,14 +280,13 @@ class CampanhasController extends Controller
             if (!$response) {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Registro não encontrado!']);
             }
-    
+
             $response->visivel = 1 - $response->visivel;
             $response->save();
-    
+
             if ($response) {
                 return redirect()->back()->with('message', ['type' => 'success', 'msg' => 'Visibilidade alterada com sucesso!']);
-            }
-            else {
+            } else {
                 return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Visibilidade não alterada!']);
             }
         }
@@ -295,8 +301,9 @@ class CampanhasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ordenar(Request $request) {
-        if ($request->ajax()){
+    public function ordenar(Request $request)
+    {
+        if ($request->ajax()) {
             $erros = [];
 
             if ($request->odr && is_array($request->odr)) {
