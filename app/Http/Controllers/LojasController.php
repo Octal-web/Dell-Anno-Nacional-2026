@@ -296,7 +296,8 @@ class LojasController extends Controller
             $lojasUf = Loja::query()
                 ->where([
                     'visivel' => true,
-                    'excluido' => null
+                    'excluido' => null,
+                    'pais_id' => 30
                 ])
                 ->with([
                     'lojasIdiomas' => function ($q) use ($idioma) {
@@ -346,7 +347,8 @@ class LojasController extends Controller
             $lojasCidades = Loja::query()
                 ->where([
                     'visivel' => true,
-                    'excluido' => null
+                    'excluido' => null,
+                    'pais_id' => 30
                 ])
                 ->with([
                     'lojasIdiomas' => function ($q) use ($idioma) {
