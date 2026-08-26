@@ -11,7 +11,10 @@ use App\Models\Post;
 use App\Models\Produto;
 use App\Models\ProjetoLoja;
 use App\Models\Showroom;
+use App\Models\Site;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
@@ -51,6 +54,52 @@ class SitemapController
                 );
             }
         }
+
+        $subsitesPath = realpath(base_path('../subsites'));
+
+        if (File::isDirectory($subsitesPath)) {
+            collect(File::directories($subsitesPath))
+                ->each(function ($directory) use ($sitemap) {
+                    $slug = basename($directory);
+
+                    if (str_contains($slug, '.old')) {
+                        return;
+                    }
+
+                    $sitemap->add(
+                        Url::create(
+                            config('url') . $slug
+                        )
+                            ->setLastModificationDate(
+                                Carbon::createFromTimestamp(
+                                    File::lastModified($directory)
+                                )
+                            )
+                            ->setPriority(1.0)
+                    );
+                });
+        }
+
+        Site::query()
+            ->where([
+                'excluido' => null,
+                'marca_id' => 2
+            ])
+            ->whereNotIn('slug', [
+                'loja-teste',
+            ])
+            ->get()
+            ->each(function ($item) use ($sitemap) {
+                $sitemap->add(
+                    Url::create(
+                        route('LandingPage.index', [
+                            'slug' => $item->slug,
+                        ])
+                    )
+                        ->setLastModificationDate(Carbon::parse($item->modificado ?? $item->criado))
+                        ->setPriority(0.7)
+                );
+            });
 
         Produto::query()
             ->where([
