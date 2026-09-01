@@ -10,7 +10,7 @@ import { HomeProducts } from '@/Components/HomeProducts';
 import { HomePosts } from '@/Components/HomePosts';
 
 const Page = () => {
-    const { slides, campanhas, destaques, produtos, posts, conteudos } = usePage().props;
+    const { slides, campanhas, destaques, ambientes, posts, conteudos } = usePage().props;
     
     return (
         <DefaultLayout>
@@ -20,7 +20,7 @@ const Page = () => {
 
             <HomeHighlights highlights={destaques.slice(2)} />
 
-            <HomeProducts content={conteudos[0]} products={produtos} />
+            <HomeProducts content={conteudos[0]} products={ambientes} />
 
             <HomePosts content={conteudos[1]} posts={posts} />
 

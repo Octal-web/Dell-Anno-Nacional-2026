@@ -5,8 +5,14 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\ProjetoLoja;
 use App\Models\ImagemProjetoLoja;
+use App\Models\ImagemProjetoLojaIdioma;
+use App\Models\AcabamentoCategoria;
+use App\Models\Ambiente;
+use App\Models\Idioma;
 use App\Services\ImageCompressor;
+use App\Http\Requests\Manager\PostStoreProjectImageRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 
 use Carbon\Carbon;
@@ -111,6 +117,231 @@ class ImagensLojasProjetosController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function editar($id)
+    {
+        $idioma = request('lang');
+
+        $imagem = ImagemProjetoLoja::query()
+            ->where([
+                'excluido' => NULL,
+                'id' => $id,
+            ])
+            ->with([
+                'imagensIdiomas' => function ($q) use ($idioma) {
+                    $q->when($idioma, function ($r) use ($idioma) {
+                        $r->whereHas('idiomas', function ($query) use ($idioma) {
+                            $query->where('codigo', $idioma);
+                        });
+                    })
+                    ->when(!$idioma, function ($r) {
+                        $r->whereHas('idiomas', function ($query) {
+                            $query->where('padrao', true);
+                        });
+                    });
+                },
+                'acabamentos',
+                'colecoes',
+                'projeto',
+            ])
+            ->first();
+
+        if (!$imagem) {
+            return Inertia::location(route('Manager.Lojas.Projetos.index'));
+        }
+
+        return Inertia::render('Manager/Lojas/Projetos/Imagens/editar', [
+            'imagemItem' => [
+                'id' => $imagem->id,
+                'projeto_id' => $imagem->projeto_loja_id,
+                'imagem' => asset('content/stores/projects/gallery/s/' . $imagem->imagem),
+                'detalhes' => $imagem->imagensIdiomas->isNotEmpty() ? $imagem->imagensIdiomas[0]->detalhes : null,
+                'acabamentos' => $imagem->acabamentos->pluck('id')->values()->all(),
+                'colecoes' => $imagem->colecoes->pluck('id')->values()->all(),
+            ],
+            'acabamentos' => $this->acabamentosOptions(),
+            'colecoes' => $this->colecoesOptions(),
+        ]);
+    }
+
+    public function atualizar(PostStoreProjectImageRequest $request, $id, ImageCompressor $compressor)
+    {
+        $imagem = ImagemProjetoLoja::query()
+            ->where([
+                'excluido' => NULL,
+                'id' => $id,
+            ])
+            ->first();
+
+        if (!$imagem) {
+            return Inertia::location(route('Manager.Lojas.Projetos.index'));
+        }
+
+        if ($request->hasFile('img')) {
+            $imagem_original = $imagem->imagem;
+            $imagem->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
+            $imagem->save();
+
+            $compressor->compressOrFallback(
+                $request->file('img')->getRealPath(),
+                public_path('content/stores/projects/gallery/s/' . $imagem->imagem)
+            );
+
+            $compressor->compressOrFallback(
+                $request->file('img')->getRealPath(),
+                public_path('content/stores/projects/gallery/b/' . $imagem->imagem)
+            );
+
+            if (File::exists(public_path('content/stores/projects/gallery/s/' . $imagem_original))) {
+                File::delete(public_path('content/stores/projects/gallery/s/' . $imagem_original));
+            }
+
+            if (File::exists(public_path('content/stores/projects/gallery/b/' . $imagem_original))) {
+                File::delete(public_path('content/stores/projects/gallery/b/' . $imagem_original));
+            }
+        }
+
+        $idioma = $request->query('lang');
+        $imagem_idioma = ImagemProjetoLojaIdioma::query()
+            ->where([
+                'excluido' => NULL,
+                'imagem_id' => $imagem->id,
+            ])
+            ->when($idioma, function ($q) use ($idioma) {
+                $q->whereHas('idiomas', function ($query) use ($idioma) {
+                    $query->where('codigo', $idioma);
+                });
+            })
+            ->when(!$idioma, function ($q) {
+                $q->whereHas('idiomas', function ($query) {
+                    $query->where('padrao', true);
+                });
+            })
+            ->first();
+
+        $idioma_id = Idioma::query()
+            ->when($idioma, function ($q) use ($idioma) {
+                $q->where('codigo', $idioma);
+            })
+            ->when(!$idioma, function ($q) {
+                $q->where('padrao', true);
+            })
+            ->value('id');
+
+        if (!$imagem_idioma) {
+            $imagem_idioma = new ImagemProjetoLojaIdioma;
+            $imagem_idioma->imagem_id = $imagem->id;
+            $imagem_idioma->idioma_id = $idioma_id;
+        }
+
+        $imagem_idioma->detalhes = $request->detalhes;
+        $imagem_idioma->save();
+
+        $imagem->acabamentos()->sync($request->acabamentos ?? []);
+        $imagem->colecoes()->sync($request->colecoes ?? []);
+
+        return to_route('Manager.Lojas.Projetos.Imagens.index', ['id' => $imagem->projeto_loja_id])->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
+    }
+
+    private function acabamentosOptions()
+    {
+        return AcabamentoCategoria::query()
+            ->where([
+                'excluido' => NULL,
+                'visivel' => true,
+            ])
+            ->whereHas('acabamentos', function ($q) {
+                $q->where([
+                    'excluido' => NULL,
+                    'visivel' => true,
+                ]);
+            })
+            ->with([
+                'acabamentosCategoriasIdiomas' => function ($q) {
+                    $q->whereHas('idiomas', function ($r) {
+                        $r->where('padrao', true);
+                    });
+                },
+                'acabamentos' => function ($q) {
+                    $q->where([
+                        'excluido' => NULL,
+                        'visivel' => true,
+                    ])
+                        ->with(['acabamentosIdiomas' => function ($r) {
+                            $r->whereHas('idiomas', function ($s) {
+                                $s->where('padrao', true);
+                            });
+                        }])
+                        ->orderBy('ordem', 'ASC')
+                        ->orderBy('id', 'DESC');
+                },
+            ])
+            ->orderBy('ordem', 'ASC')
+            ->orderBy('id', 'DESC')
+            ->get()
+            ->map(function ($categoria) {
+                return [
+                    'label' => $categoria->acabamentosCategoriasIdiomas->isNotEmpty() ? $categoria->acabamentosCategoriasIdiomas[0]->nome : 'Categoria sem nome',
+                    'options' => $categoria->acabamentos->map(function ($acabamento) {
+                        return [
+                            'value' => $acabamento->id,
+                            'label' => $acabamento->acabamentosIdiomas->isNotEmpty() ? $acabamento->acabamentosIdiomas[0]->nome : 'Acabamento sem nome',
+                        ];
+                    })->values(),
+                ];
+            })
+            ->values();
+    }
+
+    private function colecoesOptions()
+    {
+        return Ambiente::query()
+            ->where([
+                'excluido' => NULL,
+                'visivel' => true,
+            ])
+            ->whereHas('colecoes', function ($q) {
+                $q->where([
+                    'excluido' => NULL,
+                    'visivel' => true,
+                ]);
+            })
+            ->with([
+                'ambientesIdiomas' => function ($q) {
+                    $q->whereHas('idiomas', function ($r) {
+                        $r->where('padrao', true);
+                    });
+                },
+                'colecoes' => function ($q) {
+                    $q->where([
+                        'excluido' => NULL,
+                        'visivel' => true,
+                    ])
+                        ->with(['colecoesIdiomas' => function ($r) {
+                            $r->whereHas('idiomas', function ($s) {
+                                $s->where('padrao', true);
+                            });
+                        }])
+                        ->orderBy('ordem', 'ASC')
+                        ->orderBy('id', 'DESC');
+                },
+            ])
+            ->orderBy('ordem', 'ASC')
+            ->orderBy('id', 'DESC')
+            ->get()
+            ->map(function ($ambiente) {
+                return [
+                    'label' => $ambiente->ambientesIdiomas->isNotEmpty() ? $ambiente->ambientesIdiomas[0]->nome : 'Ambiente sem nome',
+                    'options' => $ambiente->colecoes->map(function ($colecao) {
+                        return [
+                            'value' => $colecao->id,
+                            'label' => $colecao->colecoesIdiomas->isNotEmpty() ? $colecao->colecoesIdiomas[0]->nome : 'Coleção sem nome',
+                        ];
+                    })->values(),
+                ];
+            })
+            ->values();
     }
 
     /**

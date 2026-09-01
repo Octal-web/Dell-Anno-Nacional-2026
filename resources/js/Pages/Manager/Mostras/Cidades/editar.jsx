@@ -14,7 +14,7 @@ const Page = () => {
     const { data, setData, post, processing, errors } = useForm(mostraCidade);
 
     const breadcrumbItems = [
-        { label: 'Produtos', link: 'Manager.Produtos.index' },
+        { label: 'Ambientes', link: 'Manager.Ambientes.index' },
         { label: 'Inspiração', link: 'Manager.Mostras.index' },
         { label: 'Mostras de decoração', link: 'Manager.Mostras.index' },
         { label: 'Editar Mostra', link: 'Manager.Mostras.editar', params: { id: mostraCidade.mostra_ano_id }},

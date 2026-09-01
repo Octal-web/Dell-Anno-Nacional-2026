@@ -8,7 +8,7 @@ use Inertia\Inertia;
 use App\Models\Slide;
 use App\Models\Campanha;
 use App\Models\Destaque;
-use App\Models\Produto;
+use App\Models\Ambiente;
 use App\Models\Post;
 
 use Carbon\Carbon;
@@ -110,41 +110,50 @@ class HomeController extends Controller
                 ];
             });
 
-        $produtos = Produto::query()
+        $ambientes = Ambiente::query()
             ->where([
                 'excluido' => NULL,
                 'visivel' => true
             ])
             ->with([
-                'produtosIdiomas' => function ($q) use ($idioma) {
+                'ambientesIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
                           ->orWhere('padrao', true);
                     })
                     ->orderBy('idioma_id', 'DESC');
                 },
-                'imagens' => function ($q) use ($idioma) {
+                'colecoes' => function ($q) {
                     $q->where([
                         'excluido' => NULL,
-                        'visivel' => true
+                        'visivel' => true,
                     ])
-                    ->orderBy('ordem', 'ASC')
-                    ->orderBy('id', 'DESC');
+                        ->with(['imagens' => function ($query) {
+                            $query->where([
+                                'excluido' => NULL,
+                                'visivel' => true,
+                            ])
+                                ->orderBy('ordem', 'ASC')
+                                ->orderBy('id', 'DESC');
+                        }])
+                        ->orderBy('ordem', 'ASC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($produto) {
+            ->map(function($ambiente) {
                 return [
-                    'id' => $produto->id,
-                    'nome' => $produto->produtosIdiomas->isNotEmpty() ? $produto->produtosIdiomas[0]->nome : null,
-                    'descricao' => $produto->produtosIdiomas->isNotEmpty() ? $produto->produtosIdiomas[0]->descricao : null,
-                    'slug' => $produto->slug,
-                    'imagens' => $produto->imagens->map(function($imagem) {
+                    'id' => $ambiente->id,
+                    'nome' => $ambiente->ambientesIdiomas->isNotEmpty() ? $ambiente->ambientesIdiomas[0]->nome : null,
+                    'descricao' => $ambiente->ambientesIdiomas->isNotEmpty() ? $ambiente->ambientesIdiomas[0]->descricao : null,
+                    'slug' => $ambiente->slug,
+                    'imagens' => $ambiente->colecoes->flatMap(function ($colecao) {
+                        return $colecao->imagens;
+                    })->unique('id')->values()->map(function($imagem) {
                         return [
                             'id' => $imagem->id,
-                            'imagem' => rafator('content/products/gallery/' . $imagem->imagem),
+                            'imagem' => rafator('content/stores/projects/gallery/b/' . $imagem->imagem),
                         ];
                     }),
                 ];
@@ -184,7 +193,7 @@ class HomeController extends Controller
         return Inertia::render('Home', [
             'slides' => $slides,
             'campanhas' => $campanhas,
-            'produtos' => $produtos,
+            'ambientes' => $ambientes,
             'destaques' => $destaques,
             'posts' => $posts
         ]);

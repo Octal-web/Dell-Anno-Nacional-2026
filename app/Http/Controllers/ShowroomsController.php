@@ -140,8 +140,8 @@ class ShowroomsController extends Controller
 
         $pagina->titulo = $showroom->showroomsIdiomas[0]->titulo_pagina . ' | Dell Anno';
         $pagina->descricao = $showroom->showroomsIdiomas[0]->descricao_pagina . ' | Dell Anno';
-        $pagina->titulo_compartilhamento = $showroom->showroomsIdiomas[0]->titulo_pagina . ' | Dell Anno';
-        $pagina->descricao_compartilhamento = $showroom->showroomsIdiomas[0]->descricao_pagina . ' | Dell Anno';
+        $pagina->tituloCompartilhamento = $showroom->showroomsIdiomas[0]->titulo_pagina . ' | Dell Anno';
+        $pagina->descricaoCompartilhamento = $showroom->showroomsIdiomas[0]->descricao_pagina . ' | Dell Anno';
 
         list($width, $height, $type, $attr) = getimagesize(public_path('/content/showrooms/thumbs/' . $showroom->imagem));
 

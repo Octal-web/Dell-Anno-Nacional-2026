@@ -5,17 +5,13 @@ import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { Breadcrumb } from '@/Components/Manager/Breadcrumb';
 import { PageSettings } from '@/Components/Manager/PageSettings';
-import { FormContent } from '@/Components/Manager/FormContent';
 import { BlockContent } from '@/Components/Manager/BlockContent';
 
 const Page = () => {
     // Content
-    const { pagina, conteudos, idioma, idiomas, acabamentos, acabamentoConteudos } = usePage().props;
+    const { pagina, idioma, idiomas, acabamentos, categorias } = usePage().props;
 
-    const breadcrumbItems = [
-        // { label: 'Inspiração', link: 'Manager.Acabamentos.index' },
-        // { label: 'Projects', link: 'Home.index' },
-    ];
+    const breadcrumbItems = [];
     
     const contentFinishes = {
         nome: ['Acabamentos', 'acabamento'],
@@ -25,16 +21,21 @@ const Page = () => {
         editavel: true,
         conteudos: acabamentos
     };
+    const contentCategories = {
+        nome: ['Categorias', 'categoria'],
+        controller: 'Acabamentos.Categorias',
+        imagens: false,
+        editavel: true,
+        conteudos: categorias
+    };
     
     return (
         <AdminLayout>
             <Breadcrumb icon={faBorderAll} items={breadcrumbItems} current="Acabamentos" idioma={idioma.codigo} idiomas={idiomas} />
             <PageSettings page={pagina} idioma={idioma.codigo} />
 
-            <FormContent content={acabamentoConteudos[0]} full={true} idioma={idioma.codigo} />
-
             <BlockContent content={contentFinishes} />
-            
+            <BlockContent content={contentCategories} />
         </AdminLayout>
     );
 };

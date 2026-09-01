@@ -94,7 +94,7 @@ const Page = () => {
                         >
                             {state.map((image, index) => (
                                 <div key={index} className="relative h-full pb-12">
-                                    <IndividualImage key={index} individualContent={image} controller="Lojas.Projetos.Imagens" crop={true} size={{ largura: 450, altura: 357 }} />
+                                    <IndividualImage key={index} individualContent={image} controller="Lojas.Projetos.Imagens" edit={true} crop={true} size={{ largura: 450, altura: 357 }} />
                                 </div>
                             ))}
                         </ReactSortable>

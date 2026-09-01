@@ -36,7 +36,7 @@ export const InputSelect = ({ title, name, value, idioma, onChange, options, isM
                 value={selectedOption}
                 onChange={handleChange}
                 placeholder="Selecione uma opção..."
-                isSearchable={options.length > 10}
+                isSearchable={allOptions.length > 10}
                 isMulti={isMulti}
                 classNamePrefix="admin-select"
             />

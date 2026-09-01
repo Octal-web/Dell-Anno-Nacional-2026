@@ -40,10 +40,10 @@ const menus = [
     },
     {
         id: 3,
-        label: "Produtos",
+        label: "Ambientes",
         icon: faCouch,
-        href: route("Manager.Produtos.index"),
-        controllers: ["Produtos", "ImagensProdutos"],
+        href: route("Manager.Ambientes.index"),
+        controllers: ["Ambientes", "Colecoes"],
     },
     {
         id: 4,
@@ -182,15 +182,15 @@ const AdminEnologiaLayout = ({ children }) => {
                 </div>
 
                 <aside
-                    className={`menu-aside fixed md:absolute left-0 top-0 z-[2] flex h-full md:h-[calc(100vh-7rem)] w-full md:w-16 md:hover:w-64 flex-col border overflow-hidden bg-white duration-200 ease-linear lg:fixed md:translate-x-0 -translate-x-full md:mx-10 md:my-14 shadow-lg${isMobileMenuOpen ? " translate-x-0" : ""}`}
+                    className={`menu-aside fixed left-0 top-0 z-[2] flex h-full w-full -translate-x-full flex-col overflow-hidden border bg-white shadow-lg duration-200 ease-linear md:absolute md:mx-4 md:my-4 md:h-[calc(100vh-2rem)] md:w-16 md:translate-x-0 md:hover:w-64 lg:fixed lg:mx-6 lg:my-6 lg:h-[calc(100vh-3rem)] xl:mx-10 xl:my-10 xl:h-[calc(100vh-5rem)] 2xl:my-14 2xl:h-[calc(100vh-7rem)]${isMobileMenuOpen ? " translate-x-0" : ""}`}
                 >
-                    <div className="w-64">
-                        <div className="flex items-center justify-between gap-2 px-4">
+                    <div className="flex h-full min-h-0 w-64 flex-col">
+                        <div className="shrink-0 flex items-center justify-between gap-2 px-4">
                             <Link
                                 href={route("Manager.Home.index")}
-                                className="mt-6"
+                                className="mt-3 xl:mt-5 2xl:mt-6"
                             >
-                                <div className="company-logo w-8 h-16 bg-no-repeat bg-top-center bg-contain transition-all hidden md:block"></div>
+                                <div className="company-logo w-8 h-12 2xl:h-16 bg-no-repeat bg-top-center bg-contain transition-all hidden md:block"></div>
                             </Link>
 
                             <button
@@ -214,8 +214,8 @@ const AdminEnologiaLayout = ({ children }) => {
                             </button>
                         </div>
 
-                        <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-                            <nav className="lg:mt-6">
+                        <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto pb-16 duration-300 ease-linear">
+                            <nav className="mt-1 xl:mt-3 2xl:mt-6">
                                 <div>
                                     <ul className="mb-6">
                                         {menus.map((menu) => (
@@ -236,7 +236,7 @@ const AdminEnologiaLayout = ({ children }) => {
                                 </div>
                             </nav>
 
-                            <div className="absolute bottom-0 left-0 bg-white z-10 w-full">
+                            <div className="absolute bottom-0 left-0 bg-white pt-2 z-10 w-full">
                                 <button
                                     className="text-sm ml-3 mb-3 p-3"
                                     onClick={openModal}
