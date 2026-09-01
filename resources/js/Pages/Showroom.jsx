@@ -13,7 +13,7 @@ const Page = () => {
         <DefaultLayout>
             <ShowroomBanner showroom={showroom} />
 
-            {showroom.imagens.length && <ShowroomGrid showroom={showroom} /> }
+            {showroom.imagens.length > 0 && <ShowroomGrid showroom={showroom} /> }
 
             <OtherShowroomsList showrooms={todosShowrooms} />
         </DefaultLayout>

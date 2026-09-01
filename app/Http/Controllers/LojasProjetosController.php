@@ -146,8 +146,8 @@ class LojasProjetosController extends Controller
 
         $pagina->titulo = $projeto->projetosLojasIdiomas[0]->titulo_pagina . ' | Dell Anno';
         $pagina->descricao = $projeto->projetosLojasIdiomas[0]->descricao_pagina . ' | Dell Anno';
-        $pagina->titulo_compartilhamento = $projeto->projetosLojasIdiomas[0]->titulo_pagina . ' | Dell Anno';
-        $pagina->descricao_compartilhamento = $projeto->projetosLojasIdiomas[0]->descricao_pagina . ' | Dell Anno';
+        $pagina->tituloCompartilhamento = $projeto->projetosLojasIdiomas[0]->titulo_pagina . ' | Dell Anno';
+        $pagina->descricaoCompartilhamento = $projeto->projetosLojasIdiomas[0]->descricao_pagina . ' | Dell Anno';
 
         list($width, $height, $type, $attr) = getimagesize(public_path('/content/stores/projects/thumbs/' . $projeto->imagem));
 

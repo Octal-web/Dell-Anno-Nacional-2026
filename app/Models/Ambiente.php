@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ambiente extends Model {
     protected $table = 'ambientes';
+
+    protected $fillable = ['ordem', 'slug'];
     
     const CREATED_AT = 'criado';
     const UPDATED_AT = 'modificado';
@@ -16,13 +18,8 @@ class Ambiente extends Model {
         return $this->hasMany(AmbienteIdioma::class);
     }
 
-    public function projetos()
+    public function colecoes()
     {
-        return $this->hasMany(Projeto::class);
-    }
-    
-    public function produto()
-    {
-        return $this->belongsTo(Produto::class);
+        return $this->hasMany(Colecao::class);
     }
 }

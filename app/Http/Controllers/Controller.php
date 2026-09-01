@@ -9,7 +9,7 @@ use Inertia\Inertia;
 use App\Models\Idioma;
 use App\Models\Pagina;
 use App\Models\Conteudo;
-use App\Models\Produto;
+use App\Models\Ambiente;
 use App\Models\Estado;
 use App\Models\Loja;
 use Illuminate\Support\Facades\Cache;
@@ -196,38 +196,30 @@ abstract class Controller
                 list($width, $height, $type, $attr) = getimagesize(public_path('content/pages/' . $pagina->imagem));
             }
 
-            $produtosMenu = Produto::query()
+            $produtosMenu = Ambiente::query()
                 ->where([
                     'excluido' => NULL,
                     'visivel' => true
                 ])
                 ->with([
-                    'produtosIdiomas' => function ($q) use ($idioma) {
+                    'ambientesIdiomas' => function ($q) use ($idioma) {
                         $q->whereHas('idiomas', function ($r) use ($idioma) {
                             $r->where('codigo', $idioma)
                                 ->orWhere('padrao', true);
                         })
                             ->orderBy('idioma_id', 'DESC');
-                    },
-                    'imagens' => function ($q) {
-                        $q->where([
-                            'excluido' => null,
-                            'visivel' => true
-                        ])
-                            ->orderBy('ordem', 'ASC')
-                            ->orderBy('id', 'DESC');
                     }
                 ])
                 ->orderBy('ordem', 'ASC')
                 ->orderBy('id', 'DESC')
                 ->get()
-                ->map(function ($produto) {
+                ->map(function ($ambiente) {
                     return [
-                        'id' => $produto->id,
-                        'slug' => $produto->slug,
-                        'imagem' => rafator('content/products/thumbs/' . $produto->imagem),
-                        'nome' => $produto->produtosIdiomas->isNotEmpty() ? $produto->produtosIdiomas[0]->nome : null,
-                        'descricao' => $produto->produtosIdiomas->isNotEmpty() ? $produto->produtosIdiomas[0]->descricao : null
+                        'id' => $ambiente->id,
+                        'slug' => $ambiente->slug,
+                        'imagem' => rafator('content/products/thumbs/' . $ambiente->imagem),
+                        'nome' => $ambiente->ambientesIdiomas->isNotEmpty() ? $ambiente->ambientesIdiomas[0]->nome : null,
+                        'descricao' => $ambiente->ambientesIdiomas->isNotEmpty() ? $ambiente->ambientesIdiomas[0]->descricao : null
                     ];
                 });
 

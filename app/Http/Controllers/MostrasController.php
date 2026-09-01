@@ -150,8 +150,8 @@ class MostrasController extends Controller
 
         $pagina->titulo = $mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';
         $pagina->descricao = $mostra->mostrasIdiomas[0]->descricao_pagina . ' | Dell Anno';
-        $pagina->titulo_compartilhamento = $mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';
-        $pagina->descricao_compartilhamento = $mostra->mostrasIdiomas[0]->descricao_pagina . ' | Dell Anno';
+        $pagina->tituloCompartilhamento = $mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';
+        $pagina->descricaoCompartilhamento = $mostra->mostrasIdiomas[0]->descricao_pagina . ' | Dell Anno';
 
         list($width, $height, $type, $attr) = getimagesize(public_path('/content/fairs/thumbs/' . $mostra->imagem));
 
@@ -280,8 +280,8 @@ class MostrasController extends Controller
 
         $pagina->titulo = $ano->mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';
         $pagina->descricao = $ano->mostra->mostrasIdiomas[0]->descricao_pagina . ' | Dell Anno';
-        $pagina->titulo_compartilhamento = $ano->mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';
-        $pagina->descricao_compartilhamento = $ano->mostra->mostrasIdiomas[0]->descricao_pagina . ' | Dell Anno';
+        $pagina->tituloCompartilhamento = $ano->mostra->mostrasIdiomas[0]->titulo_pagina . ' | Dell Anno';
+        $pagina->descricaoCompartilhamento = $ano->mostra->mostrasIdiomas[0]->descricao_pagina . ' | Dell Anno';
 
         list($width, $height, $type, $attr) = getimagesize(public_path('/content/fairs/thumbs/' . $ano->mostra->imagem));
 

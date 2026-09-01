@@ -5,7 +5,7 @@ import { faEdit, faTrash, faCrop } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmModal } from './ConfirmModal';
 import { CropModal } from './CropModal';
 
-export const IndividualImage = ({ individualContent, imagensPath, imagensClass, controller, crop = true, size = { largura: 800, altura: 600 } }) => {
+export const IndividualImage = ({ individualContent, imagensPath, imagensClass, controller, edit = false, routeParams = {}, crop = true, size = { largura: 800, altura: 600 } }) => {
     const [isChecked, setIsChecked] = useState(individualContent.visivel || false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCropModalOpen, setIsCropModalOpen] = useState(false);
@@ -16,7 +16,7 @@ export const IndividualImage = ({ individualContent, imagensPath, imagensClass, 
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
-        post(route('Manager.' + controller + '.visibilidade', {id: individualContent.id}), {
+        post(route('Manager.' + controller + '.visibilidade', { id: individualContent.id, ...routeParams }), {
             preserveScroll: true,
             onSuccess: (response) => {
                 if (response.props.message && response.props.message.type === 'success') {
@@ -52,7 +52,7 @@ export const IndividualImage = ({ individualContent, imagensPath, imagensClass, 
             <div className="group relative flex justify-center overflow-hidden border select-none h-full">
                 <div className="absolute inset-0.5 bg-black bg-opacity-0 transition-all group-hover:bg-opacity-20 duration-300"></div>
                 <img src={individualContent.imagem} className="w-full p-0.5 object-cover" />
-                <ul className={`absolute bg-white top-0.5 right-0.5 grid ${crop ? 'grid-cols-3' : 'grid-cols-2'} items-center transition-all translate-x-full group-hover:translate-x-0 sort-ignore`}>
+                <ul className={`absolute bg-white top-0.5 right-0.5 grid ${crop && edit ? 'grid-cols-4' : crop || edit ? 'grid-cols-3' : 'grid-cols-2'} items-center transition-all translate-x-full group-hover:translate-x-0 sort-ignore`}>
                     <li className="py-1.5 px-1 h-full flex items-center hover:bg-gray-100">
                         <label className="cursor-pointer">
                             <input
@@ -72,6 +72,14 @@ export const IndividualImage = ({ individualContent, imagensPath, imagensClass, 
                             </button>
                         </li>
                     )}
+
+                    {edit && (
+                        <li className="py-1.5 px-1 flex justify-center items-center hover:bg-gray-100">
+                            <Link href={route('Manager.' + controller + '.editar', { id: individualContent.id, ...routeParams })} className="h-5 w-5 relative z-[1]">
+                                <FontAwesomeIcon icon={faEdit} className="block mx-auto text-gray-600" />
+                            </Link>
+                        </li>
+                    )}
                     
                     <li className="py-1.5 px-1 flex justify-center items-center hover:bg-gray-100">
                         <button className="h-5 w-5 relative z-[1]" onClick={openModal}>
@@ -81,14 +89,14 @@ export const IndividualImage = ({ individualContent, imagensPath, imagensClass, 
                 </ul>
             </div>
             
-            {isModalOpen && <ConfirmModal icon={faTrash} closeModal={closeModal} type="delete" confirm={route('Manager.' + controller + '.excluir', {id: individualContent.id})} />}
+            {isModalOpen && <ConfirmModal icon={faTrash} closeModal={closeModal} type="delete" confirm={route('Manager.' + controller + '.excluir', { id: individualContent.id, ...routeParams })} />}
             
             {isCropModalOpen && (
                 <CropModal 
                     closeModal={closeCropModal}
                     imageUrl={individualContent.imagem_completa}
                     imageId={individualContent.id}
-                    cropRoute={route('Manager.' + controller + '.cortar', {id: individualContent.id})}
+                    cropRoute={route('Manager.' + controller + '.cortar', { id: individualContent.id, ...routeParams })}
                     size={size}
                 />
             )}

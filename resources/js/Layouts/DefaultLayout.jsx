@@ -23,6 +23,8 @@ const DefaultLayout = ({ children }) => {
     const [trackingEnabled, setTrackingEnabled] = useState(false);
     const lenisRef = useRef(null);
 
+    console.log(pagina)
+
     useEffect(() => {
         lenisRef.current = new Lenis({
             duration: 1.2,

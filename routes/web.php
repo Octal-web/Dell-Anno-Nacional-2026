@@ -34,11 +34,9 @@ use App\Http\Controllers\Manager\DestaquesController as ManagerDestaquesControll
 use App\Http\Controllers\Manager\InstitucionalController as ManagerInstitucionalController;
 use App\Http\Controllers\Manager\AcontecimentosController as ManagerAcontecimentosController;
 use App\Http\Controllers\Manager\EtapasController as ManagerEtapasController;
-use App\Http\Controllers\Manager\ProdutosController as ManagerProdutosController;
-use App\Http\Controllers\Manager\ImagensProdutosController as ManagerImagensProdutosController;
-use App\Http\Controllers\Manager\AmbientesProdutosController as ManagerAmbientesProdutosController;
-use App\Http\Controllers\Manager\ProjetosProdutosController as ManagerProjetosProdutosController;
-use App\Http\Controllers\Manager\ImagensProjetosProdutosController as ManagerImagensProjetosProdutosController;
+use App\Http\Controllers\Manager\AmbientesController as ManagerAmbientesController;
+use App\Http\Controllers\Manager\ColecoesController as ManagerColecoesController;
+use App\Http\Controllers\Manager\ImagensColecoesController as ManagerImagensColecoesController;
 use App\Http\Controllers\Manager\LojasController as ManagerLojasController;
 use App\Http\Controllers\Manager\ShowroomsController as ManagerShowroomsController;
 use App\Http\Controllers\Manager\ImagensShowroomsController as ManagerImagensShowroomsController;
@@ -49,6 +47,7 @@ use App\Http\Controllers\Manager\MostrasCidadesController as ManagerMostrasCidad
 use App\Http\Controllers\Manager\ImagensMostrasCidadesController as ManagerImagensMostrasCidadesController;
 use App\Http\Controllers\Manager\ContatoController as ManagerContatoController;
 use App\Http\Controllers\Manager\AcabamentosController as ManagerAcabamentosController;
+use App\Http\Controllers\Manager\AcabamentosCategoriasController as ManagerAcabamentosCategoriasController;
 use App\Http\Controllers\Manager\BlogController as ManagerBlogController;
 use App\Http\Controllers\Manager\PostsController as ManagerPostsController;
 use App\Http\Controllers\Manager\PostsCategoriasController as ManagerPostsCategoriasController;
@@ -70,7 +69,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
     Route::get('/produtos', [ProdutosController::class, 'index'])->name('Produtos.index');
     Route::get('/produtos/{slug}', [ProdutosController::class, 'produto'])->name('Produtos.produto');
     // Route::get('/produtos/{slug}/more', [ProdutosController::class, 'colecoes'])->name('Produtos.colecoes');
-    Route::get('/produtos/{slug}/{projeto}', [ProdutosController::class, 'projeto'])->name('Produtos.projeto');
 
     Route::get('/lojas', [LojasController::class, 'index'])->name('Lojas.index');
     Route::get('/lojas/{slug}', [LojasController::class, 'loja'])->name('Lojas.loja');
@@ -89,7 +87,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
     Route::get('/frame/{slug}', [BlogController::class, 'post'])->name('Blog.post');
 
     Route::get('/acabamentos', [AcabamentosController::class, 'index'])->name('Acabamentos.index');
-    Route::get('/acabamentos/{slug}', [AcabamentosController::class, 'acabamento'])->name('Acabamentos.acabamento');
 
     Route::get('/mostras-de-decoracao', [MostrasController::class, 'index'])->name('Mostras.index');
     Route::get('/mostras-de-decoracao/{slug}/', [MostrasController::class, 'mostra'])->name('Mostras.mostra');
@@ -199,57 +196,32 @@ Route::prefix('/manager')->group(function () {
         Route::post('/etapas/editar/{id}', [ManagerEtapasController::class, 'atualizar'])->name('Manager.Etapas.atualizar');
 
 
-        Route::get('/produtos', [ManagerProdutosController::class, 'index'])->name('Manager.Produtos.index');
+        Route::get('/ambientes', [ManagerAmbientesController::class, 'index'])->name('Manager.Ambientes.index');
+        Route::post('/ambientes/ordenar', [ManagerAmbientesController::class, 'ordenar'])->name('Manager.Ambientes.ordenar');
+        Route::post('/ambientes/visibilidade/{id}', [ManagerAmbientesController::class, 'visibilidade'])->name('Manager.Ambientes.visibilidade');
+        Route::post('/ambientes/excluir/{id}', [ManagerAmbientesController::class, 'excluir'])->name('Manager.Ambientes.excluir');
+        Route::get('/ambientes/adicionar', [ManagerAmbientesController::class, 'adicionar'])->name('Manager.Ambientes.adicionar');
+        Route::post('/ambientes/adicionar', [ManagerAmbientesController::class, 'novo'])->name('Manager.Ambientes.novo');
+        Route::get('/ambientes/editar/{id}', [ManagerAmbientesController::class, 'editar'])->name('Manager.Ambientes.editar');
+        Route::post('/ambientes/editar/{id}', [ManagerAmbientesController::class, 'atualizar'])->name('Manager.Ambientes.atualizar');
 
-        Route::post('/produtos/ordenar', [ManagerProdutosController::class, 'ordenar'])->name('Manager.Produtos.ordenar');
-        Route::post('/produtos/visibilidade/{id}', [ManagerProdutosController::class, 'visibilidade'])->name('Manager.Produtos.visibilidade');
-        Route::post('/produtos/excluir/{id}', [ManagerProdutosController::class, 'excluir'])->name('Manager.Produtos.excluir');
+        Route::get('/ambientes/colecoes/{id}', [ManagerColecoesController::class, 'index'])->name('Manager.Ambientes.Colecoes.index');
+        Route::post('/ambientes/colecoes/ordenar', [ManagerColecoesController::class, 'ordenar'])->name('Manager.Ambientes.Colecoes.ordenar');
+        Route::post('/ambientes/colecoes/visibilidade/{id}', [ManagerColecoesController::class, 'visibilidade'])->name('Manager.Ambientes.Colecoes.visibilidade');
+        Route::post('/ambientes/colecoes/excluir/{id}', [ManagerColecoesController::class, 'excluir'])->name('Manager.Ambientes.Colecoes.excluir');
+        Route::get('/ambientes/colecoes/adicionar/{id}', [ManagerColecoesController::class, 'adicionar'])->name('Manager.Ambientes.Colecoes.adicionar');
+        Route::post('/ambientes/colecoes/adicionar/{id}', [ManagerColecoesController::class, 'novo'])->name('Manager.Ambientes.Colecoes.novo');
+        Route::get('/ambientes/colecoes/editar/{id}', [ManagerColecoesController::class, 'editar'])->name('Manager.Ambientes.Colecoes.editar');
+        Route::post('/ambientes/colecoes/editar/{id}', [ManagerColecoesController::class, 'atualizar'])->name('Manager.Ambientes.Colecoes.atualizar');
 
-        Route::get('/produtos/adicionar', [ManagerProdutosController::class, 'adicionar'])->name('Manager.Produtos.adicionar');
-        Route::post('/produtos/adicionar', [ManagerProdutosController::class, 'novo'])->name('Manager.Produtos.novo');
-        Route::get('/produtos/editar/{id}', [ManagerProdutosController::class, 'editar'])->name('Manager.Produtos.editar');
-        Route::post('/produtos/editar/{id}', [ManagerProdutosController::class, 'atualizar'])->name('Manager.Produtos.atualizar');
-
-
-        Route::get('/produtos/imagens/{id}', [ManagerImagensProdutosController::class, 'index'])->name('Manager.Produtos.Imagens.index');
-        Route::post('/produtos/imagens/adicionar/{id}', [ManagerImagensProdutosController::class, 'novo'])->name('Manager.Produtos.Imagens.novo');
-
-        Route::post('/produtos/imagens/cortar/{id}', [ManagerImagensProdutosController::class, 'cortar'])->name('Manager.Produtos.Imagens.cortar');
-        Route::post('/produtos/imagens/ordenar/{id}', [ManagerImagensProdutosController::class, 'ordenar'])->name('Manager.Produtos.Imagens.ordenar');
-        Route::post('/produtos/imagens/visibilidade/{id}', [ManagerImagensProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Imagens.visibilidade');
-        Route::post('/produtos/imagens/excluir/{id}', [ManagerImagensProdutosController::class, 'excluir'])->name('Manager.Produtos.Imagens.excluir');
-
-
-        Route::get('/produtos/ambientes/{id}', [ManagerAmbientesProdutosController::class, 'index'])->name('Manager.Produtos.Ambientes.index');
-
-        Route::post('/produtos/ambientes/ordenar', [ManagerAmbientesProdutosController::class, 'ordenar'])->name('Manager.Produtos.Ambientes.ordenar');
-        Route::post('/produtos/ambientes/visibilidade/{id}', [ManagerAmbientesProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Ambientes.visibilidade');
-        Route::post('/produtos/ambientes/excluir/{id}', [ManagerAmbientesProdutosController::class, 'excluir'])->name('Manager.Produtos.Ambientes.excluir');
-
-        Route::get('/produtos/ambientes/adicionar/{id}', [ManagerAmbientesProdutosController::class, 'adicionar'])->name('Manager.Produtos.Ambientes.adicionar');
-        Route::post('/produtos/ambientes/adicionar/{id}', [ManagerAmbientesProdutosController::class, 'novo'])->name('Manager.Produtos.Ambientes.novo');
-        Route::get('/produtos/ambientes/editar/{id}', [ManagerAmbientesProdutosController::class, 'editar'])->name('Manager.Produtos.Ambientes.editar');
-        Route::post('/produtos/ambientes/editar/{id}', [ManagerAmbientesProdutosController::class, 'atualizar'])->name('Manager.Produtos.Ambientes.atualizar');
-
-
-        Route::post('/produtos/projetos/ordenar', [ManagerProjetosProdutosController::class, 'ordenar'])->name('Manager.Produtos.Projetos.ordenar');
-        Route::post('/produtos/projetos/visibilidade/{id}', [ManagerProjetosProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Projetos.visibilidade');
-        Route::post('/produtos/projetos/excluir/{id}', [ManagerProjetosProdutosController::class, 'excluir'])->name('Manager.Produtos.Projetos.excluir');
-
-        Route::get('/produtos/projetos/adicionar/{id}', [ManagerProjetosProdutosController::class, 'adicionar'])->name('Manager.Produtos.Projetos.adicionar');
-        Route::post('/produtos/projetos/adicionar/{id}', [ManagerProjetosProdutosController::class, 'novo'])->name('Manager.Produtos.Projetos.novo');
-        Route::get('/produtos/projetos/editar/{id}', [ManagerProjetosProdutosController::class, 'editar'])->name('Manager.Produtos.Projetos.editar');
-        Route::post('/produtos/projetos/editar/{id}', [ManagerProjetosProdutosController::class, 'atualizar'])->name('Manager.Produtos.Projetos.atualizar');
-
-
-        Route::get('/produtos/projetos/imagens/{id}', [ManagerImagensProjetosProdutosController::class, 'index'])->name('Manager.Produtos.Projetos.Imagens.index');
-        Route::post('/produtos/projetos/imagens/adicionar/{id}', [ManagerImagensProjetosProdutosController::class, 'novo'])->name('Manager.Produtos.Projetos.Imagens.novo');
-
-        Route::post('/produtos/projetos/imagens/cortar/{id}', [ManagerImagensProjetosProdutosController::class, 'cortar'])->name('Manager.Produtos.Projetos.Imagens.cortar');
-        Route::post('/produtos/projetos/imagens/ordenar/{id}', [ManagerImagensProjetosProdutosController::class, 'ordenar'])->name('Manager.Produtos.Projetos.Imagens.ordenar');
-        Route::post('/produtos/projetos/imagens/visibilidade/{id}', [ManagerImagensProjetosProdutosController::class, 'visibilidade'])->name('Manager.Produtos.Projetos.Imagens.visibilidade');
-        Route::post('/produtos/projetos/imagens/excluir/{id}', [ManagerImagensProjetosProdutosController::class, 'excluir'])->name('Manager.Produtos.Projetos.Imagens.excluir');
-
+        Route::get('/ambientes/colecoes/imagens/{id}', [ManagerImagensColecoesController::class, 'index'])->name('Manager.Ambientes.Colecoes.Imagens.index');
+        Route::post('/ambientes/colecoes/imagens/adicionar/{id}', [ManagerImagensColecoesController::class, 'novo'])->name('Manager.Ambientes.Colecoes.Imagens.novo');
+        Route::get('/ambientes/colecoes/imagens/editar/{id}', [ManagerImagensColecoesController::class, 'editar'])->name('Manager.Ambientes.Colecoes.Imagens.editar');
+        Route::post('/ambientes/colecoes/imagens/editar/{id}', [ManagerImagensColecoesController::class, 'atualizar'])->name('Manager.Ambientes.Colecoes.Imagens.atualizar');
+        Route::post('/ambientes/colecoes/imagens/cortar/{id}', [ManagerImagensColecoesController::class, 'cortar'])->name('Manager.Ambientes.Colecoes.Imagens.cortar');
+        Route::post('/ambientes/colecoes/imagens/ordenar/{id}', [ManagerImagensColecoesController::class, 'ordenar'])->name('Manager.Ambientes.Colecoes.Imagens.ordenar');
+        Route::post('/ambientes/colecoes/imagens/visibilidade/{id}', [ManagerImagensColecoesController::class, 'visibilidade'])->name('Manager.Ambientes.Colecoes.Imagens.visibilidade');
+        Route::post('/ambientes/colecoes/imagens/excluir/{id}', [ManagerImagensColecoesController::class, 'excluir'])->name('Manager.Ambientes.Colecoes.Imagens.excluir');
 
         Route::get('/lojas', [ManagerLojasController::class, 'index'])->name('Manager.Lojas.index');
 
@@ -300,6 +272,8 @@ Route::prefix('/manager')->group(function () {
 
         Route::get('/lojas/projetos/imagens/{id}', [ManagerImagensLojasProjetosController::class, 'index'])->name('Manager.Lojas.Projetos.Imagens.index');
         Route::post('/lojas/projetos/imagens/adicionar/{id}', [ManagerImagensLojasProjetosController::class, 'novo'])->name('Manager.Lojas.Projetos.Imagens.novo');
+        Route::get('/lojas/projetos/imagens/editar/{id}', [ManagerImagensLojasProjetosController::class, 'editar'])->name('Manager.Lojas.Projetos.Imagens.editar');
+        Route::post('/lojas/projetos/imagens/editar/{id}', [ManagerImagensLojasProjetosController::class, 'atualizar'])->name('Manager.Lojas.Projetos.Imagens.atualizar');
 
         Route::post('/lojas/projetos/imagens/cortar/{id}', [ManagerImagensLojasProjetosController::class, 'cortar'])->name('Manager.Lojas.Projetos.Imagens.cortar');
         Route::post('/lojas/projetos/imagens/ordenar/{id}', [ManagerImagensLojasProjetosController::class, 'ordenar'])->name('Manager.Lojas.Projetos.Imagens.ordenar');
@@ -363,6 +337,14 @@ Route::prefix('/manager')->group(function () {
         Route::post('/acabamentos/adicionar', [ManagerAcabamentosController::class, 'novo'])->name('Manager.Acabamentos.novo');
         Route::get('/acabamentos/editar/{id}', [ManagerAcabamentosController::class, 'editar'])->name('Manager.Acabamentos.editar');
         Route::post('/acabamentos/editar/{id}', [ManagerAcabamentosController::class, 'atualizar'])->name('Manager.Acabamentos.atualizar');
+
+        Route::post('/acabamentos/categorias/ordenar', [ManagerAcabamentosCategoriasController::class, 'ordenar'])->name('Manager.Acabamentos.Categorias.ordenar');
+        Route::post('/acabamentos/categorias/visibilidade/{id}', [ManagerAcabamentosCategoriasController::class, 'visibilidade'])->name('Manager.Acabamentos.Categorias.visibilidade');
+        Route::post('/acabamentos/categorias/excluir/{id}', [ManagerAcabamentosCategoriasController::class, 'excluir'])->name('Manager.Acabamentos.Categorias.excluir');
+        Route::get('/acabamentos/categorias/adicionar', [ManagerAcabamentosCategoriasController::class, 'adicionar'])->name('Manager.Acabamentos.Categorias.adicionar');
+        Route::post('/acabamentos/categorias/adicionar', [ManagerAcabamentosCategoriasController::class, 'novo'])->name('Manager.Acabamentos.Categorias.novo');
+        Route::get('/acabamentos/categorias/editar/{id}', [ManagerAcabamentosCategoriasController::class, 'editar'])->name('Manager.Acabamentos.Categorias.editar');
+        Route::post('/acabamentos/categorias/editar/{id}', [ManagerAcabamentosCategoriasController::class, 'atualizar'])->name('Manager.Acabamentos.Categorias.atualizar');
 
 
         Route::get('/blog', [ManagerBlogController::class, 'index'])->name('Manager.Blog.index');

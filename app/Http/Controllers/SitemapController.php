@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Acabamento;
 use App\Models\Conteudo;
 use App\Models\Loja;
 use App\Models\Mostra;
 use App\Models\Pagina;
 use App\Models\Post;
-use App\Models\Produto;
+use App\Models\Ambiente;
 use App\Models\ProjetoLoja;
 use App\Models\Showroom;
 use App\Models\Site;
@@ -101,7 +100,7 @@ class SitemapController
                 );
             });
 
-        Produto::query()
+        Ambiente::query()
             ->where([
                 'excluido' => null,
                 'visivel' => true
@@ -183,24 +182,6 @@ class SitemapController
                 $sitemap->add(
                     Url::create(
                         route('Blog.post', [
-                            'slug' => $item->slug,
-                        ])
-                    )
-                        ->setLastModificationDate($item->modificado ?? $item->criado)
-                        ->setPriority(0.6)
-                );
-            });
-
-        Acabamento::query()
-            ->where([
-                'excluido' => null,
-                'visivel' => true
-            ])
-            ->get()
-            ->each(function ($item) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('Acabamentos.acabamento', [
                             'slug' => $item->slug,
                         ])
                     )

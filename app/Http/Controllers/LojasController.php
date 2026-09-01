@@ -266,8 +266,8 @@ class LojasController extends Controller
 
         $pagina->titulo = $loja->lojasIdiomas[0]->titulo_pagina . ' | Dell Anno';
         $pagina->descricao = $loja->lojasIdiomas[0]->descricao_pagina . ' | Dell Anno';
-        $pagina->titulo_compartilhamento = $loja->lojasIdiomas[0]->titulo_pagina . ' | Dell Anno';
-        $pagina->descricao_compartilhamento = $loja->lojasIdiomas[0]->descricao_pagina . ' | Dell Anno';
+        $pagina->tituloCompartilhamento = $loja->lojasIdiomas[0]->titulo_pagina . ' | Dell Anno';
+        $pagina->descricaoCompartilhamento = $loja->lojasIdiomas[0]->descricao_pagina . ' | Dell Anno';
 
         list($width, $height, $type, $attr) = getimagesize(public_path('/content/stores/s/' . $loja->imagem));
 

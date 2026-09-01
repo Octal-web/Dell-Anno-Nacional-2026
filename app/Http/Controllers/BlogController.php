@@ -153,8 +153,8 @@ class BlogController extends Controller
 
         $pagina->titulo = $post->postsIdiomas[0]->titulo_pagina . ' | Dell Anno';
         $pagina->descricao = $post->postsIdiomas[0]->descricao_pagina . ' | Dell Anno';
-        $pagina->titulo_compartilhamento = $post->postsIdiomas[0]->titulo_pagina . ' | Dell Anno';
-        $pagina->descricao_compartilhamento = $post->postsIdiomas[0]->descricao_pagina . ' | Dell Anno';
+        $pagina->tituloCompartilhamento = $post->postsIdiomas[0]->titulo_pagina . ' | Dell Anno';
+        $pagina->descricaoCompartilhamento = $post->postsIdiomas[0]->descricao_pagina . ' | Dell Anno';
 
         list($width, $height, $type, $attr) = getimagesize(public_path('/content/posts/thumbs/' . $post->imagem));
 

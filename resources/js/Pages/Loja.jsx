@@ -30,11 +30,11 @@ const Page = () => {
             
             {loja.video_showroom ? <StoreShowroomVideo video={loja.video_showroom} cover={loja.imagem_showroom} /> : <StoreShowroomImage image={loja.imagem_showroom} /> }
             
-            {imagensShowroom.length && <StoreFeatureds images={imagensShowroom} /> }
+            {imagensShowroom.length > 0 && <StoreFeatureds images={imagensShowroom} /> }
 
-            {loja.projetos.length && <StoreProjectGrid projects={loja.projetos} /> }
+            {loja.projetos.length > 0 && <StoreProjectGrid projects={loja.projetos} /> }
             
-            {/* imagensProjetos.length && <StoreProjects images={imagensProjetos} /> */}
+            {/* imagensProjetos.length > 0 && <StoreProjects images={imagensProjetos} /> */}
 
             <ProjectSteps content={conteudos[1]} steps={fasesProjetos} noExternal={false} />
 

@@ -19,9 +19,4 @@ class Cidade extends Model
     {
         return $this->hasMany(Contato::class);
     }
-    
-    public function lojas()
-    {
-        return $this->belongsToMany(Loja::class, 'loja_cidade');
-    }
 }

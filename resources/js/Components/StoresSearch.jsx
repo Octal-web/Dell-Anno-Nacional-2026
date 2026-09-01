@@ -12,6 +12,7 @@ export const StoresSearch = ({
 }) => {
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
+    const [isLoadingCities, setIsLoadingCities] = useState(false);
 
     const [selectedState, setSelectedState] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
@@ -38,11 +39,17 @@ export const StoresSearch = ({
         if (!selectedState) {
             setCities([]);
             setSelectedCity("");
+            setIsLoadingCities(false);
             setStores(allStores);
             return;
         }
 
+        let isCurrentRequest = true;
+
         const fetchCities = async (stateId) => {
+            setCities([]);
+            setIsLoadingCities(true);
+
             try {
                 const response = await axios.post(route("Lojas.cidades"), {
                     estado_id: stateId.value,
@@ -50,15 +57,23 @@ export const StoresSearch = ({
 
                 const data = await response.data;
 
-                setCities(data.cidades);
+                if (isCurrentRequest) {
+                    setCities(data.cidades);
+                }
             } catch (error) {
                 console.error(error);
             } finally {
-                setIsProcessing(false);
+                if (isCurrentRequest) {
+                    setIsLoadingCities(false);
+                }
             }
         };
 
         fetchCities(selectedState);
+
+        return () => {
+            isCurrentRequest = false;
+        };
     }, [selectedState]);
 
     const handleSearch = (e) => {
@@ -118,9 +133,10 @@ export const StoresSearch = ({
                     placeholder="Selecione uma cidade..."
                     classNamePrefix="admin-select"
                     className="w-full"
-                    isDisabled={!selectedState}
+                    isDisabled={!selectedState || isLoadingCities}
                     isClearable
-                    isLoading={isProcessing}
+                    isLoading={isLoadingCities}
+                    loadingMessage={() => "Carregando cidades..."}
                     noOptionsMessage={() => "Nenhuma cidade encontrada"}
                 />
 

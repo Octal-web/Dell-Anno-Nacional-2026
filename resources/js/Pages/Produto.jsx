@@ -14,8 +14,8 @@ const Page = () => {
         <DefaultLayout>
             <CollectionBanner product={{banner: produto.banner, nome: produto.nome, descricao: produto.descricao}} />
 
-            {produto.ambientes.map((ambiente, index) => (
-                <CollectionEnvironment key={index} environment={ambiente} slug={produto.slug} />
+            {produto.colecoes.map((ambiente, index) => (
+                <CollectionEnvironment key={index} environment={ambiente} />
             ))}
 
             <Link href={route('Produtos.index')} className="block w-fit mx-auto mt-16 mb-24 border border-neutral-800 bg-white font-light text-center uppercase py-2 px-8 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white">Todos os Ambientes</Link>

@@ -20,30 +20,12 @@ class PostStoreProjectRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules()
-    {  
+    {
         return [
-            'nome' => 'required|string|max:120',
-            'chamada' => 'required|string|max:320',
-
-            'dados' => 'nullable|string|max:120',
             'loja_id' => 'nullable|integer|exists:lojas,id',
-
-            'descricao' => 'required|string|max:1020',
-            'conteudo' => 'nullable|string|max:1520',
-
-            'produtos' => 'required|string|max:320',
+            'nome' => 'required|string|max:120',
             'creditos' => 'required|string|max:320',
-
-            'img' => inertia()->getShared('action') === 'novo'
-                ? 'required|image|mimes:png,jpg|max:4096'
-                : 'nullable|image|mimes:png,jpg|max:4096',
-                
-            'img_banner' => inertia()->getShared('action') === 'novo'
-                ? 'required|image|mimes:png,jpg|max:4096'
-                : 'nullable|image|mimes:png,jpg|max:4096',
-
-            'vid' => 'nullable|mimetypes:video/mp4,video/x-msvideo,video/webm|max:20480',
-
+            'conteudo' => 'nullable|string|max:1520',
             'titulo_pagina' => 'required|string|max:120',
             'descricao_pagina' => 'required|string|max:320',
         ];
@@ -57,42 +39,15 @@ class PostStoreProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'nome.required' => 'Por favor, informe o nome.',
-            'nome.max' => 'O nome deve ter no máximo 120 caracteres.',
-
-            'chamada.required' => 'Por favor, informe a chamada.',
-            'chamada.max' => 'A chamada deve ter no máximo 320 caracteres.',
-
-            // 'dados.required' => 'Por favor, informe os dados.',
-            'dados.max' => 'Os dados devem ter no máximo 120 caracteres.',
-
             'loja_id.exists' => 'A loja selecionada é inválida.',
 
-            'descricao.required' => 'Por favor, informe a descrição.',
-            'descricao.max' => 'A descrição deve ter no máximo 1020 caracteres.',
-
-            // 'conteudo.required' => 'Por favor, informe o conteúdo.',
-            'conteudo.max' => 'O conteúdo deve ter no máximo 1520 caracteres.',
-
-            'produtos.required' => 'Por favor, informe os produtos.',
-            'produtos.max' => 'O campo produtos deve ter no máximo 320 caracteres.',
+            'nome.required' => 'Por favor, informe o nome.',
+            'nome.max' => 'O nome deve ter no máximo 120 caracteres.',
 
             'creditos.required' => 'Por favor, informe os créditos.',
             'creditos.max' => 'Os créditos devem ter no máximo 320 caracteres.',
 
-            'img.required' => 'Por favor, selecione uma imagem.',
-            'img.image' => 'Por favor, selecione uma imagem válida.',
-            'img.mimes' => 'Os formatos válidos são JPG e PNG.',
-            'img.max' => 'Por favor, envie uma imagem menor que 4MB.',
-
-            'img_banner.required' => 'Por favor, selecione o banner.',
-            'img_banner.image' => 'Por favor, selecione um banner válido.',
-            'img_banner.mimes' => 'Os formatos válidos são JPG e PNG.',
-            'img_banner.max' => 'Por favor, envie um banner menor que 4MB.',
-
-            'vid.required' => 'Por favor, selecione um vídeo.',
-            'vid.mimetypes' => 'Os formatos de vídeo válidos são: MP4, AVI e WEBM.',
-            'vid.max' => 'Por favor, envie um arquivo menor que 20MB.',
+            'conteudo.max' => 'O conteúdo deve ter no máximo 1520 caracteres.',
 
             'titulo_pagina.required' => 'Por favor, informe o título da página.',
             'titulo_pagina.max' => 'O título da página deve ter no máximo 120 caracteres.',

@@ -13,11 +13,16 @@ class Acabamento extends Model {
 
     public function acabamentosIdiomas()
     {
-        return $this->hasMany(AcabamentoIdioma::class);
+        return $this->hasMany(AcabamentoIdioma::class, 'acabamento_id');
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(AcabamentoCategoria::class, 'categoria_id');
     }
     
-    public function blocos()
+    public function imagens()
     {
-        return $this->hasMany(AcabamentoBloco::class);
+        return $this->belongsToMany(ImagemProjetoLoja::class, 'imagens_acabamentos', 'acabamento_id', 'imagem_id');
     }
 }
