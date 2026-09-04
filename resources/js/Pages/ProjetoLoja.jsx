@@ -18,7 +18,7 @@ const Page = () => {
             
             <StoreProjectStats project={projeto} />
             
-            <StoreProjectDetails data={projeto.conteudo} />
+            {projeto.conteudo && <StoreProjectDetails data={projeto.conteudo} /> }
             
             <StoreProjectGallery slides={projeto.imagens} />
 

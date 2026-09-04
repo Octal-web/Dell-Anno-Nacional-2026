@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Manager\PostStoreProjectRequest;
+
 use App\Models\Idioma;
 use App\Models\Loja;
 use App\Models\ProjetoLoja;
 use App\Models\ProjetoLojaIdioma;
+
+use App\Services\ImageCompressor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -49,7 +52,7 @@ class LojasProjetosController extends Controller
         ]);
     }
 
-    public function novo(PostStoreProjectRequest $request)
+    public function novo(PostStoreProjectRequest $request, ImageCompressor $compressor)
     {
         $slugBase = Str::slug($request->nome);
         $slug = $slugBase;
@@ -62,6 +65,10 @@ class LojasProjetosController extends Controller
         $projeto->slug = $slug;
         $projeto->loja_id = $request->loja_id;
         $projeto->visivel = true;
+    
+        $projeto->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
+        $projeto->banner = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_banner')->extension());
+
         $projeto->save();
 
         $traducao = new ProjetoLojaIdioma;
@@ -73,6 +80,9 @@ class LojasProjetosController extends Controller
         $traducao->projeto_loja_id = $projeto->id;
         $traducao->idioma_id = inertia()->getShared('idioma')->id;
         $traducao->save();
+        
+        $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/stores/projects/thumbs/' . $projeto->imagem));
+        $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/stores/projects/banner/' . $projeto->banner));
 
         return to_route('Manager.Lojas.Projetos.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
     }
@@ -102,6 +112,8 @@ class LojasProjetosController extends Controller
                 'nome' => optional($traducao)->nome,
                 'creditos' => optional($traducao)->creditos,
                 'conteudo' => optional($traducao)->conteudo,
+                'imagem' => rafator('content/stores/projects/thumbs/' . $projeto->imagem),
+                'banner' => rafator('content/stores/projects/banner/' . $projeto->banner),
                 'titulo_pagina' => optional($traducao)->titulo_pagina,
                 'descricao_pagina' => optional($traducao)->descricao_pagina,
             ],
@@ -109,7 +121,7 @@ class LojasProjetosController extends Controller
         ]);
     }
 
-    public function atualizar(PostStoreProjectRequest $request, $id)
+    public function atualizar(PostStoreProjectRequest $request, $id, ImageCompressor $compressor)
     {
         $projeto = ProjetoLoja::query()->where(['excluido' => NULL, 'id' => $id])->first();
         if (!$projeto) {
@@ -157,6 +169,22 @@ class LojasProjetosController extends Controller
         $projeto->loja_id = $request->loja_id;
         $projeto->save();
         $traducao->save();
+
+        if ($request->file('img') && $request->file('img')->getError() == 0) {
+            if ($projeto->imagem && isset($projetoOriginal) && File::exists('content/stores/projects/thumbs/' . $projetoOriginal->imagem)) {
+                File::delete('content/stores/projects/thumbs/' . $projetoOriginal->imagem);
+            }
+            
+            $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/stores/projects/thumbs/' . $projeto->imagem));
+        }
+        
+        if ($request->file('img_banner') && $request->file('img_banner')->getError() == 0) {
+            if ($projeto->banner && isset($projetoOriginal) && File::exists('content/stores/projects/banner/' . $projetoOriginal->banner)) {
+                File::delete('content/stores/projects/banner/' . $projetoOriginal->banner);
+            }
+            
+            $compressor->compressOrFallback($request->file('img_banner')->getRealPath(), public_path('content/stores/projects/banner/' . $projeto->banner));
+        }
 
         return to_route('Manager.Lojas.Projetos.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
     }

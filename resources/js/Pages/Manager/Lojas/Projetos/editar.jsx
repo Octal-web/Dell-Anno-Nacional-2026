@@ -23,6 +23,7 @@ const Page = () => {
         [{ titulo: 'Loja', name: 'loja_id', tamanho: 'col-span-12 md:col-span-8', tipo: 'select', options: lojas }],
         [{ titulo: 'Créditos', name: 'creditos', tamanho: 'col-span-12 md:col-span-8', tipo: 'texto_longo', max: 320 }],
         [{ titulo: 'Conteúdo', name: 'conteudo', tamanho: 'col-span-12 md:col-span-8', tipo: 'texto_longo', editor: true, toolbar: ['Heading', 'Bold', 'Italic', 'List'], max: 1520 }],
+        [{ titulo: 'Imagem', name: 'img', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'imagem', crop: true, largura: 860, altura: 560, imagem: projeto.imagem }, { titulo: 'Banner', name: 'img_banner', tamanho: 'col-span-12 md:col-span-6 lg:col-span-6', tipo: 'imagem', crop: true, largura: 1920, altura: 490, imagem: projeto.banner }],
         [{ titulo: 'Título Página', name: 'titulo_pagina', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto', max: 120 }],
         [{ titulo: 'Descrição Página', name: 'descricao_pagina', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto_longo', max: 320 }],
     ];
@@ -40,6 +41,13 @@ const Page = () => {
         setData(prevData => ({
             ...prevData,
             [name]: value,
+        }));
+    };
+
+    const handleImageCrop = (croppedImage, fileExtenstion, name) => {
+        setData(prevData => ({
+            ...prevData,
+            [name]: croppedImage
         }));
     };
 
@@ -67,6 +75,7 @@ const Page = () => {
                                             idioma={idioma}
                                             value={data[input.name]}
                                             onChange={onChange}
+                                            handleImageCrop={handleImageCrop}
                                         />
                                         {errors[input.name] && <p className="text-sm text-red-500 -mt-5 mb-3">{errors[input.name]}</p>}
                                     </div>
