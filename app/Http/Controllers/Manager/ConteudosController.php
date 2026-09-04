@@ -145,7 +145,7 @@ class ConteudosController extends Controller
                         File::delete('content/display/' . $conteudoOriginal->imagem);
                     }
 
-                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/display/' . $onteudo->imagem));
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/display/' . $conteudo->imagem));
                 }
 
 
