@@ -12,21 +12,55 @@ import { InputLink } from './Inputs/InputLink';
 
 export const FormContent = ({ content, full, toolbar, idioma }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(false);
-    const contentRef = useRef(null);
+    const [isCollapsed, setIsCollapsed] = useState(content.minimizavel);
+    const [contentHeight, setContentHeight] = useState('0px');
 
-    const contentHeight = useRef('0px');
+    const contentRef = useRef(null);
+    const contentInnerRef = useRef(null);
+
+    const updateContentHeight = () => {
+        if (!contentRef.current || isCollapsed) return;
+
+        setContentHeight(`${contentRef.current.scrollHeight}px`);
+    };
+
+    const updateContentHeightAfterRender = (delay = 0) => {
+        return setTimeout(() => {
+            requestAnimationFrame(() => {
+                updateContentHeight();
+            });
+        }, delay);
+    };
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            if (contentRef.current) {
-                contentHeight.current = `${contentRef.current.scrollHeight}px`;
-            }
-            setIsCollapsed(content.minimizavel);
-        }, 1000);
+        if (!content.minimizavel || !contentInnerRef.current) return;
+
+        const resizeObserver = new ResizeObserver(() => {
+            updateContentHeight();
+        });
+
+        resizeObserver.observe(contentInnerRef.current);
+
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, [content.minimizavel, isCollapsed]);
+
+    useEffect(() => {
+        if (isCollapsed) return;
+
+        const timeout = updateContentHeightAfterRender();
 
         return () => clearTimeout(timeout);
-    }, []);
+    }, [isCollapsed]);
+
+    useEffect(() => {
+        if (isCollapsed) return;
+
+        const timeout = updateContentHeightAfterRender(150);
+
+        return () => clearTimeout(timeout);
+    }, [content.imagem, content.imagem_mobile]);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -49,7 +83,6 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
         ],
         ...(content.img ? { img: content.img } : {})
     });
-
 
     const handleChange = (name, content) => {
         const [key, index, field] = name.split('.');
@@ -83,9 +116,13 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
 
         post(route('Manager.Conteudos.editar', {id: content.id, lang: idioma_url}), {
             preserveScroll: true,
+            onSuccess: () => {
+                updateContentHeightAfterRender();
+                updateContentHeightAfterRender(150);
+            },
         });
 
-        console.log(data)
+        console.log(data);
     };
 
     const toggleCollapse = () => {
@@ -101,7 +138,7 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                     <Link
                         href={route('Manager.Imagens.conteudo', {id: content.id})}
                         className="flex items-center border border-stroke bg-white px-3 py-2 rounded-md transition-all hover:bg-slate-100 ml-2"
-                    >   
+                    >
                         <FontAwesomeIcon icon={faImage} className="text-slate-700 mr-2" />
                         Imagens
                     </Link>
@@ -109,6 +146,7 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
 
                 {content.minimizavel &&
                     <button
+                        type="button"
                         onClick={toggleCollapse}
                         className="relative block ml-auto mr-1 before:content-[''] before:absolute before:-top-1 before:-left-2 before:w-8 before:h-8 before:border before:rounded-full"
                     >
@@ -119,12 +157,12 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
 
             <div
                 ref={contentRef}
-                style={{ height: content.minimizavel ? (isCollapsed ? '0px' : contentHeight.current) : 'auto' }}
+                style={{ height: content.minimizavel ? (isCollapsed ? '0px' : contentHeight) : 'auto' }}
                 className="transition-all duration-300 ease-in-out overflow-hidden"
             >
-                <div className="mt-10">
+                <div ref={contentInnerRef} className="mt-10">
                     <form onSubmit={handleSubmit}>
-                        { content.habilitar_titulo &&
+                        {content.habilitar_titulo &&
                             <div className="grid grid-cols-12 gap-x-6">
                                 <div className={`col-span-12 ${full ? ' lg:col-span-8' : ''}`}>
                                     <InputText
@@ -139,7 +177,7 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                             </div>
                         }
 
-                        { content.habilitar_subtitulo &&
+                        {content.habilitar_subtitulo &&
                             <div className="grid grid-cols-12 gap-x-6">
                                 <div className={`col-span-12 ${full ? ' lg:col-span-8' : ''}`}>
                                     <InputText
@@ -154,10 +192,10 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                             </div>
                         }
 
-                        { content.habilitar_texto &&
+                        {content.habilitar_texto &&
                             <div className="grid grid-cols-12 gap-x-6">
                                 <div className={`col-span-12 ${full ? ' lg:col-span-8' : ''}`}>
-                                    { content.texto_formatado ?
+                                    {content.texto_formatado ?
                                         <InputTipTapEditor
                                             title="Texto"
                                             name="conteudosIdiomas.0.texto"
@@ -180,7 +218,7 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                             </div>
                         }
 
-                        { content.habilitar_link &&
+                        {content.habilitar_link &&
                             <div className="grid grid-cols-12 gap-x-6">
                                 <div className={`col-span-12 ${full ? ' lg:col-span-8' : ''}`}>
                                     <InputLink
@@ -197,7 +235,7 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                             </div>
                         }
 
-                        { content.habilitar_video &&
+                        {content.habilitar_video &&
                             <div className="grid grid-cols-12 gap-x-6">
                                 <div className={`col-span-12 ${full ? ' lg:col-span-8' : ''}`}>
                                     <InputLink
@@ -212,16 +250,16 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                             </div>
                         }
 
-                        { content.habilitar_img &&
+                        {content.habilitar_img &&
                             <div className="grid grid-cols-12 gap-x-6">
                                 <div className={`col-span-12 ${full ? ' lg:col-span-8' : ''}`}>
-                                    <InputFileImage title="Imagem" imagem={content.imagem} size={{largura: content.largura_img, altura: content.altura_img}} crop={content.recortar_img ? true : false} onImageCrop={handleImageCrop} />
+                                    <InputFileImage title="Imagem" imagem={content.imagem} size={{largura: content.largura_img, altura: content.altura_img}} allowCrop={content.recortar_img ? true : false} onImageCrop={handleImageCrop} />
                                     {errors['img'] && <p className="text-sm text-red-500 -mt-5 mb-3">{errors['img']}</p>}
                                 </div>
 
-                                { content.habilitar_img_mobile &&
+                                {content.habilitar_img_mobile &&
                                     <div className={`col-span-12 ${full ? ' lg:col-span-4' : ''}`}>
-                                        <InputFileImage title="Imagem Mobile" imagem={content.imagem_mobile} size={{largura: content.largura_img_mobile, altura: content.altura_img_mobile}} crop={content.recortar_img_mobile ? true : false} onImageCrop={handleImageCrop} />
+                                        <InputFileImage title="Imagem Mobile" imagem={content.imagem_mobile} size={{largura: content.largura_img_mobile, altura: content.altura_img_mobile}} allowCrop={content.recortar_img_mobile ? true : false} onImageCrop={handleImageCrop} />
                                         {errors['img_mobile'] && <p className="text-sm text-red-500 -mt-5 mb-3">{errors['img_mobile']}</p>}
                                     </div>
                                 }
@@ -232,7 +270,7 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                             <button
                                 type="submit"
                                 className="block relative w-fit border border-gray-300 px-3 py-2 cursor-pointer transition-all hover:bg-slate-200"
-                            >   
+                            >
                                 <FontAwesomeIcon icon={faSave} className="text-slate-700 mr-2" />
                                 Salvar
                             </button>
