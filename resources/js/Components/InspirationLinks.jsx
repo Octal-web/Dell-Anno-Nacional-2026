@@ -24,7 +24,7 @@ export const InspirationLinks = ({ content }) => {
                     >
                         <div className="overflow-hidden mb-4 md:mb-10">
                             <img
-                                src="/site/img/inspiration-2.jpg"
+                                src={content[1].imagem}
                                 className="transition-all duration-500 group-hover:scale-110"
                                 alt={content[1].titulo}
                             />
@@ -37,7 +37,7 @@ export const InspirationLinks = ({ content }) => {
                     <Link href={content[2].link} className="group">
                         <div className="overflow-hidden mb-4 md:mb-10">
                             <img
-                                src="/site/img/inspiration-3.jpg"
+                                src={content[2].imagem}
                                 className="transition-all duration-500 group-hover:scale-110"
                                 alt={content[2].titulo}
                             />

@@ -13,7 +13,7 @@ class ProjetoLojaIdioma extends Model {
 
     public function projetoLoja()
     {
-        return $this->belongsTo(ProjetoLoja::class);
+    return $this->belongsTo(ProjetoLoja::class);
     }
 
     public function idiomas()

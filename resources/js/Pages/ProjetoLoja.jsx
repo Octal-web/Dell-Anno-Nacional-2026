@@ -18,7 +18,9 @@ const Page = () => {
             
             <StoreProjectStats project={projeto} />
             
-            {projeto.conteudo && <StoreProjectDetails data={projeto.conteudo} /> }
+            {projeto.conteudo?.replace(/<[^>]*>/g, '').trim() && (
+                <StoreProjectDetails data={projeto.conteudo} />
+            )}
             
             <StoreProjectGallery slides={projeto.imagens} />
 

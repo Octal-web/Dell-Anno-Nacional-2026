@@ -50,10 +50,10 @@ export const StoreProjectGallery = ({ slides }) => {
     };
 
     return (
-        <section className="py-10 md:py-14">
+        <section className="pt-14 md:pt-20 pb-10 md:pb-14">
             <div className="container max-w-large">
                 <div className="flex items-end justify-between mb-10">
-                    <h2 className="text-3xl sm:text-4xl 2xl:text-[45px] font-light uppercase tracking-wide leading-snug -mb-2">Detalhes</h2>
+                    <h2 className="text-3xl sm:text-4xl 2xl:text-[45px] font-light uppercase tracking-wide leading-snug -mb-2">Galeria de Fotos</h2>
 
                     <div className="flex items-center">
                         <div className="flex items-center text-gray-400 text-sm font-light sm:tracking-widest">
