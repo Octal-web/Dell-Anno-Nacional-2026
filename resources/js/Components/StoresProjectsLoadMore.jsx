@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { router } from '@inertiajs/react';
 
 const StoresProjectsLoadMore = ({ 
     initialData, 
@@ -15,37 +14,39 @@ const StoresProjectsLoadMore = ({
     const [hasMore, setHasMore] = useState(initialData?.next_page_url !== null);
     const observerRef = useRef();
 
-    const loadMore = useCallback(() => {
+    const loadMore = useCallback(async () => {
         if (loading || !hasMore || !data?.next_page_url) return;
 
         setLoading(true);
 
-        router.visit(data.next_page_url, {
-            preserveState: true,
-            preserveScroll: true,
-            replace: false,
-            only: ['projects'],
-            onSuccess: (page) => {
-                const newData = page.props.projects;
-                
-                const updatedData = {
-                    ...newData,
-                    data: [...data.data, ...newData.data]
-                };
-                
-                setData(updatedData);
-                setHasMore(newData.next_page_url !== null);
-                setLoading(false);
-                
-                if (onDataUpdate) {
-                    onDataUpdate(updatedData);
-                }
-            },
-            onError: (errors) => {
-                console.error('Erro ao carregar mais dados:', errors);
-                setLoading(false);
+        try {
+            const url = new URL(data.next_page_url);
+
+            const response = await fetch(url.toString(), {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            const newData = await response.json();
+
+            const updatedData = {
+                ...newData,
+                data: [...data.data, ...newData.data],
+            };
+
+            setData(updatedData);
+            setHasMore(newData.next_page_url !== null);
+
+            if (onDataUpdate) {
+                onDataUpdate(updatedData);
             }
-        });
+        } catch (error) {
+            console.error('Erro ao carregar mais dados:', error);
+        } finally {
+            setLoading(false);
+        }
     }, [loading, hasMore, data, onDataUpdate]);
 
     const triggerRef = useCallback((node) => {

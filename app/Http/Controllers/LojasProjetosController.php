@@ -15,7 +15,7 @@ class LojasProjetosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $idioma = inertia()->getShared('idioma');
 
         $projetos = ProjetoLoja::query()
@@ -45,6 +45,10 @@ class LojasProjetosController extends Controller
                 'chamada' => $projeto->projetosLojasIdiomas->isNotEmpty() ? $projeto->projetosLojasIdiomas[0]->chamada : null
             ];
         });
+
+        if ($request->wantsJson()) {
+            return response()->json($projetos);
+        }
 
         return Inertia::render('ProjetosLojas', [
             'projetos' => $projetos
