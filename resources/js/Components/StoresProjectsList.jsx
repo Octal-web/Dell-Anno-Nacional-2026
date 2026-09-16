@@ -15,7 +15,7 @@ export const StoresProjectsList = ({ content, data }) => {
                 <div className="container max-w-x-large">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-10 md:gap-y-20">
                         {data.map((item, index) => (
-                            <Reveal direction="bottom" scale={true} delay={index} className="group flex flex-col" key={index}>
+                            <Reveal direction="bottom" scale={true} className="group flex flex-col" key={index}>
                                 <Link href={route('Lojas.Projetos.projeto', {slug: item.slug})} className="overflow-hidden aspect-[5/4]">
                                     <img src={item.imagem} className="transition-all duration-500 h-full object-cover group-hover:scale-110" />
                                 </Link>
