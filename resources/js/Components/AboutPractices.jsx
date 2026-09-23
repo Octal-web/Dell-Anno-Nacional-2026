@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,24 +16,26 @@ export const AboutPractices = ({ content }) => {
         if (!content?.texto) return;
 
         const parser = new DOMParser();
-        const doc = parser.parseFromString(content.texto, 'text/html');
+        const doc = parser.parseFromString(content.texto, "text/html");
 
-        const table = doc.querySelector('table');
+        const table = doc.querySelector("table");
         if (table) {
             // Extrai dados da tabela
-            const rows = table.querySelectorAll('tbody tr');
-            const data = Array.from(rows).map(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells.length >= 2) {
-                    const img = cells[0].querySelector('img');
-                    const html = cells[1].innerHTML.trim();
-                    return {
-                        image: img ? img.src : null,
-                        html: html
-                    };
-                }
-                return null;
-            }).filter(Boolean);
+            const rows = table.querySelectorAll("tbody tr");
+            const data = Array.from(rows)
+                .map((row) => {
+                    const cells = row.querySelectorAll("td");
+                    if (cells.length >= 2) {
+                        const img = cells[0].querySelector("img");
+                        const html = cells[1].innerHTML.trim();
+                        return {
+                            image: img ? img.src : null,
+                            html: html,
+                        };
+                    }
+                    return null;
+                })
+                .filter(Boolean);
 
             setTableData(data);
 
@@ -41,7 +43,6 @@ export const AboutPractices = ({ content }) => {
         }
 
         setOtherContent(doc.body.innerHTML);
-
     }, [content.texto]);
 
     useEffect(() => {
@@ -59,9 +60,9 @@ export const AboutPractices = ({ content }) => {
                         scrollTrigger: {
                             trigger: containerRef.current,
                             start: "top 80%",
-                            toggleActions: "play none none reverse"
-                        }
-                    }
+                            toggleActions: "play none none reverse",
+                        },
+                    },
                 );
             }, 100);
         }
@@ -71,9 +72,9 @@ export const AboutPractices = ({ content }) => {
         return (
             <section className="pt-16 sm:pt-20 md:pt-24 2xl:pt-32">
                 <div className="container max-w-large">
-                    <div 
+                    <div
                         className="font-light sm:leading-loose text-center sm:tracking-wide max-w-[1280px] mx-auto mb-12"
-                        dangerouslySetInnerHTML={{ __html: content.texto }} 
+                        dangerouslySetInnerHTML={{ __html: content.texto }}
                     />
                 </div>
             </section>
@@ -83,16 +84,16 @@ export const AboutPractices = ({ content }) => {
     return (
         <section className="pt-28 2xl:pt-32 pb-16">
             <div className="container max-w-large" ref={containerRef}>
-                
+                <div className=" border-t border-neutral-300 pb-20" />
                 {otherContent && (
                     <div
-                        className="font-light sm:leading-loose text-center sm:tracking-wide max-w-[1280px] mx-auto mb-12"
+                        className="font-medium sm:leading-loose text-center sm:tracking-wide max-w-[1380px] mx-auto mb-12"
                         dangerouslySetInnerHTML={{ __html: otherContent }}
                     />
                 )}
 
                 {tableData && (
-                    <div className="border-t border-b border-neutral-300">
+                    <div>
                         <Swiper
                             slidesPerView={2.5}
                             spaceBetween={16}
@@ -105,13 +106,15 @@ export const AboutPractices = ({ content }) => {
                                 1280: {
                                     slidesPerView: 6,
                                     spaceBetween: 24,
-                                }
+                                },
                             }}
                         >
                             {tableData.map((item, index) => (
                                 <SwiperSlide key={index}>
                                     <div
-                                        ref={el => cardRefs.current[index] = el}
+                                        ref={(el) =>
+                                            (cardRefs.current[index] = el)
+                                        }
                                         className="transition-all duration-300 py-12 h-full"
                                     >
                                         <div className="flex flex-col items-center text-center space-y-4">
@@ -130,7 +133,9 @@ export const AboutPractices = ({ content }) => {
                                             </div>
                                             <div
                                                 className="font-light max-sm:tracking-tight md:leading-relaxed"
-                                                dangerouslySetInnerHTML={{ __html: item.html }}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: item.html,
+                                                }}
                                             />
                                         </div>
                                     </div>
