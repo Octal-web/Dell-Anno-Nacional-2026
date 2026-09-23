@@ -10,7 +10,7 @@ import { StoresText } from "@/Components/StoresText";
 
 const getInitialRegion = () => {
     const params = new URLSearchParams(window.location.search);
-    return params.get("region") === "eua" ? "eua" : "brasil";
+    return params.get("region") === "internacional" ? "internacional" : "brasil";
 };
 
 const Page = () => {
@@ -23,7 +23,7 @@ const Page = () => {
 
     const regions = [
         { nome: "Brasil", slug: "brasil" },
-        { nome: "EUA", slug: "eua" },
+        { nome: "Internacional", slug: "internacional" },
     ];
 
     useEffect(() => {
