@@ -33,7 +33,7 @@ export const ContractBanner = ({ content }) => {
         <section>
             <div
                 ref={imageRef}
-                className="h-[50vh] max-[430px]:bg-[length:auto_120%] max-[570px]:bg-[length:200%] sm:bg-[length:170%] 2xl:bg-[length:100%]"
+                className="h-[40vh] md:h-[50vh] max-[430px]:bg-[length:auto_120%] max-[570px]:bg-[length:200%] sm:bg-[length:170%] 2xl:bg-[length:100%] bg-[60%]"
                 style={{
                     backgroundImage: `url(${content.imagem})`,
                 }}
