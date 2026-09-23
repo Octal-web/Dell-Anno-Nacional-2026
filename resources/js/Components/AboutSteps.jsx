@@ -24,8 +24,6 @@ export const AboutSteps = ({ steps }) => {
                     const isEven = index % 2 === 0;
                     const imageFirst = isMobile || isEven;
 
-                    const textParts = item.descricao.split("\n\n");
-
                     return (
                         <div
                             key={index}
@@ -46,10 +44,8 @@ export const AboutSteps = ({ steps }) => {
                                         <h2 className="text-4xl md:text-5xl 2xl:text-6xl font-secondary tracking-wide leading-snug mb-6 md:mb-8 2xl:mb-20">
                                             {item.titulo}
                                         </h2>
-                                        <div className="font-secondary font-light max-md:text-justify md:leading-loose md:tracking-wide">
-                                            {textParts.map((part, i) => (
-                                                <p key={i}>{part}</p>
-                                            ))}
+                                        <div className="font-secondary font-light max-md:text-justify md:leading-loose md:tracking-wide whitespace-pre-line">
+                                            {item.descricao}
                                         </div>
                                     </Reveal>
                                 </>
@@ -62,7 +58,7 @@ export const AboutSteps = ({ steps }) => {
                                         <h2 className="text-4xl md:text-5xl 2xl:text-6xl font-secondary tracking-wide leading-snug mb-6 md:mb-8 2xl:mb-20">
                                             {item.titulo}
                                         </h2>
-                                        <div className="font-secondary font-light max-md:text-justify md:leading-loose md:tracking-wide">
+                                        <div className="font-secondary font-light max-md:text-justify md:leading-loose md:tracking-wide whitespace-pre-line">
                                             {item.descricao}
                                         </div>
                                     </Reveal>

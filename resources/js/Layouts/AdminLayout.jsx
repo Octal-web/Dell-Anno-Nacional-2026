@@ -17,6 +17,7 @@ import {
     faFileText,
     faBorderAll,
     faBook,
+    faHandshake,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { MenuItem } from "@/Components/Manager/MenuItem";
@@ -90,13 +91,20 @@ const menus = [
     },
     {
         id: 9,
+        label: "Contratos",
+        icon: faHandshake,
+        href: route("Manager.Contratos.index"),
+        controllers: ["Contratos"],
+    },
+    {
+        id: 10,
         label: "Contato",
         icon: faEnvelope,
         href: route("Manager.Contato.index"),
         controllers: ["Contato"],
     },
     {
-        id: 10,
+        id: 11,
         label: "Política de Privacidade",
         icon: faFileText,
         href: route("Manager.Politicas.privacidade"),

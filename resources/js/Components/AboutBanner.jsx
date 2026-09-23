@@ -3,7 +3,9 @@ import LetterReveal from "./LetterReveal";
 import { Reveal } from "./Reveal";
 
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const AboutBanner = ({ content }) => {
     const imageRef = useRef(null);
