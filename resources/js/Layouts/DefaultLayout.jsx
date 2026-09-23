@@ -171,10 +171,18 @@ const DefaultLayout = ({ children }) => {
             route: "https://globalliving.com.br/",
             external: true,
         },
-        { name: "Explore", route: "Inspiracao.index", external: false },
+        {
+            name: "Projetos",
+            route: "Lojas.Projetos.index",
+            external: false,
+            submenu: [
+                { nome: "Mostras", route: "Mostras.index" },
+                { nome: "Projetos", route: "Lojas.Projetos.index" },
+                { nome: "Lojas", route: "Lojas.index" },
+                { nome: "Contract", route: "Contratos.index" },
+            ],
+        },
         { name: "Frame", route: "Blog.index", external: false },
-        // { name: "Contacts", route: "Contato.index", external: false },
-        { name: "Catálogos", route: "Catalogos.index", external: false },
     ];
 
     return (
@@ -409,6 +417,15 @@ const DefaultLayout = ({ children }) => {
                                         </Link>
                                     </li>
 
+                                    <li>
+                                        <Link
+                                            href={route("Catalogos.index")}
+                                            className="block font-secondary text-white text-sm font-light leading-none transition-all opacity-70 hover:opacity-100"
+                                        >
+                                            Catálogos
+                                        </Link>
+                                    </li>
+                                    
                                     <li>
                                         <Link
                                             href={route("Contato.index")}

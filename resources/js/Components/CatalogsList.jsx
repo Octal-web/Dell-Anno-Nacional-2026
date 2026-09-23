@@ -26,7 +26,9 @@ export const CatalogsList = ({ catalogs }) => {
                                     className="w-full h-full object-cover transition-all duration-500"
                                 />
 
-                                <h4 className="text-xl font-light uppercase my-6">{item.titulo}</h4>
+                                <a href={route('Catalogos.download', { id: item.id })} className="block w-fit my-6 hover:opacity-80">
+                                    <h4 className="text-xl font-light uppercase">{item.titulo}</h4>
+                                </a>
 
                                 <p className="font-secondary font-light sm:tracking-wide max-w-md mb-8 2xl:mb-10">{item.descricao}</p>
 
