@@ -43,12 +43,6 @@ const Page = () => {
                 idioma={idioma.codigo}
             />
 
-            <FormContent
-                content={conteudos[1]}
-                full={true}
-                idioma={idioma.codigo}
-            />
-
             <BlockContent content={contentContracts} />
         </AdminLayout>
     );
