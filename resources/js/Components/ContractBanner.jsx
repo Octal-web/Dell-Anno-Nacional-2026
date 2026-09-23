@@ -41,12 +41,12 @@ export const ContractBanner = ({ content }) => {
 
             <div className="container max-w-large py-10 md:py-16 mt-5 2xl:py-20">
                 <LetterReveal
-                    className="text-4xl md:text-5xl 2xl:text-[55px] font-light uppercase sm:tracking-wide text-balance text-center mb-6 md:mb-10"
+                    className="text-4xl md:text-5xl 2xl:text-[55px] font-light uppercase sm:tracking-wide text-balance text-center mb-6 md:mb-10 mx-auto md:max-w-[900px]"
                     text={content.titulo}
                     element="h1"
                 />
 
-                <p className="font-secondary font-light text-justify md:text-center sm:tracking-wide sm:leading-loose whitespace-pre-line max-w-[1000px] mx-auto mb-10">
+                <p className="font-secondary font-light text-justify md:text-center sm:tracking-wide sm:leading-loose whitespace-pre-line max-w-[900px] mx-auto mb-10">
                     {content.texto}
                 </p>
             </div>
