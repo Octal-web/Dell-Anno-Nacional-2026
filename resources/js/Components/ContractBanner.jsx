@@ -31,24 +31,25 @@ export const ContractBanner = ({ content }) => {
     }, []);
     return (
         <section>
-            <div className="container max-w-large flex flex-col md:flex-row justify-between py-10 md:py-16 mt-10 2xl:py-20">
-                <LetterReveal
-                    className="text-4xl md:text-5xl 2xl:text-[55px] font-light text-center uppercase tracking-wide mb-6 md:mb-10"
-                    text={content.titulo}
-                    element="h1"
-                />
-                <p className="font-secondary font-light text-justify md:text-left sm:tracking-wide sm:leading-loose whitespace-pre-line max-w-[580px] mb-10 md:ml-auto">
-                    {content.texto}
-                </p>
-            </div>
-
             <div
                 ref={imageRef}
-                className="h-[55vh] max-[430px]:bg-[length:auto_120%] max-[570px]:bg-[length:200%] sm:bg-[length:170%] 2xl:bg-[length:100%]"
+                className="h-[50vh] max-[430px]:bg-[length:auto_120%] max-[570px]:bg-[length:200%] sm:bg-[length:170%] 2xl:bg-[length:100%]"
                 style={{
                     backgroundImage: `url(${content.imagem})`,
                 }}
             />
+
+            <div className="container max-w-large py-10 md:py-16 mt-5 2xl:py-20">
+                <LetterReveal
+                    className="text-4xl md:text-5xl 2xl:text-[55px] font-light uppercase sm:tracking-wide text-balance text-center mb-6 md:mb-10"
+                    text={content.titulo}
+                    element="h1"
+                />
+
+                <p className="font-secondary font-light text-justify md:text-center sm:tracking-wide sm:leading-loose whitespace-pre-line max-w-[1000px] mx-auto mb-10">
+                    {content.texto}
+                </p>
+            </div>
         </section>
     );
 };

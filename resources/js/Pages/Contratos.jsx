@@ -1,9 +1,8 @@
 import { usePage } from "@inertiajs/react";
 
-import DefaultLayout from "@/Layouts/DefaultLayout";
 import { ContractBanner } from "@/Components/ContractBanner";
-import { ContractText } from "@/Components/ContractText";
 import { ContractItems } from "@/Components/ContractItems";
+import DefaultLayout from "@/Layouts/DefaultLayout";
 
 const Page = () => {
     const { conteudos, contratos } = usePage().props;
@@ -11,8 +10,6 @@ const Page = () => {
     return (
         <DefaultLayout>
             <ContractBanner content={conteudos[0]} />
-            <ContractText content={conteudos[1]}/>
-
             <ContractItems items={contratos}/>
         </DefaultLayout>
     );
