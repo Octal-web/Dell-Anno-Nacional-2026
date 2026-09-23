@@ -176,9 +176,9 @@ const DefaultLayout = ({ children }) => {
             route: "Lojas.Projetos.index",
             external: false,
             submenu: [
+                { nome: "Residências", route: "Lojas.Projetos.index" },
                 { nome: "Mostras", route: "Mostras.index" },
-                { nome: "Projetos", route: "Lojas.Projetos.index" },
-                { nome: "Lojas", route: "Lojas.index" },
+                { nome: "Showrooms", route: "Showrooms.index" },
                 { nome: "Contract", route: "Contratos.index" },
             ],
         },

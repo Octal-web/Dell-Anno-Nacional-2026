@@ -27,14 +27,18 @@ class LojasController extends Controller
     {
         $idioma = inertia()->getShared('idioma');
 
-        $paises = request('region') === 'eua' ? [226] : [30];
+        $internacional = request('region') === 'internacional';
 
         $lojas = Loja::query()
             ->where([
                 'excluido' => NULL,
                 'visivel' => true
             ])
-            ->whereIn('pais_id', $paises)
+            ->when(
+                $internacional,
+                fn ($q) => $q->where('pais_id', '!=', 30),
+                fn ($q) => $q->where('pais_id', 30)
+            )
             ->with([
                 'lojasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
