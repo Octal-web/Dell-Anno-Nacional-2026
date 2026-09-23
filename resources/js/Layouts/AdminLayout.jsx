@@ -91,7 +91,7 @@ const menus = [
     },
     {
         id: 9,
-        label: "Contratos",
+        label: "Contracts",
         icon: faHandshake,
         href: route("Manager.Contratos.index"),
         controllers: ["Contratos"],

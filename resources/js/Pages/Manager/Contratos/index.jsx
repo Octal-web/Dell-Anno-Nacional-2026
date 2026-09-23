@@ -31,7 +31,7 @@ const Page = () => {
             <Breadcrumb
                 icon={faHandshake}
                 items={breadcrumbItems}
-                current="Contratos"
+                current="Contracts"
                 idioma={idioma.codigo}
                 idiomas={idiomas}
             />
