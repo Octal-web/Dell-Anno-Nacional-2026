@@ -123,7 +123,7 @@ export const AboutPractices = ({ content }) => {
                                                     <img
                                                         src={item.image}
                                                         alt="Practice icon"
-                                                        className="w-full h-full object-contain"
+                                                        className="w-full h-full object-contain opacity-10"
                                                     />
                                                 ) : (
                                                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
