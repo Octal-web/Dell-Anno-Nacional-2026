@@ -79,134 +79,141 @@ class SitemapController
                 });
         }
 
-        Site::query()
-            ->where([
-                'excluido' => null,
-                'marca_id' => 2
-            ])
-            ->whereNotIn('slug', [
-                'loja-teste',
-            ])
-            ->get()
-            ->each(function ($item) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('LandingPage.index', [
-                            'slug' => $item->slug,
-                        ])
-                    )
-                        ->setLastModificationDate(Carbon::parse($item->modificado ?? $item->criado))
-                        ->setPriority(0.7)
-                );
-            });
+        if (Route::has('LandingPage.index'))
+            Site::query()
+                ->where([
+                    'excluido' => null,
+                    'marca_id' => 2
+                ])
+                ->whereNotIn('slug', [
+                    'loja-teste',
+                ])
+                ->get()
+                ->each(function ($item) use ($sitemap) {
+                    $sitemap->add(
+                        Url::create(
+                            route('LandingPage.index', [
+                                'slug' => $item->slug,
+                            ])
+                        )
+                            ->setLastModificationDate(Carbon::parse($item->modificado ?? $item->criado))
+                            ->setPriority(0.7)
+                    );
+                });
 
-        Ambiente::query()
-            ->where([
-                'excluido' => null,
-                'visivel' => true
-            ])
-            ->get()
-            ->each(function ($item) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('Produtos.produto', [
-                            'slug' => $item->slug,
-                        ])
-                    )
-                        ->setLastModificationDate($item->modificado ?? $item->criado)
-                        ->setPriority(0.6)
-                );
-            });
+        if (Route::has('Produtos.produto'))
+            Ambiente::query()
+                ->where([
+                    'excluido' => null,
+                    'visivel' => true
+                ])
+                ->get()
+                ->each(function ($item) use ($sitemap) {
+                    $sitemap->add(
+                        Url::create(
+                            route('Produtos.produto', [
+                                'slug' => $item->slug,
+                            ])
+                        )
+                            ->setLastModificationDate($item->modificado ?? $item->criado)
+                            ->setPriority(0.6)
+                    );
+                });
 
-        Loja::query()
-            ->where([
-                'excluido' => null,
-                'visivel' => true
-            ])
-            ->get()
-            ->each(function ($loja) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('Lojas.loja', [
-                            'slug' => $loja->slug,
-                        ])
-                    )
-                        ->setLastModificationDate($loja->modificado ?? $loja->criado)
-                        ->setPriority(0.6)
-                );
-            });
+        if (Route::has('Lojas.loja'))
+            Loja::query()
+                ->where([
+                    'excluido' => null,
+                    'visivel' => true
+                ])
+                ->get()
+                ->each(function ($loja) use ($sitemap) {
+                    $sitemap->add(
+                        Url::create(
+                            route('Lojas.loja', [
+                                'slug' => $loja->slug,
+                            ])
+                        )
+                            ->setLastModificationDate($loja->modificado ?? $loja->criado)
+                            ->setPriority(0.6)
+                    );
+                });
 
-        ProjetoLoja::query()
-            ->where([
-                'excluido' => null,
-                'visivel' => true
-            ])
-            ->get()
-            ->each(function ($loja) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('Lojas.Projetos.projeto', [
-                            'slug' => $loja->slug,
-                        ])
-                    )
-                        ->setLastModificationDate($loja->modificado ?? $loja->criado)
-                        ->setPriority(0.6)
-                );
-            });
+        if (Route::has('Lojas.Projetos.projeto'))
+            ProjetoLoja::query()
+                ->where([
+                    'excluido' => null,
+                    'visivel' => true
+                ])
+                ->get()
+                ->each(function ($loja) use ($sitemap) {
+                    $sitemap->add(
+                        Url::create(
+                            route('Lojas.Projetos.projeto', [
+                                'slug' => $loja->slug,
+                            ])
+                        )
+                            ->setLastModificationDate($loja->modificado ?? $loja->criado)
+                            ->setPriority(0.6)
+                    );
+                });
 
-        Showroom::query()
-            ->where([
-                'excluido' => null,
-                'visivel' => true
-            ])
-            ->get()
-            ->each(function ($item) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('Showrooms.showroom', [
-                            'slug' => $item->slug,
-                        ])
-                    )
-                        ->setLastModificationDate($item->modificado ?? $item->criado)
-                        ->setPriority(0.6)
-                );
-            });
+        if (Route::has('Showrooms.showroom'))
+            Showroom::query()
+                ->where([
+                    'excluido' => null,
+                    'visivel' => true
+                ])
+                ->get()
+                ->each(function ($item) use ($sitemap) {
+                    $sitemap->add(
+                        Url::create(
+                            route('Showrooms.showroom', [
+                                'slug' => $item->slug,
+                            ])
+                        )
+                            ->setLastModificationDate($item->modificado ?? $item->criado)
+                            ->setPriority(0.6)
+                    );
+                });
 
-        Post::query()
-            ->where([
-                'excluido' => null,
-                'visivel' => true
-            ])
-            ->get()
-            ->each(function ($item) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('Blog.post', [
-                            'slug' => $item->slug,
-                        ])
-                    )
-                        ->setLastModificationDate($item->modificado ?? $item->criado)
-                        ->setPriority(0.6)
-                );
-            });
+        if (Route::has('Blog.post'))
+            Post::query()
+                ->where([
+                    'excluido' => null,
+                    'visivel' => true
+                ])
+                ->get()
+                ->each(function ($item) use ($sitemap) {
+                    $sitemap->add(
+                        Url::create(
+                            route('Blog.post', [
+                                'slug' => $item->slug,
+                            ])
+                        )
+                            ->setLastModificationDate($item->modificado ?? $item->criado)
+                            ->setPriority(0.6)
+                    );
+                });
 
-        Mostra::query()
-            ->where([
-                'excluido' => null,
-                'visivel' => true
-            ])
-            ->get()
-            ->each(function ($item) use ($sitemap) {
-                $sitemap->add(
-                    Url::create(
-                        route('Mostras.mostra', [
-                            'slug' => $item->slug,
-                        ])
-                    )
-                        ->setLastModificationDate($item->modificado ?? $item->criado)
-                        ->setPriority(0.6)
-                );
-            });
+        if (Route::has('Mostras.mostra'))
+            Mostra::query()
+                ->where([
+                    'excluido' => null,
+                    'visivel' => true
+                ])
+                ->get()
+                ->each(function ($item) use ($sitemap) {
+                    $sitemap->add(
+                        Url::create(
+                            route('Mostras.mostra', [
+                                'slug' => $item->slug,
+                            ])
+                        )
+                            ->setLastModificationDate($item->modificado ?? $item->criado)
+                            ->setPriority(0.6)
+                    );
+                });
 
         return $sitemap;
     }
