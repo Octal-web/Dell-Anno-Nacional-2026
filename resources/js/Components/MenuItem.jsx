@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link } from "@inertiajs/react";
 
 import { ProductsSubmenu } from './ProductsSubmenu';
+import { MenuSubmenu } from './MenuSubmenu';
 
 export const MenuItem = ({ item, isHeaderVisible, index, isMenuOpen }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +66,6 @@ export const MenuItem = ({ item, isHeaderVisible, index, isMenuOpen }) => {
                     data-after={item.name}
                 >
                     {item.name}
-                    <span className="ml-2 text-base">{isOpen ? "▲" : "▼"}</span>
                 </button>
             ) : typeof item.submenu === "string" && item.submenu === "Produtos" ? (
                 <button
@@ -91,23 +91,16 @@ export const MenuItem = ({ item, isHeaderVisible, index, isMenuOpen }) => {
                 typeof item.submenu === "string" && item.submenu === "Produtos" ? (
                     <ProductsSubmenu menuRef={menuRef} isMenuOpen={isOpen} isHeaderVisible={isHeaderVisible} />
                 ) : Array.isArray(item.submenu) && item.submenu.length > 0 ? (
-                    <ul
-                        ref={menuRef}
-                        className={`absolute left-0 mt-2 w-48 bg-white shadow-lg overflow-hidden transition-all z-[1] ${
-                            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                        }`}
-                    >
-                        {item.submenu.map((subItem, index) => (
-                            <li key={index} className="border-b border-gray-200 last:border-0">
-                                <Link
-                                    href={`${route(item.route)}#${subItem.slug}`} 
-                                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                                >
-                                    {subItem.nome ?? subItem.slug}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+                    <MenuSubmenu
+                        menuRef={menuRef}
+                        isMenuOpen={isOpen}
+                        isHeaderVisible={isHeaderVisible}
+                        onNavigate={() => setIsOpen(false)}
+                        items={item.submenu.map((subItem) => ({
+                            nome: subItem.nome ?? subItem.slug,
+                            href: subItem.route ? route(subItem.route) : `${route(item.route)}#${subItem.slug}`,
+                        }))}
+                    />
                 ) : null
             )}
         </li>

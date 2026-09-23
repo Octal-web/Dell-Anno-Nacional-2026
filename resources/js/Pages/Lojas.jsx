@@ -1,5 +1,5 @@
 import { router, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import DefaultLayout from "@/Layouts/DefaultLayout";
 
@@ -10,7 +10,7 @@ import { StoresText } from "@/Components/StoresText";
 
 const getInitialRegion = () => {
     const params = new URLSearchParams(window.location.search);
-    return params.get("region");
+    return params.get("region") === "eua" ? "eua" : "brasil";
 };
 
 const Page = () => {
@@ -19,10 +19,10 @@ const Page = () => {
     const [stores, setStores] = useState(initialStores);
     const [allStores, setAllStores] = useState(initialStores);
     const [loading, setLoading] = useState(true);
+    const regionFilterRef = useRef(null);
 
     const regions = [
         { nome: "Brasil", slug: "brasil" },
-        { nome: "América Latina", slug: "america-latina" },
         { nome: "EUA", slug: "eua" },
     ];
 
@@ -47,18 +47,26 @@ const Page = () => {
                 setStores(page.props.lojas);
                 setAllStores(page.props.lojas);
                 setLoading(false);
+                requestAnimationFrame(() => {
+                    if (regionFilterRef.current) {
+                        window.scrollTo({
+                            top: Math.max(0, window.scrollY + regionFilterRef.current.getBoundingClientRect().top - 80),
+                            behavior: "smooth",
+                        });
+                    }
+                });
             },
         });
     };
 
-    const isBrasil =
-        getInitialRegion() === "brasil" || getInitialRegion() === null;
+    const isBrasil = getInitialRegion() === "brasil";
 
     return (
         <DefaultLayout>
             <StoresText content={conteudos[0]} />
 
             <StoresRegionFilter
+                filterRef={regionFilterRef}
                 regions={regions}
                 selectedRegion={selectedRegion}
                 setSelectedRegion={setSelectedRegion}

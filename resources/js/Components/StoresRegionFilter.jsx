@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const StoresRegionFilter = ({ regions, selectedRegion, setSelectedRegion, onRegionChange }) => {
+export const StoresRegionFilter = ({ regions, selectedRegion, setSelectedRegion, onRegionChange, filterRef }) => {
     const handleRegionClick = (region) => {
         
         const currentParams = new URLSearchParams(window.location.search);
@@ -16,7 +16,7 @@ export const StoresRegionFilter = ({ regions, selectedRegion, setSelectedRegion,
     return (
         <section className="md:my-10">
             <div className="container max-w-x-large">
-                <div className="flex items-center justify-center gap-4 md:gap-10 border-b">
+                <div ref={filterRef} className="flex items-center justify-center gap-4 md:gap-10 border-b">
                     
                     {regions.map((region, index) => (
                         <button

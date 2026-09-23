@@ -27,17 +27,7 @@ class LojasController extends Controller
     {
         $idioma = inertia()->getShared('idioma');
 
-        $paises = [30];
-
-        if (request()->has('region')) {
-            if (request('region') == 'eua') {
-                $paises = [226];
-            } else if (request('region') == 'america-latina') {
-                $paises = [10, 26, 30, 43, 47, 52, 55, 61, 62, 64, 88, 92, 95, 138, 154, 165, 167, 168, 173, 202, 228, 231];
-            } else if (request('region') == 'brasil') {
-                $paises = [30];
-            }
-        }
+        $paises = request('region') === 'eua' ? [226] : [30];
 
         $lojas = Loja::query()
             ->where([

@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 
+import { InputMask } from "@react-input/mask";
 import Select from 'react-select';
 
 import AnimatedCheckMark from './AnimatedCheckMark';
 
-export const ProductsForm = ({ content }) => {
+export const ProductsForm = ({ content, posicaoForm = "Não informado" }) => {
     const { message, estados } = usePage().props;
 
     const [showInfo, setShowInfo] = useState(false);
     const [cities, setCities] = useState([]);
     const [isProcessing, setIsProcessing] = useState(false);
     const [isSuccessful, setIsSuccessful] = useState(false);
-
+    
+    const [phoneMask, setPhoneMask] = useState("(__) ____-____");
+    
     const { data, setData, post, processing, errors, clearErrors } = useForm({
         nome: '',
         email: '',
@@ -22,7 +25,51 @@ export const ProductsForm = ({ content }) => {
         estado_id: '',
         mensagem: '',
         politica: false,
+        
+        origem: "",
+        campanha: "",
+        grupo: "",
+        anuncio: "",
+        entrada: "",
+        posicao_formulario: posicaoForm
     });
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        const now = new Date();
+
+        now.setHours(now.getHours() - 3);
+
+        const entrada = now.toISOString().slice(0, 19).replace("T", " ");
+
+        setData((currentData) => ({
+            ...currentData,
+
+            origem: params.get("origin") || params.get("utm_source") || "",
+
+            campanha:
+                params.get("campaign") || params.get("utm_campaign") || "",
+
+            grupo:
+                params.get("group") ||
+                params.get("utm_group") ||
+                params.get("utm_medium") ||
+                "",
+
+            anuncio: params.get("ad") || params.get("utm_content") || "",
+
+            entrada,
+        }));
+    }, []);
+
+    useEffect(() => {
+        const numbers = data.telefone.replace(/\D/g, "");
+
+        setPhoneMask(
+            numbers.length >= 10 ? "(__) _____-____" : "(__) ____-____",
+        );
+    }, [data.telefone]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -108,7 +155,7 @@ export const ProductsForm = ({ content }) => {
                     <div className="mb-3 md:mb-5 min-[1440px]:mb-7 flex gap-3 md:gap-10 lg:gap-16 flex-col lg:flex-row">
                         <div className="w-full lg:w-1/2">
                             <label htmlFor="telefone" className="inline-block font-secondary text-neutral-600 2xl:mb-2">Telefone</label>
-                            <input type="text" name="telefone" value={data.telefone} onChange={handleChange} placeholder="Seu número de telefone" className="w-full h-12 px-0 font-secondary border-0 border-b border-b-gray-300 focus:outline-none focus:ring-0 focus:border-b-black focus:shadow-inner transition-colors duration-200 placeholder:text-gray-500 placeholder:text-opacity-50" />
+                            <InputMask type="text" name="telefone" mask={phoneMask} value={data.telefone} replacement={{ _: /\d/ }} onChange={handleChange} placeholder="Seu número de telefone" className="w-full h-12 px-0 font-secondary border-0 border-b border-b-gray-300 focus:outline-none focus:ring-0 focus:border-b-black focus:shadow-inner transition-colors duration-200 placeholder:text-gray-500 placeholder:text-opacity-50" />
                             {errors.telefone && <p className="text-xs text-white bg-red-900 px-3 py-1.5 mt-2">{errors.telefone}</p>}
                         </div>
 
@@ -174,6 +221,42 @@ export const ProductsForm = ({ content }) => {
                             {errors.cidade_id && <p className="text-xs text-white bg-red-900 px-3 py-1.5 mt-2">{errors.cidade_id}</p>}
                         </div>
                     </div>
+
+                    <input
+                        type="hidden"
+                        name="origem"
+                        value={data.origem}
+                    />
+
+                    <input
+                        type="hidden"
+                        name="campanha"
+                        value={data.campanha}
+                    />
+
+                    <input
+                        type="hidden"
+                        name="grupo"
+                        value={data.grupo}
+                    />
+
+                    <input
+                        type="hidden"
+                        name="anuncio"
+                        value={data.anuncio}
+                    />
+
+                    <input
+                        type="hidden"
+                        name="entrada"
+                        value={data.entrada}
+                    />
+
+                    <input
+                        type="hidden"
+                        name="posicao_formulario"
+                        value={data.posicao_formulario}
+                    />
 
                     <div className="mb-3 md:mb-5 min-[1440px]:mb-7 flex gap-3 md:gap-10 lg:gap-16 flex-col lg:flex-row">
                         <div className="w-full">
