@@ -97,7 +97,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/design-consultation', [OrcamentosController::class, 'index'])->name('Orcamentos.index');
 
-    Route::get('/contracts', [ContratosController::class, 'index'])->name('Contratos.index');
+    Route::get('/contract', [ContratosController::class, 'index'])->name('Contratos.index');
 
     Route::get('/solicite-seu-projeto', [ContatoController::class, 'index'])->name('Contato.index');
     Route::post('/solicite-seu-projeto/enviar', [ContatoController::class, 'enviar'])->name('Contato.enviar');
@@ -325,24 +325,24 @@ Route::prefix('/manager')->group(function () {
         // Route::post('/showrooms/imagens/visibilidade/{id}', [ManagerImagensMostrasCidadesController::class, 'visibilidade'])->name('Manager.Mostras.Cidades.Imagens.visibilidade');
         // Route::post('/showrooms/imagens/excluir/{id}', [ManagerImagensMostrasCidadesController::class, 'excluir'])->name('Manager.Mostras.Cidades.Imagens.excluir');
 
-        Route::get('/contracts', [ManagerContratosController::class, 'index'])->name('Manager.Contratos.index');
+        Route::get('/contract', [ManagerContratosController::class, 'index'])->name('Manager.Contratos.index');
 
-        Route::post('/contracts/ordenar', [ManagerContratosController::class, 'ordenar'])->name('Manager.Contratos.ordenar');
-        Route::post('/contracts/visibilidade/{id}', [ManagerContratosController::class, 'visibilidade'])->name('Manager.Contratos.visibilidade');
-        Route::post('/contracts/excluir/{id}', [ManagerContratosController::class, 'excluir'])->name('Manager.Contratos.excluir');
+        Route::post('/contract/ordenar', [ManagerContratosController::class, 'ordenar'])->name('Manager.Contratos.ordenar');
+        Route::post('/contract/visibilidade/{id}', [ManagerContratosController::class, 'visibilidade'])->name('Manager.Contratos.visibilidade');
+        Route::post('/contract/excluir/{id}', [ManagerContratosController::class, 'excluir'])->name('Manager.Contratos.excluir');
 
-        Route::get('/contracts/adicionar', [ManagerContratosController::class, 'adicionar'])->name('Manager.Contratos.adicionar');
-        Route::post('/contracts/adicionar', [ManagerContratosController::class, 'novo'])->name('Manager.Contratos.novo');
-        Route::get('/contracts/editar/{id}', [ManagerContratosController::class, 'editar'])->name('Manager.Contratos.editar');
-        Route::post('/contracts/editar/{id}', [ManagerContratosController::class, 'atualizar'])->name('Manager.Contratos.atualizar');
+        Route::get('/contract/adicionar', [ManagerContratosController::class, 'adicionar'])->name('Manager.Contratos.adicionar');
+        Route::post('/contract/adicionar', [ManagerContratosController::class, 'novo'])->name('Manager.Contratos.novo');
+        Route::get('/contract/editar/{id}', [ManagerContratosController::class, 'editar'])->name('Manager.Contratos.editar');
+        Route::post('/contract/editar/{id}', [ManagerContratosController::class, 'atualizar'])->name('Manager.Contratos.atualizar');
 
 
-        Route::get('/contracts/imagens/{id}', [ManagerImagensContratosController::class, 'index'])->name('Manager.Contratos.Imagens.index');
-        Route::post('/contracts/imagens/adicionar/{id}', [ManagerImagensContratosController::class, 'novo'])->name('Manager.Contratos.Imagens.novo');
+        Route::get('/contract/imagens/{id}', [ManagerImagensContratosController::class, 'index'])->name('Manager.Contratos.Imagens.index');
+        Route::post('/contract/imagens/adicionar/{id}', [ManagerImagensContratosController::class, 'novo'])->name('Manager.Contratos.Imagens.novo');
 
-        Route::post('/contracts/imagens/ordenar/{id}', [ManagerImagensContratosController::class, 'ordenar'])->name('Manager.Contratos.Imagens.ordenar');
-        Route::post('/contracts/imagens/visibilidade/{id}', [ManagerImagensContratosController::class, 'visibilidade'])->name('Manager.Contratos.Imagens.visibilidade');
-        Route::post('/contracts/imagens/excluir/{id}', [ManagerImagensContratosController::class, 'excluir'])->name('Manager.Contratos.Imagens.excluir');
+        Route::post('/contract/imagens/ordenar/{id}', [ManagerImagensContratosController::class, 'ordenar'])->name('Manager.Contratos.Imagens.ordenar');
+        Route::post('/contract/imagens/visibilidade/{id}', [ManagerImagensContratosController::class, 'visibilidade'])->name('Manager.Contratos.Imagens.visibilidade');
+        Route::post('/contract/imagens/excluir/{id}', [ManagerImagensContratosController::class, 'excluir'])->name('Manager.Contratos.Imagens.excluir');
 
         Route::get('/contato', [ManagerContatoController::class, 'index'])->name('Manager.Contato.index');
 
