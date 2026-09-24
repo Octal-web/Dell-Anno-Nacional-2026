@@ -8,7 +8,7 @@ export const AboutSustain = ({ content }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center">
                     <Reveal direction="left">
                         <LetterReveal className='md:text-right text-4xl md:text-5xl 2xl:text-6xl font-secondary mb-5' text={content.titulo} />
-                        <img src={content.imagem} className="w-60 md:mb-10 md:ml-auto" />
+                        <img alt="Selos de sustentabilidade" src={content.imagem} className="w-60 md:mb-10 md:ml-auto pointer-events-none" />
                     </Reveal>
 
                     <Reveal
