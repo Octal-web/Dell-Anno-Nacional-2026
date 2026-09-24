@@ -54,8 +54,8 @@ const Page = () => {
                 tamanho: "col-span-12 md:col-span-8",
                 tipo: "imagem",
                 crop: true,
-                largura: 740,
-                altura: 400,
+                largura: 800,
+                altura: 600,
             },
         ],
     ];

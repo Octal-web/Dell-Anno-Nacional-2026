@@ -57,8 +57,8 @@ const Page = () => {
                 tamanho: "col-span-12 md:col-span-8",
                 tipo: "imagem",
                 crop: true,
-                largura: 740,
-                altura: 400,
+                largura: 800,
+                altura: 600,
                 imagem: contrato.imagem,
             },
         ],
@@ -154,7 +154,7 @@ const Page = () => {
                     />
                     Imagens
                 </Link>
-                <div className="mt-10">
+                <div className="mt-12">
                     <form onSubmit={handleSubmit}>
                         {inputItems.map((group, groupIndex) => (
                             <div
