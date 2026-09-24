@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\Acontecimento;
 use App\Models\Etapa;
-use App\Models\Imagem;
 
 class InstitucionalController extends Controller
 {
@@ -16,7 +14,8 @@ class InstitucionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $idioma = inertia()->getShared('idioma');
 
         $acontecimentos = Acontecimento::query()
@@ -28,15 +27,15 @@ class InstitucionalController extends Controller
                 'acontecimentosIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($acontecimento) {
+            ->map(function ($acontecimento) {
                 return [
                     'id' => $acontecimento->id,
                     'ano' => $acontecimento->ano,
@@ -54,15 +53,15 @@ class InstitucionalController extends Controller
                 'etapasIdiomas' => function ($q) use ($idioma) {
                     $q->whereHas('idiomas', function ($r) use ($idioma) {
                         $r->where('codigo', $idioma)
-                          ->orWhere('padrao', true);
+                            ->orWhere('padrao', true);
                     })
-                    ->orderBy('idioma_id', 'DESC');
+                        ->orderBy('idioma_id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($etapa) {
+            ->map(function ($etapa) {
                 return [
                     'id' => $etapa->id,
                     'imagem' => rafator('content/steps/thumbs/' . $etapa->imagem),
@@ -71,29 +70,9 @@ class InstitucionalController extends Controller
                 ];
             });
 
-        $imagensGaleria = Imagem::query()
-            ->where([
-                'excluido' => NULL,
-                'visivel' => true,
-                'controladora' => 'Institucional',
-                'acao' => 'index'
-            ])
-            ->orderBy('ordem', 'ASC')
-            ->orderBy('id', 'DESC')
-            ->get()
-            ->mapToGroups(function($imagem) {
-                return [
-                    $imagem->conteudo_id => [
-                        'id' => $imagem->id,
-                        'imagem' => asset('content/carousel/' . $imagem->imagem),
-                    ]
-                ];
-            });
-
         return Inertia::render('Institucional', [
             'acontecimentos' => $acontecimentos,
             'etapas' => $etapas,
-            'imagensGaleria' => $imagensGaleria
         ]);
     }
 };
