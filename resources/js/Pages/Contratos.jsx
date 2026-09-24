@@ -12,7 +12,7 @@ const Page = () => {
         <DefaultLayout>
             <ContractBanner content={conteudos[0]} />
             <ContractItems items={contratos}/>
-            <ProductsForm content={chamadaForm} />
+            <ProductsForm content={chamadaForm} posicaoForm="Página Contract"/>
         </DefaultLayout>
     );
 };

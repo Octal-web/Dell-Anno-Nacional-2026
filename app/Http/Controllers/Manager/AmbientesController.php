@@ -243,8 +243,9 @@ class AmbientesController extends Controller
         if ($ambiente && $ambiente->colecoes()->where(['excluido' => NULL])->exists()) {
             return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'O ambiente possui coleções e não pode ser excluído.']);
         }
+        $ambiente->excluido = Carbon::now();
 
-        $response = $ambiente ? $ambiente->update(['excluido' => Carbon::now()]) : false;
+        $response = $ambiente ? $ambiente->save() : false;
 
         return redirect()->back()->with('message', $response
             ? ['type' => 'alert', 'msg' => 'Registro excluído com sucesso.']
