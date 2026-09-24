@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conteudo;
 use App\Models\Contrato;
 use Inertia\Inertia;
 
@@ -56,8 +57,33 @@ class ContratosController extends Controller
                 ];
             });
 
+        $chamadaForm = Conteudo::query()
+            ->where([
+                'excluido' => NULL,
+                'id' => 14
+            ])
+            ->with([
+                'conteudosIdiomas' => function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($r) use ($idioma) {
+                        $r->where('codigo', $idioma)
+                            ->orWhere('padrao', true);
+                    })
+                        ->orderBy('idioma_id', 'DESC');
+                }
+            ])
+            ->first();
+
+        if ($chamadaForm) {
+            $chamadaForm = [
+                'id' => $chamadaForm->id,
+                'titulo' => $chamadaForm->conteudosIdiomas->isNotEmpty() ? $chamadaForm->conteudosIdiomas[0]->titulo : null,
+                'texto' => $chamadaForm->conteudosIdiomas->isNotEmpty() ? $chamadaForm->conteudosIdiomas[0]->texto : null,
+            ];
+        }
+
         return Inertia::render('Contratos', [
-            'contratos' => $contratos
+            'contratos' => $contratos,
+            'chamadaForm' => $chamadaForm
         ]);
     }
 }
