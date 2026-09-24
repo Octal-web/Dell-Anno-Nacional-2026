@@ -21,7 +21,7 @@ const Page = () => {
 
     const handleImageUpload = (processedImages) => {
         const imagesData = processedImages.map(({ original, resized }) => ({
-            img: original,
+            img: original ?? resized,
             img_alt: resized,
         }));
 
@@ -104,7 +104,7 @@ const Page = () => {
                     <div className="min-h-[calc(100vh-13rem)] lg:col-span-1">
                         <ImageUploader
                             onUpload={handleImageUpload}
-                            crop={false}
+                            crop={true}
                             size={{ largura: 450, altura: 357 }}
                         />
                     </div>

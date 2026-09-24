@@ -30,7 +30,7 @@ const Page = () => {
         const formData = new FormData();
 
         const imagesData = processedImages.map(({ original, resized }) => ({
-            img: original,
+            img: original ?? resized,
             img_alt: resized,
         }));
 
