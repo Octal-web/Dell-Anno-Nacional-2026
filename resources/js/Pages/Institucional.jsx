@@ -10,7 +10,7 @@ import { AboutSustain } from "@/Components/AboutSustain";
 import { AboutTimeline } from "@/Components/AboutTimeline";
 
 const Page = () => {
-    const { acontecimentos, etapas, imagensGaleria, conteudos } =
+    const { acontecimentos, etapas, conteudos } =
         usePage().props;
 
         return (
