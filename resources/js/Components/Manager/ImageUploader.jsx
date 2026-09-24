@@ -68,7 +68,7 @@ export const ImageUploader = ({ onUpload, crop, size }) => {
         const processedImages = await Promise.all(
             acceptedFiles.map(async (file) => {
                 const { blob, originalFile } = await resizeAndCropImage(file);
-                return crop ? { original: originalFile } : { resized: blob, original: originalFile };
+                return crop ? { resized: blob, original: originalFile } : { resized: blob };
             })
         );
 
