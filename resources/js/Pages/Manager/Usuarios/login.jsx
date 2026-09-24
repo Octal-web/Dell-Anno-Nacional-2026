@@ -81,7 +81,7 @@ const Login = () => {
                                 <div className="flex items-center">
                                     <Link
                                         href={route('Home.index')}
-                                        className="text-xs text-white font-semibold hover:underline"
+                                        className="text-xs text-black font-semibold hover:underline"
                                     >   
                                         <FontAwesomeIcon icon={faArrowLeft} className="mr-1" />
                                         Ir para o site

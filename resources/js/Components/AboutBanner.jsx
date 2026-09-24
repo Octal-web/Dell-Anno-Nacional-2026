@@ -42,7 +42,8 @@ export const AboutBanner = ({ content }) => {
 
             <img
                 src="/site/img/logo.svg"
-                className="ml-auto mb-14 md:mb-32 w-[55vw] opacity-5"
+                aria-hidden="true"
+                className="ml-auto mb-14 md:mb-32 w-[55vw] opacity-5 pointer-events-none"
             />
             <div className="container max-w-large">
                 <Reveal direction="bottom" scale={true}>

@@ -76,3 +76,18 @@ form .admin-select__option {
 form .admin-select__input:focus {
     @apply ring-0;
 }
+
+table .sortable-fallback {
+	@apply table bg-slate-50;
+}
+
+.sortable-ghost {
+	@apply relative;
+}
+.sortable-ghost::after {
+	@apply bg-white content-[''] absolute inset-0 border-2 border-slate-600 border-dashed z-10;
+}
+
+.sortable-fallback {
+  background: #fff;
+}

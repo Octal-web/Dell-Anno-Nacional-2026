@@ -126,7 +126,7 @@ const Page = () => {
                         <ImageUploader
                             onUpload={handleImageUpload}
                             crop={false}
-                            size={{ largura: 740, altura: 400 }}
+                            size={{ largura: 1920, altura: 1080 }}
                         />
                     </div>
                 </div>
