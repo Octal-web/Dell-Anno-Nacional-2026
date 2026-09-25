@@ -104,7 +104,7 @@ export const AboutPractices = ({ content }) => {
                                     spaceBetween: 20,
                                 },
                                 1280: {
-                                    slidesPerView: 6,
+                                    slidesPerView: 5,
                                     spaceBetween: 24,
                                 },
                             }}
