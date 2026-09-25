@@ -50,7 +50,7 @@ const Page = () => {
                 tipo: "imagem",
                 crop: true,
                 largura: 740,
-                altura: 400,
+                altura: 500,
             },
         ],
     ];
