@@ -10,6 +10,7 @@ use App\Models\Campanha;
 use App\Models\Destaque;
 use App\Models\Ambiente;
 use App\Models\Post;
+use App\Models\Acontecimento;
 
 use Carbon\Carbon;
 
@@ -190,12 +191,39 @@ class HomeController extends Controller
                 ];
             });
 
+        $acontecimentos = Acontecimento::query()
+            ->where([
+                'excluido' => NULL,
+                'visivel' => true
+            ])
+            ->with([
+                'acontecimentosIdiomas' => function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($r) use ($idioma) {
+                        $r->where('codigo', $idioma)
+                          ->orWhere('padrao', true);
+                    })
+                    ->orderBy('idioma_id', 'DESC');
+                }
+            ])
+            ->orderBy('ordem', 'ASC')
+            ->orderBy('id', 'DESC')
+            ->get()
+            ->map(function($acontecimento) {
+                return [
+                    'id' => $acontecimento->id,
+                    'ano' => $acontecimento->ano,
+                    'imagem' => rafator('content/timeline/thumbs/' . $acontecimento->imagem),
+                    'descricao' => $acontecimento->acontecimentosIdiomas->isNotEmpty() ? $acontecimento->acontecimentosIdiomas[0]->descricao : null,
+                ];
+            });
+
         return Inertia::render('Home', [
             'slides' => $slides,
             'campanhas' => $campanhas,
             'ambientes' => $ambientes,
             'destaques' => $destaques,
-            'posts' => $posts
+            'posts' => $posts,
+            'acontecimentos' => $acontecimentos
         ]);
     }
 };
