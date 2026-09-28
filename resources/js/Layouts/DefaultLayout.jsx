@@ -163,7 +163,11 @@ const DefaultLayout = ({ children }) => {
             name: "Produtos",
             route: "Produtos.index",
             external: false,
-            submenu: "Produtos",
+            // submenu: "Produtos",
+            submenu: [
+                // { nome: "Produtos", route: "Produtos.index" },
+                { nome: "Acabamentos", route: "Acabamentos.index" },
+            ],
         },
         { name: "Lojas", route: "Lojas.index", external: false },
         {
@@ -379,14 +383,14 @@ const DefaultLayout = ({ children }) => {
                                         </Link>
                                     </li>
 
-                                    <li>
+                                    {/* <li>
                                         <Link
                                             href={route("Produtos.index")}
                                             className="block font-secondary text-white text-sm font-light leading-none transition-all opacity-70 hover:opacity-100"
                                         >
                                             Produtos
                                         </Link>
-                                    </li>
+                                    </li> */}
 
                                     <li>
                                         <Link

@@ -69,8 +69,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/sobre', [InstitucionalController::class, 'index'])->name('Institucional.index');
 
-    Route::get('/produtos', [ProdutosController::class, 'index'])->name('Produtos.index');
-    Route::get('/produtos/{slug}', [ProdutosController::class, 'produto'])->name('Produtos.produto');
+    // Route::get('/produtos', [ProdutosController::class, 'index'])->name('Produtos.index');
+    // Route::get('/produtos/{slug}', [ProdutosController::class, 'produto'])->name('Produtos.produto');
     // Route::get('/produtos/{slug}/more', [ProdutosController::class, 'colecoes'])->name('Produtos.colecoes');
 
     Route::get('/lojas', [LojasController::class, 'index'])->name('Lojas.index');

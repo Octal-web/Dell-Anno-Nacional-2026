@@ -2,98 +2,108 @@
 
 namespace App\Services;
 
-use App\Models\Contato;
-use App\Models\Loja;
-
-use Illuminate\Http\UploadedFile;
+use App\Mail\BudgetWelcome;
+use App\Models\Cidade;
+use App\Models\Cliente;
+use App\Models\Expectativa;
+use App\Models\Lead;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ContactService
 {
-    public function create(array $data): Contato
+    public function create(array $data): array
     {
-        return DB::transaction(function () use ($data) {
-            $lojaId = $this->resolveStoreId($data['cidade_id'] ?? null, $data['estado_id'] ?? null);
+        $cidade = Cidade::with('estado')
+            ->where('estado_id', $data['estado_id'])
+            ->findOrFail($data['cidade_id']);
 
-            $contatoData = collect($data)
-                ->except(['policy', 'estado_id'])
-                ->merge([ 
-                    'loja_id' => $lojaId
-                ])
-                ->toArray();
+        $result = (new Cliente())->getConnection()->transaction(function () use ($data, $cidade) {
+            return DB::connection('8poroito')->transaction(function () use ($data, $cidade) {
+                $cliente = Cliente::create([
+                    'nome' => $data['nome'],
+                    'telefone' => $data['telefone'],
+                    'email' => $data['email'],
+                    'uf' => $cidade->estado->uf,
+                    'cidade' => $cidade->nome,
+                    'cod_marca' => 'dellanno',
+                    'token' => Str::random(32),
+                    'canal_atendimento_id' => 1,
+                    'tipo_cadastro' => 'L',
+                    'status_cliente' => 'C',
+                    'data' => now(),
+                    'mkt_midia_origem' => $data['origem'] ?? null,
+                    'mkt_campanha_origem' => $data['campanha'] ?? null,
+                    'mkt_grupo_origem' => $data['grupo'] ?? null,
+                    'mkt_anuncio_origem' => $data['anuncio'] ?? null,
  
-            $contato = Contato::create($contatoData);
- 
-            $emails = ['francimara.frozza@unicasamoveis.com.br'];
-            $temLoja = false;
-            
-            if ($lojaId) {
-                $loja = Loja::with('emails')->find($lojaId);
-                if ($loja && $loja->emails->isNotEmpty()) {
-                    $emails = $loja->emails->pluck('email')->toArray();
-                    $temLoja = true;
+                ]);
+
+                $observacao = $data['mensagem'];
+
+                if (!empty($data['ocupacao'])) {
+                    $observacao .= "\n\nCargo: " . $data['ocupacao'];
                 }
-            }
 
-            $mailData = [
-                'emails' => $emails,
-                'tem_loja' => $temLoja,
-                'contato_nome' => $contato->name,
-                'contato_email' => $contato->email,
-                'contato_regiao' => $contato->cidade->name . ' - ' . $contato->cidade->estado->codigo,
-            ];
+                $expectativa = Expectativa::create([
+                    'cliente_id' => $cliente->id,
+                    'cod_marca' => 'dellanno',
+                    'observacao_cliente' => $observacao,
+                ]);
 
-            $this->sendInvite($mailData);
+                $conversoes = Lead::query()->where([
+                    'email' => $cliente->email,
+                    'cliente' => 'dellanno',
+                    'projeto' => 'facaseuprojeto',
+                ])->count();
 
-            return $contato;
+                $lead = Lead::create([
+                    'nome' => $cliente->nome,
+                    'email' => $cliente->email,
+                    'telefone' => $cliente->telefone,
+                    'uf' => $cliente->uf,
+                    'cidade' => $cliente->cidade,
+                    'conversoes' => $conversoes,
+                    'cliente' => 'dellanno',
+                    'projeto' => 'facaseuprojeto',
+                    'token' => $cliente->token,
+                    'entrada' => !empty($data['entrada']) ? Carbon::parse($data['entrada']) : null,
+                    'dispositivo' => $this->detectDevice(),
+                    'posicao_formulario' => $data['posicao_formulario'] ?? null,
+                    'origem' => $data['origem'] ?? null,
+                    'campanha' => $data['campanha'] ?? null,
+                    'grupo' => $data['grupo'] ?? null,
+                    'anuncio' => $data['anuncio'] ?? null,
+                    'termo' => $data['termo'] ?? null,
+                ]);
+
+                return compact('cliente', 'expectativa', 'lead');
+            });
         });
+
+        // Send only after both databases have committed the contact.
+        try {
+            Mail::to($result['cliente']->email)->send(new BudgetWelcome());
+        } catch (\Throwable $exception) {
+            // A mail failure must not prompt a duplicate CRM submission.
+            report($exception);
+        }
+
+        return $result;
     }
 
-    protected function resolveStoreId(?int $cidadeId, ?int $estadoId): ?int
+    protected function detectDevice(): string
     {
-        if ($cidadeId) {
-            $loja = DB::table('loja_cidade')
-                ->join('lojas', 'lojas.id', '=', 'loja_cidade.loja_id')
-                ->where('loja_cidade.cidade_id', $cidadeId)
-                ->select('lojas.id')
-                ->first();
+        $userAgent = request()->userAgent() ?? '';
 
-            if ($loja) {
-                return $loja->id;
+        foreach (['iPhone', 'iPad', 'Android', 'BlackBerry', 'Windows Phone'] as $agent) {
+            if (stripos($userAgent, $agent) !== false) {
+                return 'Mobile';
             }
         }
 
-        if ($estadoId) {
-            $loja = DB::table('loja_estado')
-                ->where('estado_id', $estadoId)
-                ->join('lojas', 'lojas.id', '=', 'loja_estado.loja_id')
-                ->select('lojas.id')
-                ->first();
-
-            if ($loja) {
-                return $loja->id;
-            }
-        }
-
-        return null;
+        return 'Computador';
     }
-     
-    protected function sendInvite(array $data): void 
-    { 
-        foreach ($data['emails'] as $email) {
-            Mail::send('emails.notifyStore', $data, function ($message) use ($email, $data) { 
-                $message->from('tradeprogramdellanno@dellanno.com', 'Dell Anno') 
-                        ->to($email) 
-                        ->bcc('rafael@8poroito.com.br')
-                        ->subject('A new contact has been sent from the website!'); 
-                
-                if ($data['tem_loja']) {
-                    $message->bcc('francimara.frozza@unicasamoveis.com.br');
-                }
-            }); 
-        }
-    } 
 }

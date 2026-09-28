@@ -8,9 +8,10 @@ import { HomeCampaigns } from '@/Components/HomeCampaigns';
 import { HomeHighlights } from '@/Components/HomeHighlights';
 import { HomeProducts } from '@/Components/HomeProducts';
 import { HomePosts } from '@/Components/HomePosts';
+import { AboutTimeline } from '@/Components/AboutTimeline';
 
 const Page = () => {
-    const { slides, campanhas, destaques, ambientes, posts, conteudos } = usePage().props;
+    const { slides, campanhas, destaques, ambientes, posts, acontecimentos, conteudos } = usePage().props;
     
     return (
         <DefaultLayout>
@@ -20,7 +21,9 @@ const Page = () => {
 
             <HomeHighlights highlights={destaques.slice(2)} />
 
-            <HomeProducts content={conteudos[0]} products={ambientes} />
+            {/* <HomeProducts content={conteudos[0]} products={ambientes} /> */}
+
+            <AboutTimeline slides={acontecimentos} />
 
             <HomePosts content={conteudos[1]} posts={posts} />
 
