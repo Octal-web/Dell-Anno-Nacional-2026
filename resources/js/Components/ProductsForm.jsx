@@ -30,6 +30,7 @@ export const ProductsForm = ({ content, posicaoForm = "Não informado" }) => {
         campanha: "",
         grupo: "",
         anuncio: "",
+        termo: "",
         entrada: "",
         posicao_formulario: posicaoForm
     });
@@ -58,6 +59,7 @@ export const ProductsForm = ({ content, posicaoForm = "Não informado" }) => {
                 "",
 
             anuncio: params.get("ad") || params.get("utm_content") || "",
+            termo: params.get("utm_term") || "",
 
             entrada,
         }));
@@ -112,7 +114,8 @@ export const ProductsForm = ({ content, posicaoForm = "Não informado" }) => {
             setIsSuccessful(true);
 
             setTimeout(() => {
-                setData({
+                setData((currentData) => ({
+                    ...currentData,
                     nome: '',
                     email: '',
                     telefone: '',
@@ -120,8 +123,8 @@ export const ProductsForm = ({ content, posicaoForm = "Não informado" }) => {
                     cidade_id: '',
                     estado_id: '',
                     mensagem: '',
-                    policy: false,
-                });
+                    politica: false,
+                }));
 
                 setIsSuccessful(false);
             }, 3000);
@@ -198,7 +201,7 @@ export const ProductsForm = ({ content, posicaoForm = "Não informado" }) => {
                                     name="cidade_id"
                                     options={cities}
                                     value={
-                                        cities.flatMap(group => group.options).find(option => option.value === data.cidade_id) || null
+                                        cities.find(option => option.value === data.cidade_id) || null
                                     }
                                     onChange={(selected) => {
                                         setData('cidade_id', selected?.value || '')
@@ -244,6 +247,12 @@ export const ProductsForm = ({ content, posicaoForm = "Não informado" }) => {
                         type="hidden"
                         name="anuncio"
                         value={data.anuncio}
+                    />
+
+                    <input
+                        type="hidden"
+                        name="termo"
+                        value={data.termo}
                     />
 
                     <input

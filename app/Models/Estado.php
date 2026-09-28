@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Estado extends Model
 {
+    protected $connection = 'unicasa';
+    
     protected $table = 'estados';
 
     public $timestamps = false;
