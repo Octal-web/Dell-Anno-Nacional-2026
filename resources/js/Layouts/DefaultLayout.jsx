@@ -195,6 +195,7 @@ const DefaultLayout = ({ children }) => {
                 <title>{pagina.titulo}</title>
                 <meta name="description" content={pagina.descricao} />
 
+                <link rel="canonical" href={window.location.origin + window.location.pathname} />
                 <meta name="twitter:card" content="summary" />
 
                 <meta property="og:url" content={window.location.pathname} />
