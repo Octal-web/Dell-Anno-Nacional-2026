@@ -113,6 +113,14 @@ class LojasController extends Controller
                     })
                         ->orderBy('idioma_id', 'DESC');
                 },
+                'showrooms' => function ($q) {
+                    $q->where([
+                        'excluido' => NULL,
+                        'visivel' => true
+                    ])
+                        ->orderBy('ordem', 'ASC')
+                        ->orderBy('id', 'DESC');
+                },
                 'projetos' => function ($q) use ($idioma) {
                     $q->where([
                         'excluido' => NULL,
@@ -163,6 +171,7 @@ class LojasController extends Controller
             'horario_atendimento' => $loja->lojasIdiomas->isNotEmpty() ? $loja->lojasIdiomas[0]->horario_atendimento : null,
             'slug' => $loja->slug,
             'link_showroom' => $loja->link_showroom,
+            'showroom_slug' => $loja->showrooms->isNotEmpty() ? $loja->showrooms[0]->slug : null,
             'imagem' => rafator('content/stores/b/' . $loja->imagem),
             'imagem_showroom' => rafator('content/stores/showroom/' . $loja->imagem_showroom),
             'video_showroom' => $loja->video_showroom ? rafator('content/stores/showroom/video/' . $loja->video_showroom) : null,

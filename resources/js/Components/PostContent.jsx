@@ -1,7 +1,7 @@
 export const PostContent = ({ post }) => {
     return (
         <section className="py-16 md:py-24 2xl:py-30">
-            <div className="container max-w-medium">
+            <div className="container max-w-[80rem]">
                 <div
                     className="
                         [&_img]:h-auto [&_img]:!cursor-auto [&_h1]:text-5xl [&_h1]:my-10 [&_h1]:font-light [&_h1]:uppercase [&_h2]:text-4xl [&_h2]:my-10 [&_h2]:font-light [&_h2]:uppercase [&_h3]:text-2xl [&_h3]:my-10 [&_h3]:font-light [&_h3]:uppercase [&>*:first-child]:!mt-0 [&_p+ul]:mt-2.5 [&_ul+p]:mt-2.5 [&_ul]:list-disc [&_ul]:list-inside
