@@ -74,8 +74,6 @@ class SlidesController extends Controller
 
             $response = $slide->save();
 
-            $slide_idioma->titulo = $request->titulo;
-            $slide_idioma->descricao = $request->descricao;
             $slide_idioma->link = $request->link;
             $slide_idioma->texto_botao = $request->texto_botao;
 
@@ -147,8 +145,6 @@ class SlidesController extends Controller
         $slideData = [
             'id' => $slide->id,
             'tipo' => $slide->tipo,
-            'titulo' => count($slide->slidesIdiomas) ? $slide->slidesIdiomas[0]->titulo : null,
-            'descricao' => count($slide->slidesIdiomas) ? $slide->slidesIdiomas[0]->descricao : null,
             'link' => count($slide->slidesIdiomas) ? $slide->slidesIdiomas[0]->link : null,
             'texto_botao' => count($slide->slidesIdiomas) ? $slide->slidesIdiomas[0]->texto_botao : null,
         ];
@@ -242,8 +238,6 @@ class SlidesController extends Controller
                 }
             }
 
-            $slide_idioma->titulo = $request->titulo;
-            $slide_idioma->descricao = $request->descricao;
             $slide_idioma->link = $request->link;
             $slide_idioma->texto_botao = $request->texto_botao;
 

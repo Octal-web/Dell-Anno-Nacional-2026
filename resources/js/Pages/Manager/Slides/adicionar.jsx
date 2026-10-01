@@ -19,8 +19,6 @@ const Page = () => {
     ];
 
     const inputItems = [
-        [{ titulo: 'Título', name: 'titulo', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto', max: 120 }],
-        [{ titulo: 'Descrição', name: 'descricao', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto_longo', max: 220 }],
         [{ titulo: 'Link', name: 'link', tamanho: 'col-span-12 lg:col-span-4', tipo: 'texto', max: 120 }, { titulo: 'Texto do botão', name: 'texto_botao', tamanho: 'col-span-12 lg:col-span-4', tipo: 'texto', max: 32 }],
         ...(tipo === 'imagem'
             ? [[

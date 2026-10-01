@@ -22,8 +22,6 @@ class PostSlideRequest extends FormRequest
     public function rules()
     {  
         return [
-            'titulo'  => 'required',
-            'descricao'  => 'required',
             'link'  => 'nullable|url',
             'img' => request('tipo') !== 'imagem'
                 ? 'nullable'
@@ -59,8 +57,6 @@ class PostSlideRequest extends FormRequest
     public function messages()
     {
         return [
-            'titulo.required'  => 'Por favor, informe o título.',
-            'descricao.required'  => 'Por favor, informe a descrição.',
             'link.url'  => 'Por favor, informe um link válido.',
             'img.required' => 'Por favor, selecione uma imagem.',
             'img.image' => 'Por favor, selecione uma imagem válida.',
