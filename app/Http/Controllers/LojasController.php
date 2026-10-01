@@ -132,7 +132,7 @@ class LojasController extends Controller
             ->first();
 
         if (!$loja) {
-            return Inertia::location(route('Lojas.index'));
+            return redirect()->route('Lojas.index', [], 301);
         }
 
         $imagensShowroom = ImagemShowroom::query()

@@ -91,7 +91,7 @@ class ShowroomsController extends Controller
             ->first();
 
         if (!$showroom) {
-            return Inertia::location(route('Showrooms.index'));
+            return redirect()->route('Showrooms.index', [], 301);
         }
 
         $showroomData = [

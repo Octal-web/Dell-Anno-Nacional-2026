@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Expectativa extends Model
 {
-    // protected $connection = 'unicasa';
+    protected $connection = 'unicasa';
 
     protected $table = 'expectativa_projetos';
 

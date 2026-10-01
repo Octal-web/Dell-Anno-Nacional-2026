@@ -97,7 +97,7 @@ class LojasProjetosController extends Controller
             ->first();
 
         if (!$projeto) {
-            return Inertia::location(route('Projetos.index'));
+            return redirect()->route('Projetos.index', [], 301);
         }
 
         $projetoData = [

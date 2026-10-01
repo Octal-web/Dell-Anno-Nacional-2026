@@ -72,7 +72,7 @@ const Page = () => {
                     "Image",
                 ],
                 tipo: "texto_longo",
-                max: 6500,
+                max: 7000,
             },
         ],
         [

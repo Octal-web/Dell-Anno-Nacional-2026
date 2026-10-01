@@ -112,7 +112,7 @@ class ProdutosController extends Controller
             ->first();
 
         if (!$ambiente) {
-            return Inertia::location(route('Produtos.index'));
+            return redirect()->route('Produtos.index', [], 301);
         }
 
         $ambiente_data = [

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Conteudo;
 use App\Models\Loja;
-use App\Models\Mostra;
 use App\Models\Pagina;
 use App\Models\Post;
 use App\Models\Ambiente;
@@ -188,25 +187,6 @@ class SitemapController
                     $sitemap->add(
                         Url::create(
                             route('Blog.post', [
-                                'slug' => $item->slug,
-                            ])
-                        )
-                            ->setLastModificationDate($item->modificado ?? $item->criado)
-                            ->setPriority(0.6)
-                    );
-                });
-
-        if (Route::has('Mostras.mostra'))
-            Mostra::query()
-                ->where([
-                    'excluido' => null,
-                    'visivel' => true
-                ])
-                ->get()
-                ->each(function ($item) use ($sitemap) {
-                    $sitemap->add(
-                        Url::create(
-                            route('Mostras.mostra', [
                                 'slug' => $item->slug,
                             ])
                         )

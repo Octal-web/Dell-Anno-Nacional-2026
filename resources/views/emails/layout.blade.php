@@ -12,7 +12,7 @@
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;margin:0 auto;">
                     <tr>
                         <td align="center" style="padding:30px 20px 20px;border-bottom:1px solid #161616;">
-                            <img src="{{ $message->embed(public_path('admin/img/logo.png')) }}" alt="Dell Anno" width="150" style="display:block;width:150px;height:auto;border:0;">
+                            <img src="{{ $message->embed(public_path('site/img/logo-black.png')) }}" alt="Dell Anno" width="150" style="display:block;width:150px;height:auto;border:0;">
                         </td>
                     </tr>
                     <tr>
@@ -31,7 +31,7 @@
                     </tr>
                     <tr>
                         <td align="center" style="padding:20px 30px;">
-                            <img src="{{ $message->embed(public_path('admin/img/logo.png')) }}" alt="Dell Anno" width="150" style="display:block;width:150px;height:auto;border:0;">
+                            <img src="{{ $message->embed(public_path('site/img/logo-black.png')) }}" alt="Dell Anno" width="150" style="display:block;width:150px;height:auto;border:0;">
                         </td>
                     </tr>
                     <tr>
