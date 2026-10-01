@@ -1,1 +1,0 @@
-import{u as e,j as o}from"./app-Bt2k5kZ1.js";import{D as s}from"./DefaultLayout-D7AB5wSD.js";import{P as r}from"./PolicyText-DUCIDBlx.js";const n=()=>{const{conteudo:t}=e().props;return o.jsx(s,{children:o.jsx(r,{content:{titulo:"Política de Cookies",texto:t}})})};export{n as default};
