@@ -18,7 +18,7 @@ export const HomeHighlights = ({ highlights }) => {
                     <p className="font-secondary font-light text-center max-md:text-justify sm:tracking-wide sm:leading-loose whitespace-pre-line w-[90vw] max-w-[1080px] mx-auto mb-6 md:mb-8 2xl:mb-10">{item.texto}</p>
 
                     {item.link && (
-                        <Link href={item.link} className="block w-fit mx-auto font-light text-center uppercase border border-black px-8 py-2 my-16 2xl:my-20 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label={item.titulo}>{item.texto_botao}</Link>
+                        <a href={item.link} className="block w-fit mx-auto font-light text-center uppercase border border-black px-8 py-2 my-16 2xl:my-20 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label={item.titulo}>{item.texto_botao}</a>
                     )}
 
                     {item.video && (

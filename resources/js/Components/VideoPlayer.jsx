@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import playIcon from "../assets/img/play-btn.png";
-import pauseIcon from "../assets/img/pause-btn.png";
 
 import { Reveal } from './Reveal';
 
@@ -31,15 +30,14 @@ export const VideoPlayer = ({ video, poster }) => {
 
     const togglePlayPause = () => {
         if (videoRef.current) {
-            if (isPlaying) {
-                videoRef.current.pause();
-            } else {
+            if (videoRef.current.paused) {
                 videoRef.current.play();
+            } else {
+                videoRef.current.pause();
             }
-            setIsPlaying(!isPlaying);
         }
     };
-    
+
     return (
         <section className="max-md:-mx-[5vw] w-screen md:w-full h-full">
             <Reveal className="group relative w-full h-full" direction="bottom">
@@ -50,18 +48,23 @@ export const VideoPlayer = ({ video, poster }) => {
                     poster={poster || generatedPoster || undefined}
                     playsInline
                     preload="metadata"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnded={() => setIsPlaying(false)}
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent to-80% opacity-50 transition-all group-hover:opacity-80" />
-
                 <button
+                    type="button"
                     onClick={togglePlayPause}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[20%] z-10"
+                    aria-label={isPlaying ? "Pause" : "Play"}
+                    className="absolute inset-0 z-10 flex items-center justify-center cursor-pointer"
                 >
+                    <span className="absolute inset-0 bg-gradient-to-t from-black to-transparent to-80% opacity-50 transition-all group-hover:opacity-80" />
+
                     <img
-                        src={isPlaying ? pauseIcon : playIcon}
-                        alt={isPlaying ? "Pause" : "Play"}
-                        className={`${isPlaying ? 'opacity-0 group-hover:opacity-50 ' : ''}rounded-full transition-all group-hover:scale-110`}
+                        src={playIcon}
+                        alt=""
+                        className={`relative max-w-[20%] rounded-full transition-all group-hover:scale-110 ${isPlaying ? 'opacity-0' : ''}`}
                     />
                 </button>
             </Reveal>
