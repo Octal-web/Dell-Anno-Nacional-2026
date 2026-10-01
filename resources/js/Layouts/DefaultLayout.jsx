@@ -75,32 +75,50 @@ const DefaultLayout = ({ children }) => {
         setTrackingEnabled(true);
     };
 
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         if (notifyCookie || trackingEnabled) {
-    //             const script = document.createElement('script');
-    //             script.innerHTML = `
-    //                 (function(w,d,s,l,i){
-    //                     w[l]=w[l]||[];
-    //                     w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
-    //                     var f=d.getElementsByTagName(s)[0],
-    //                         j=d.createElement(s),
-    //                         dl=l!='dataLayer'?'&l='+l:'';
-    //                     j.async=true;
-    //                     j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-    //                     f.parentNode.insertBefore(j,f);
-    //                 })(window,document,'script','dataLayer','${dados_site.tag_google}');
-    //             `;
-    //             document.head.appendChild(script);
+    useEffect(() => {
+        if (!notifyCookie && !trackingEnabled) return;
 
-    //             const noscript = document.createElement('noscript');
-    //             noscript.innerHTML = `
-    //                 <iframe src="https://www.googletagmanager.com/ns.html?id=${dados_site.tag_google}" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    //             `;
-    //             document.body.appendChild(noscript);
-    //         }
-    //     }, 100);
-    // }, [notifyCookie, trackingEnabled]);
+        const timer = setTimeout(() => {
+            if (window.__trackingLoaded) return;
+            window.__trackingLoaded = true;
+
+            const addScript = ({ src, inline }) => {
+                const script = document.createElement("script");
+                if (src) {
+                    script.async = true;
+                    script.src = src;
+                } else {
+                    script.innerHTML = inline;
+                }
+                document.head.appendChild(script);
+            };
+
+            // Google Tag Manager
+            addScript({
+                inline: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MLRF8T2');`,
+            });
+
+            // Google tag (gtag.js) - Google Ads
+            addScript({
+                src: "https://www.googletagmanager.com/gtag/js?id=AW-812340317",
+            });
+            addScript({
+                inline: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-812340317'); gtag('config', 'AW-17775089081');`,
+            });
+
+            // Event snippet for Solicite Orçamento 2022 conversion page
+            addScript({
+                inline: `function gtag_report_conversion(url) { var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } }; gtag('event', 'conversion', { 'send_to': 'AW-812340317/cImPCO7O4bIDEN2orYMD', 'event_callback': callback }); return false; }`,
+            });
+
+            // Meta Pixel Code
+            addScript({
+                inline: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init', '1440610143838030');fbq('track', 'PageView');`,
+            });
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, [notifyCookie, trackingEnabled]);
 
     const localBusinessSchema = useMemo(
         () => ({
