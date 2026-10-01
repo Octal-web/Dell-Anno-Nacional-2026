@@ -89,6 +89,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
     Route::get('/frame', [BlogController::class, 'index'])->name('Blog.index');
     Route::get('/frame/{slug}', [BlogController::class, 'post'])->name('Blog.post');
 
+    // URLs antigas do blog
+    Route::get('/blog', fn () => redirect()->route('Blog.index', [], 301));
+    Route::get('/blog/{slug}', fn ($slug) => redirect()->route('Blog.post', ['slug' => $slug], 301));
+
     Route::get('/acabamentos', [AcabamentosController::class, 'index'])->name('Acabamentos.index');
 
     Route::get('/mostras-de-decoracao', [MostrasController::class, 'index'])->name('Mostras.index');

@@ -120,7 +120,7 @@ class BlogController extends Controller
     public function post($slug)
     {
         if (!$slug) {
-            return Inertia::location(route('Blog.index'));
+            return redirect()->route('Blog.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -146,7 +146,7 @@ class BlogController extends Controller
             ->first();
 
         if (!$post) {
-            return Inertia::location(route('Blog.index'));
+            return redirect()->route('Blog.index', [], 301);
         }
 
         $pagina = new Pagina;

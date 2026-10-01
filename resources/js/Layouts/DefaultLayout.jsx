@@ -189,16 +189,20 @@ const DefaultLayout = ({ children }) => {
         { name: "Frame", route: "Blog.index", external: false },
     ];
 
+    const canonicalUrl =
+        window.location.origin.replace("://www.", "://") +
+        window.location.pathname;
+
     return (
         <>
             <Head>
                 <title>{pagina.titulo}</title>
                 <meta name="description" content={pagina.descricao} />
 
-                <link rel="canonical" href={window.location.origin + window.location.pathname} />
+                <link head-key="canonical" rel="canonical" href={canonicalUrl} />
                 <meta name="twitter:card" content="summary" />
 
-                <meta property="og:url" content={window.location.pathname} />
+                <meta head-key="og-url" property="og:url" content={canonicalUrl} />
                 <meta property="og:type" content="website" />
                 <meta
                     property="og:title"

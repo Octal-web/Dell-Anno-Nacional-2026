@@ -68,7 +68,7 @@ class MostrasController extends Controller
         return Inertia::location(route('Mostras.index'));
 
         if (!$slug) {
-            return Inertia::location(route('Mostras.index'));
+            return redirect()->route('Mostras.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -104,7 +104,7 @@ class MostrasController extends Controller
             ->first();
 
         if (!$mostra) {
-            return Inertia::location(route('Mostras.index'));
+            return redirect()->route('Mostras.index', [], 301);
         }
 
         $mostraData = [
@@ -172,7 +172,7 @@ class MostrasController extends Controller
     public function ano($slug = null, $ano = null)
     {
         if (!$slug || !$ano) {
-            return Inertia::location(route('Mostras.index'));
+            return redirect()->route('Mostras.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -229,7 +229,7 @@ class MostrasController extends Controller
             ->first();
 
         if (!$ano) {
-            return Inertia::location(route('Mostras.index'));
+            return redirect()->route('Mostras.index', [], 301);
         }
 
         $anoData = [
