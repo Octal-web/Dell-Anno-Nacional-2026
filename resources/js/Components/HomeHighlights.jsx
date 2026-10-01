@@ -11,7 +11,7 @@ export const HomeHighlights = ({ highlights }) => {
 
     return (
         highlights.map((item, index) => (
-            <section key={index} className="pt-12 sm:pt-16 lg:pt-30 mt-10 2xl:mt-30">
+            <section key={index} className="pt-5 sm:pt-8 lg:pt-10 mt-8 2xl:mt-10">
                 <Reveal direction="bottom" scale={true} className={sizeClasses[item.tamanho] || ""}>
                     <h2 className="text-3xl md:text-4xl 2xl:text-[45px] text-center font-light uppercase tracking-wide leading-snug mb-6 md:mb-8 2xl:mb-10 max-xl:w-[90vw] mx-auto">{item.titulo}</h2>
 
