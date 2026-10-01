@@ -171,21 +171,34 @@ abstract class Controller
                     ];
                 });
 
+            $paginaIdiomas = [
+                'paginasIdiomas' => function ($q) use ($idioma) {
+                    $q->whereHas('idiomas', function ($r) use ($idioma) {
+                        $r->where('codigo', $idioma)
+                            ->orWhere('padrao', true);
+                    })
+                        ->orderBy('idioma_id', 'DESC');
+                },
+            ];
+
             $pagina = Pagina::query()
                 ->where([
                     'controladora' => $controller,
                     'acao' => $action
                 ])
-                ->with([
-                    'paginasIdiomas' => function ($q) use ($idioma) {
-                        $q->whereHas('idiomas', function ($r) use ($idioma) {
-                            $r->where('codigo', $idioma)
-                                ->orWhere('padrao', true);
-                        })
-                            ->orderBy('idioma_id', 'DESC');
-                    },
-                ])
+                ->with($paginaIdiomas)
                 ->first();
+
+            // Ações sem registro em paginas usam a da Home como base
+            if (!$pagina) {
+                $pagina = Pagina::query()
+                    ->where([
+                        'controladora' => 'Home',
+                        'acao' => 'index'
+                    ])
+                    ->with($paginaIdiomas)
+                    ->first();
+            }
 
             // $dados_gerais = DadosGerais::first();
 

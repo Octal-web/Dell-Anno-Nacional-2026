@@ -21,6 +21,9 @@ class PoliticasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function cookies() {
+        Inertia::share('pagina.titulo', 'Política de Cookies | Dell Anno');
+        Inertia::share('pagina.tituloCompartilhamento', 'Política de Cookies | Dell Anno');
+
         $conteudo = '
         <p class="font-16">O que são cookies?</p>
                 <p>
@@ -53,7 +56,7 @@ class PoliticasController extends Controller
                 Vendelino, Bento Gonçalves - RS. 905707-540 - Brasil, faz parte
                 da Política de Privacidade do referido - para todas as
                 informações relativas à nossa Política de Privacidade,
-                <a href="politica/">Clique AQUI.</a>
+                <a href="' . route('Politicas.privacidade') . '">Clique AQUI.</a>
             </p>
             <p>
                 <strong>
