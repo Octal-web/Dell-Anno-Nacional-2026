@@ -50,6 +50,8 @@ export const HomeSlides = ({ slides }) => {
             <Swiper
                 slidesPerView={1}
                 allowTouchMove={false}
+                preventClicks={false}
+                preventClicksPropagation={false}
                 effect="fade"
                 pagination={{
                     el: paginationRef.current,
