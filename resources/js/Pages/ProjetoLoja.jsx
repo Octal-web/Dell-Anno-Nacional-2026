@@ -26,7 +26,7 @@ const Page = () => {
 
             <OtherStoreProjectsList projects={todosProjetos} />
 
-            <ProductsForm content={conteudos[0]} />       
+            <ProductsForm content={{ titulo: 'Solicite orçamento' }}/>   
         </DefaultLayout>
     );
 };

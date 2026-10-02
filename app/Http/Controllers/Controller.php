@@ -10,7 +10,6 @@ use App\Models\Idioma;
 use App\Models\Pagina;
 use App\Models\Conteudo;
 use App\Models\Ambiente;
-use App\Models\Estado;
 use App\Models\Loja;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -236,13 +235,6 @@ abstract class Controller
                     ];
                 });
 
-            $estados = Estado::select('id', 'nome')->get()->map(function ($estado) {
-                return [
-                    'value' => $estado->id,
-                    'label' => $estado->nome,
-                ];
-            });
-
             Inertia::share([
                 'pagina' => [
                     'titulo' => $pagina->paginasIdiomas->isNotEmpty() ? $pagina->paginasIdiomas[0]->titulo : null,
@@ -264,7 +256,6 @@ abstract class Controller
                 'produtosMenu' => $produtosMenu,
                 'idiomas' => $idiomas,
                 'idioma' => $idioma,
-                'estados' => $estados,
                 'lojasSchema' => fn() => Cache::remember(
                     'lojasSchema',
                     345600,

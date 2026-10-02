@@ -49,6 +49,7 @@ use App\Http\Controllers\Manager\ImagensMostrasCidadesController as ManagerImage
 use App\Http\Controllers\Manager\ImagensContratosController as ManagerImagensContratosController;
 use App\Http\Controllers\Manager\ContratosController as ManagerContratosController;
 use App\Http\Controllers\Manager\ContatoController as ManagerContatoController;
+use App\Http\Controllers\Manager\ProjetosContatosController as ManagerProjetosContatosController;
 use App\Http\Controllers\Manager\AcabamentosController as ManagerAcabamentosController;
 use App\Http\Controllers\Manager\AcabamentosCategoriasController as ManagerAcabamentosCategoriasController;
 use App\Http\Controllers\Manager\BlogController as ManagerBlogController;
@@ -352,6 +353,15 @@ Route::prefix('/manager')->group(function () {
 
         Route::get('/contato/visualizar/{id}', [ManagerContatoController::class, 'visualizar'])->name('Manager.Contato.visualizar');
         Route::post('/contato/excluir/{id}', [ManagerContatoController::class, 'excluir'])->name('Manager.Contato.excluir');
+
+        Route::post('/projetos-contatos/ordenar', [ManagerProjetosContatosController::class, 'ordenar'])->name('Manager.ProjetosContatos.ordenar');
+        Route::post('/projetos-contatos/visibilidade/{id}', [ManagerProjetosContatosController::class, 'visibilidade'])->name('Manager.ProjetosContatos.visibilidade');
+        Route::post('/projetos-contatos/excluir/{id}', [ManagerProjetosContatosController::class, 'excluir'])->name('Manager.ProjetosContatos.excluir');
+
+        Route::get('/projetos-contatos/adicionar', [ManagerProjetosContatosController::class, 'adicionar'])->name('Manager.ProjetosContatos.adicionar');
+        Route::post('/projetos-contatos/adicionar', [ManagerProjetosContatosController::class, 'novo'])->name('Manager.ProjetosContatos.novo');
+        Route::get('/projetos-contatos/editar/{id}', [ManagerProjetosContatosController::class, 'editar'])->name('Manager.ProjetosContatos.editar');
+        Route::post('/projetos-contatos/editar/{id}', [ManagerProjetosContatosController::class, 'atualizar'])->name('Manager.ProjetosContatos.atualizar');
 
 
         Route::get('/acabamentos', [ManagerAcabamentosController::class, 'index'])->name('Manager.Acabamentos.index');

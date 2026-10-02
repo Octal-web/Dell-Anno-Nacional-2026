@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contato;
-use App\Models\Newsletter;
+use App\Models\ProjetoContato;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 use Carbon\Carbon;
-use DeepCopy\DeepCopy;
 
 class ContatoController extends Controller
 {
@@ -22,100 +21,34 @@ class ContatoController extends Controller
     public function index() {
         $idioma = inertia()->getShared('idioma');
 
-        $contatos = Contato::query()
+        $projetos = ProjetoContato::query()
             ->where([
                 'excluido' => NULL
             ])
-            ->orderBy('criado', 'ASC')
+            ->with([
+                'projetosContatosIdiomas' => function ($q) {
+                    $q->whereHas('idiomas', function ($r) {
+                        $r->Where('padrao', true);
+                    })
+                    ->orderBy('idioma_id', 'DESC');
+                }
+            ])
+            ->orderBy('ordem', 'ASC')
             ->orderBy('id', 'DESC')
             ->get()
-            ->map(function($contato) {
+            ->map(function($projeto) {
                 return [
-                    'id' => $contato->id,
-                    'nome' => $contato->nome,
-                    'data' => $contato->criado->format('d/m/Y'),
+                    'id' => $projeto->id,
+                    'visivel' => $projeto->visivel,
+                    'imagem' => rafator('content/contact-projects/thumbs/' . $projeto->imagem),
+                    'titulo' => $projeto->projetosContatosIdiomas->isNotEmpty() && $projeto->projetosContatosIdiomas[0]->descricao
+                        ? Str::limit($projeto->projetosContatosIdiomas[0]->descricao, 40)
+                        : 'Projeto #' . $projeto->id,
                 ];
             });
 
         return Inertia::render('Manager/Contato/index', [
-            'contatos' => $contatos
+            'projetos' => $projetos,
         ]);
-    }
-
-    public function visualizar($id) {
-        if (!$id) {
-            return Inertia::location(route('Manager.Contato.index'));
-        }
-        
-        $idioma = inertia()->getShared('idioma');
-
-        $contato = Contato::query()
-            ->where([
-                'excluido' => NULL,
-            ])
-            ->with([
-                'departamento' => function ($q) use ($idioma) {
-                    $q->where([
-                        'excluido' => null,
-                        'visivel' => true
-                    ])
-                    ->with('departamentosIdiomas', function ($query) use ($idioma) {
-                        $query->whereHas('idiomas', function ($r) use ($idioma) {
-                            $r->where('codigo', $idioma)
-                            ->orWhere('padrao', true);
-                        })
-                        ->orderBy('idioma_id', 'DESC');
-                    });
-                }
-            ])
-            ->first();
-
-        if(!$contato) {
-            return Inertia::location(route('Manager.Contato.index'));
-        }
-
-        $contato = [
-            'id' => $contato->id,
-            'nome' => $contato->nome,
-            'email' => $contato->email,
-            'departamento' => $contato->departamento?->departamentosIdiomas->isNotEmpty() ? $contato->departamento?->departamentosIdiomas[0]->nome : null,
-            'assunto' => $contato->assunto,
-            'mensagem' => $contato->mensagem,
-            'data' => $contato->criado->format('d/m/Y H:i')
-        ];
-
-        return Inertia::render('Manager/Contato/visualizar', [
-            'contato' => $contato
-        ]);
-    }
-
-    /**
-     * Set the specified resource as deleted.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function excluir(Request $request, $id) {
-        if ($request->ajax()){
-            if (!$id) {
-                return $request->header('referer');
-            }
-
-            $exclusao = Contato::query()
-                ->where([
-                    'excluido' => NULL,
-                    'id' => $id
-                ])
-                ->update([
-                    'excluido' => Carbon::now()
-                ]);
-
-            if ($exclusao == true) {
-                return redirect(route('Manager.Contato.index'))->with('message', ['type' => 'alert', 'msg' => 'Registro excluído com sucesso.']);
-            } else {
-                return redirect(route('Manager.Contato.index'))->with('message', ['type' => 'error', 'msg' => 'Não foi possível excluir o registro.']);
-            }
-        }
     }
 }

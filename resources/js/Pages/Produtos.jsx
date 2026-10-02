@@ -13,7 +13,7 @@ const Page = () => {
         <DefaultLayout>
             <ProductsList content={conteudos[0]} products={produtos} />
 
-            <ProductsForm content={conteudos[1]} />
+            <ProductsForm content={{ titulo: 'Solicite orçamento' }}/>
         </DefaultLayout>
     );
 };
