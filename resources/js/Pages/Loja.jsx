@@ -38,7 +38,7 @@ const Page = () => {
 
             <ProjectSteps content={conteudos[1]} steps={fasesProjetos} noExternal={false} />
 
-            <ProductsForm content={chamadaForm} />
+            <ProductsForm content={{ titulo: 'Solicite orçamento' }}/>
         </DefaultLayout>
     );
 };

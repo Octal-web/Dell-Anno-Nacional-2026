@@ -2,7 +2,7 @@ import { faEraser, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Select from "react-select";
+import { SiteSelect } from "./SiteSelect";
 
 export const StoresSearch = ({
     allStores,
@@ -107,11 +107,10 @@ export const StoresSearch = ({
     return (
         <div className="container max-w-small">
             <form
-                data-lenis-prevent
                 className="flex flex-col md:flex-row gap-5"
                 onSubmit={handleSearch}
             >
-                <Select
+                <SiteSelect
                     options={states}
                     value={selectedState}
                     onChange={(option) => {
@@ -126,7 +125,7 @@ export const StoresSearch = ({
                     noOptionsMessage={() => "Nenhum estado encontrado"}
                 />
 
-                <Select
+                <SiteSelect
                     options={cities}
                     value={selectedCity}
                     onChange={(option) => setSelectedCity(option)}

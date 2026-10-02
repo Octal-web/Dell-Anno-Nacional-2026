@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+use App\Services\ContactService;
+
 class PostContactRequest extends FormRequest
 {
     /**
@@ -26,14 +28,8 @@ class PostContactRequest extends FormRequest
             'nome' => 'required|string|min:3|max:255',
             'email' => 'required|email:rfc,dns|max:255',
             'telefone' => 'required|celular_com_ddd',
-            'ocupacao' => 'nullable|string|max:255',
-            'estado_id' => 'required|integer|exists:estados,id',
-            'cidade_id' => [
-                'required',
-                'integer',
-                Rule::exists('cidades', 'id')->where('estado_id', $this->input('estado_id')),
-            ],
-            'mensagem' => 'required|string',
+            'cep' => 'required|formato_cep',
+            'expectativa_investimento' => ['required', Rule::in(array_keys(ContactService::EXPECTATIVAS))],
             'politica' => 'required|accepted',
             'origem' => 'nullable|string|max:255',
             'campanha' => 'nullable|string|max:255',
@@ -62,16 +58,10 @@ class PostContactRequest extends FormRequest
             'email.max' => 'O e-mail deve ter no máximo 255 caracteres.',
             'telefone.required' => 'Por favor, insira seu telefone.',
             'telefone.celular_com_ddd' => 'Por favor, informe um telefone válido.',
-            'ocupacao.string' => 'O cargo informado é inválido.',
-            'ocupacao.max' => 'O cargo deve ter no máximo 255 caracteres.',
-            'estado_id.required' => 'Por favor, informe o seu estado.',
-            'estado_id.integer' => 'Selecione um estado válido.',
-            'estado_id.exists' => 'Selecione um estado válido.',
-            'cidade_id.required' => 'Por favor, informe a sua cidade.',
-            'cidade_id.integer' => 'Selecione uma cidade válida.',
-            'cidade_id.exists' => 'Selecione uma cidade do estado informado.',
-            'mensagem.required'  => 'Por favor, informe a sua mensagem.',
-            'mensagem.string' => 'A descrição do projeto ideal é inválida.',
+            'cep.required' => 'Por favor, informe o seu CEP.',
+            'cep.formato_cep' => 'Por favor, informe um CEP válido.',
+            'expectativa_investimento.required' => 'Por favor, informe o investimento desejado.',
+            'expectativa_investimento.in' => 'Selecione uma expectativa de investimento válida.',
             'politica.required' => 'Para continuar, você deve concordar com a LGPD.',
             'politica.accepted' => 'Para continuar, você deve concordar com a LGPD.',
             'origem.string' => 'Origem inválida.',
