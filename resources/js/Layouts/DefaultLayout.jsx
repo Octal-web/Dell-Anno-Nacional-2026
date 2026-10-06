@@ -461,6 +461,16 @@ const DefaultLayout = ({ children }) => {
                                             Contato
                                         </Link>
                                     </li>
+                                    
+                                    <li>
+                                        <a
+                                            href="https://dellanno.com.br/sejalojista"
+                                            target="blank"
+                                            className="block font-secondary text-white text-sm font-light leading-none transition-all opacity-70 hover:opacity-100"
+                                        >
+                                            Seja Lojista
+                                        </a>
+                                    </li>
                                 </ul>
                             </nav>
 
