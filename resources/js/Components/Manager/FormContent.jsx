@@ -161,7 +161,7 @@ export const FormContent = ({ content, full, toolbar, idioma }) => {
                 className="transition-all duration-300 ease-in-out overflow-hidden"
             >
                 <div ref={contentInnerRef} className="mt-10">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} id="budgets--form">
                         {content.habilitar_titulo &&
                             <div className="grid grid-cols-12 gap-x-6">
                                 <div className={`col-span-12 ${full ? ' lg:col-span-8' : ''}`}>
