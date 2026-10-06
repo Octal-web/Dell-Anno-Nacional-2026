@@ -41,6 +41,8 @@ class MostrasController extends Controller
                     ]);
                 }
             ])
+            ->orderBy('ordem', 'ASC')
+            ->orderBy('id', 'DESC')
             ->get()
             ->map(function ($mostra) {
                 return [
@@ -98,9 +100,13 @@ class MostrasController extends Controller
                                     ->orWhere('padrao', true);
                             })
                                 ->orderBy('idioma_id', 'DESC');
-                        });
+                        })
+                        ->orderBy('ordem', 'ASC')
+                        ->orderBy('id', 'DESC');
                 }
             ])
+            ->orderBy('ordem', 'ASC')
+            ->orderBy('id', 'DESC')
             ->first();
 
         if (!$mostra) {
@@ -223,7 +229,9 @@ class MostrasController extends Controller
                                     'visivel' => true,
                                 ]);
                             }
-                        ]);
+                        ])
+                        ->orderBy('ordem', 'ASC')
+                        ->orderBy('id', 'DESC');
                 }
             ])
             ->first();
