@@ -67,7 +67,7 @@ export const InputFileDropzone = ({ title, name, value, currentFile, onChange, o
             } else {
                 setPreview(false);
             }
-            // Change here: Pass the name and file to the onChange handler
+
             onChange(name, file);
         }
     };
@@ -86,6 +86,10 @@ export const InputFileDropzone = ({ title, name, value, currentFile, onChange, o
         <div className="mb-6">
             <label className="mb-2 block font-bold text-gray-500">{title}</label>
 
+            {currentFile && (
+                <a href={currentFile} className="block w-fit text-sm text-blue-700 underline mb-2">Baixar arquivo atual</a>
+            )}
+
             <div className="w-full">
                 {!value ? (
                     <div
@@ -94,7 +98,7 @@ export const InputFileDropzone = ({ title, name, value, currentFile, onChange, o
                         onDragOver={handleDrag}
                         onDrop={handleDrop}
                         className={`relative border-2 border-dashed px-4 py-10 text-center cursor-pointer transition-colors ${
-                            isDragging ? 'border-black bg-secondary bg-opacity-10' : 'border-gray-300'
+                            isDragging ? 'border-secondary bg-secondary bg-opacity-10' : 'border-gray-300'
                         }`}
                     >
                         <input
@@ -161,10 +165,6 @@ export const InputFileDropzone = ({ title, name, value, currentFile, onChange, o
                     </div>
                 )}
             </div>
-            
-            {currentFile && (
-                <a href={currentFile} className="block w-fit text-sm text-blue-700 underline mt-2">Baixar arquivo atual</a>
-            )}
         </div>
     );
 };
