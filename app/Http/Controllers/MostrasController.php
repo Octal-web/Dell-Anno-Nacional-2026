@@ -38,7 +38,9 @@ class MostrasController extends Controller
                     $q->where([
                         'excluido' => NULL,
                         'visivel' => true
-                    ]);
+                    ])
+                    ->orderBy('ordem', 'ASC')
+                    ->orderBy('id', 'DESC');
                 }
             ])
             ->orderBy('ordem', 'ASC')
