@@ -22,7 +22,9 @@ export const HomeHighlights = ({ highlights }) => {
                     )}
 
                     {item.video && (
-                        <VideoPlayer video={item.video} poster={item.imagem} className={`${item.tamanho !== 'grande' ? 'max-md:container' : '' } mx-auto mt-16 md:mt-20 max-h-[85vh] w-full object-cover`} autoPlay muted loop playsInline />
+                        <div className={item.tamanho == 'grande' ? 'max-md:container' : '' }>
+                            <VideoPlayer video={item.video} poster={item.imagem} className="mx-auto mt-16 md:mt-20 max-h-[85vh] w-full object-cover" autoPlay muted loop playsInline />
+                        </div>
                     )}
 
                     {!item.video && item.imagem && (
