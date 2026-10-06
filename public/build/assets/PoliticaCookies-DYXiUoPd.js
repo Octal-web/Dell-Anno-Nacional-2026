@@ -1,0 +1,1 @@
+import{u as e,j as o}from"./app-C4H-mu2G.js";import{D as s}from"./DefaultLayout-rIg2ZitO.js";import{P as r}from"./PolicyText-BJDVuJ6Y.js";const n=()=>{const{conteudo:t}=e().props;return o.jsx(s,{children:o.jsx(r,{content:{titulo:"Política de Cookies",texto:t}})})};export{n as default};
