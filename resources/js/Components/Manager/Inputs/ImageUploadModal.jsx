@@ -6,8 +6,19 @@ const csrf = () => {
 };
 
 const API = {
-    list: (path) =>
-        fetch(route("Manager.Finder.list", { path })).then((r) => r.json()),
+    list: async (path) => {
+        const response = await fetch(route("Manager.Finder.list", { path }), {
+            headers: { Accept: "application/json" },
+        });
+        if (!response.ok) {
+            throw new Error("Não foi possível listar os arquivos. Tente novamente.");
+        }
+        const files = await response.json();
+        if (!Array.isArray(files)) {
+            throw new Error("A resposta da listagem de arquivos é inválida.");
+        }
+        return files;
+    },
     upload: (path, files) => {
         const form = new FormData();
         files.forEach((f) => form.append("files[]", f));
@@ -62,6 +73,9 @@ const isImage = (name) =>
 
 const joinPath = (...parts) =>
     parts.filter(Boolean).join("/").replace(/\/+/g, "/");
+
+const fileUrl = (...parts) =>
+    "/files/" + joinPath(...parts).split("/").map(encodeURIComponent).join("/");
 
 function FileIcon({ file, thumbUrl }) {
     const ext = file.name.split(".").pop().toLowerCase();
@@ -325,6 +339,7 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
         { id: "", name: "Início" },
     ]);
     const [loading, setLoading] = useState(false);
+    const [listError, setListError] = useState("");
     const [contextMenu, setContextMenu] = useState(null);
     const [draggingFile, setDraggingFile] = useState(null);
     const [dropTarget, setDropTarget] = useState(null);
@@ -338,6 +353,7 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
 
     const loadFiles = useCallback(async (path = "") => {
         setLoading(true);
+        setListError("");
         try {
             const data = await API.list(path);
             setFiles(
@@ -348,11 +364,13 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
                     size: f.size,
                     thumbUrl:
                         !f.isDir && isImage(f.name)
-                            ? joinPath("/files", path, f.name)
+                            ? fileUrl(path, f.name)
                             : undefined,
                 })),
             );
         } catch (e) {
+            setFiles([]);
+            setListError(e.message || "Não foi possível listar os arquivos.");
             console.error(e);
         } finally {
             setLoading(false);
@@ -360,17 +378,11 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
     }, []);
 
     useEffect(() => {
-        if (activeTab === "files") {
-            loadFiles(currentPath);
-            setSelected(null);
-        }
-    }, [currentPath, loadFiles, activeTab]);
-
-    useEffect(() => {
         if (activeTab === 'files') {
             loadFiles(currentPath);
             setSelected(null);
             setSearch('');
+            setDebouncedSearch('');
         }
     }, [currentPath, loadFiles, activeTab]);
 
@@ -398,14 +410,14 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
     const handleDoubleClick = (file) => {
         if (file.isDir) openDir(file);
         else if (isImage(file.name))
-            onImageSelect(joinPath("/files", currentPath, file.name));
+            onImageSelect(fileUrl(currentPath, file.name));
     };
 
     const handleContextAction = async (action, file) => {
         const fullPath = joinPath(currentPath, file.name);
         if (action === "open") openDir(file);
         else if (action === "select")
-            onImageSelect(joinPath("/files", fullPath));
+            onImageSelect(fileUrl(fullPath));
         else if (action === "rename") {
             const name = prompt("Novo nome:", file.name);
             if (name && name !== file.name) {
@@ -710,6 +722,10 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
                                             />
                                         </svg>
                                     </div>
+                                ) : listError ? (
+                                    <p role="alert" className="px-3 py-8 text-center text-sm text-red-500">
+                                        {listError}
+                                    </p>
                                 ) : files.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center h-48 text-gray-400 gap-3">
                                         <svg
@@ -907,7 +923,7 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
                                                                     type="button"
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
-                                                                        onImageSelect(joinPath('/files', currentPath, file.name));
+                                                                        onImageSelect(fileUrl(currentPath, file.name));
                                                                     }}
                                                                     className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 bg-black/40 flex items-center justify-center transition-all"
                                                                 >
