@@ -1,1 +1,0 @@
-import{u as e,j as o}from"./app-De_VBal4.js";import{D as s}from"./DefaultLayout-BZulBu7F.js";import{P as r}from"./PolicyText-CdxyzGK2.js";const n=()=>{const{conteudo:t}=e().props;return o.jsx(s,{children:o.jsx(r,{content:{titulo:"Política de Cookies",texto:t}})})};export{n as default};

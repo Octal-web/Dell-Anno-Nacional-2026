@@ -1,0 +1,1 @@
+import{u as s,j as o}from"./app-B1dpwQ2d.js";import{D as e}from"./DefaultLayout-DD3s1MxE.js";import{P as r}from"./PolicyText-kr-83a9V.js";const m=()=>{const{conteudos:t}=s().props;return o.jsx(e,{children:o.jsx(r,{content:t[0]})})};export{m as default};
