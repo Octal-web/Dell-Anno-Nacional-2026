@@ -85,7 +85,7 @@ class AcabamentosController extends Controller
                 ->when($codigo, fn ($r) => $r->whereHas('idiomas', fn ($i) => $i->where('codigo', $codigo)))
                 ->when(!$codigo, fn ($r) => $r->whereHas('idiomas', fn ($i) => $i->where('padrao', true))),
         ])->first();
-        if (!$acabamento) return Inertia::location(route('Manager.Acabamentos.index'));
+        if (!$acabamento) return redirect()->route('Manager.Acabamentos.index', [], 301);
 
         $idioma = inertia()->getShared('idioma');
         $categorias = AcabamentoCategoria::query()

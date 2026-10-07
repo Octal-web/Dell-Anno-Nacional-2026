@@ -23,7 +23,7 @@ class UsuariosController extends Controller
 
     public function login() {
         if (Auth::user()) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         if (isset(session('url')['intended'])) {
@@ -72,6 +72,6 @@ class UsuariosController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Inertia::location(route('Manager.Usuarios.login'));
+        return redirect()->route('Manager.Usuarios.login', [], 301);
     }
 }

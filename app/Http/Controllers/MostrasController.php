@@ -69,7 +69,7 @@ class MostrasController extends Controller
 
     public function mostra($slug = null)
     {
-        return Inertia::location(route('Mostras.index'));
+        return redirect()->route('Mostras.index', [], 301);
 
         if (!$slug) {
             return redirect()->route('Mostras.index', [], 301);

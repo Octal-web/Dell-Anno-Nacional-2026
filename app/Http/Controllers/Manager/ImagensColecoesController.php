@@ -46,7 +46,7 @@ class ImagensColecoesController extends Controller
             ->first();
 
         if (!$colecao) {
-            return Inertia::location(route('Manager.Ambientes.index'));
+            return redirect()->route('Manager.Ambientes.index', [], 301);
         }
 
         return Inertia::render('Manager/Ambientes/Colecoes/Imagens/index', [
@@ -81,7 +81,7 @@ class ImagensColecoesController extends Controller
             ->first();
 
         if (!$colecao) {
-            return Inertia::location(route('Manager.Ambientes.index'));
+            return redirect()->route('Manager.Ambientes.index', [], 301);
         }
 
         foreach ($request->file('images') as $image) {
@@ -146,7 +146,7 @@ class ImagensColecoesController extends Controller
             ->first();
 
         if (!$imagem || !$colecao) {
-            return Inertia::location(route('Manager.Ambientes.index'));
+            return redirect()->route('Manager.Ambientes.index', [], 301);
         }
 
         return Inertia::render('Manager/Ambientes/Colecoes/Imagens/editar', [
@@ -175,7 +175,7 @@ class ImagensColecoesController extends Controller
             ->first();
 
         if (!$imagem) {
-            return Inertia::location(route('Manager.Ambientes.index'));
+            return redirect()->route('Manager.Ambientes.index', [], 301);
         }
 
         if ($request->hasFile('img')) {

@@ -151,7 +151,7 @@ class CatalogosController extends Controller
      */
     public function editar($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Catalogos.index'));
+            return redirect()->route('Manager.Catalogos.index', [], 301);
         }
         
         $idiomas = Idioma::query()
@@ -183,7 +183,7 @@ class CatalogosController extends Controller
             ->first();
 
         if(!$catalogo) {
-            return Inertia::location(route('Manager.Catalogos.index'));
+            return redirect()->route('Manager.Catalogos.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -261,7 +261,7 @@ class CatalogosController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Catalogos.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Catalogos.index'));
+                return redirect()->route('Manager.Catalogos.index', [], 301);
             }
 
             if (!$catalogo_idioma) {

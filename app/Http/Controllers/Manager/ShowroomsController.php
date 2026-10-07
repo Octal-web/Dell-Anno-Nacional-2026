@@ -172,7 +172,7 @@ class ShowroomsController extends Controller
     public function editar($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Showrooms.index'));
+            return redirect()->route('Manager.Showrooms.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -204,7 +204,7 @@ class ShowroomsController extends Controller
             ->first();
 
         if (!$showroom) {
-            return Inertia::location(route('Manager.Showrooms.index'));
+            return redirect()->route('Manager.Showrooms.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -314,7 +314,7 @@ class ShowroomsController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Showrooms.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Showrooms.index'));
+                return redirect()->route('Manager.Showrooms.index', [], 301);
             }
 
             if (!$showroom_idioma) {

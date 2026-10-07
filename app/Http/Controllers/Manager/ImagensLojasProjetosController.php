@@ -27,7 +27,7 @@ class ImagensLojasProjetosController extends Controller
     public function index($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Lojas.Projetos.index'));
+            return redirect()->route('Manager.Lojas.Projetos.index', [], 301);
         }
 
         $projeto = ProjetoLoja::query()
@@ -54,7 +54,7 @@ class ImagensLojasProjetosController extends Controller
             ->first();
 
         if (!$projeto) {
-            return Inertia::location(route('Manager.Lojas.Projetos.index'));
+            return redirect()->route('Manager.Lojas.Projetos.index', [], 301);
         }
 
         $projetoData = [
@@ -92,7 +92,7 @@ class ImagensLojasProjetosController extends Controller
                 ->first();
 
             if (!$projeto) {
-                return Inertia::location(route('Manager.Lojas.Projetos.index'));
+                return redirect()->route('Manager.Lojas.Projetos.index', [], 301);
             }
 
             foreach ($request->file('images') as $image) {
@@ -148,7 +148,7 @@ class ImagensLojasProjetosController extends Controller
             ->first();
 
         if (!$imagem) {
-            return Inertia::location(route('Manager.Lojas.Projetos.index'));
+            return redirect()->route('Manager.Lojas.Projetos.index', [], 301);
         }
 
         return Inertia::render('Manager/Lojas/Projetos/Imagens/editar', [
@@ -175,7 +175,7 @@ class ImagensLojasProjetosController extends Controller
             ->first();
 
         if (!$imagem) {
-            return Inertia::location(route('Manager.Lojas.Projetos.index'));
+            return redirect()->route('Manager.Lojas.Projetos.index', [], 301);
         }
 
         if ($request->hasFile('img')) {

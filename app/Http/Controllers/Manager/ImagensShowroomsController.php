@@ -21,7 +21,7 @@ class ImagensShowroomsController extends Controller
     public function index($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Showrooms.index'));
+            return redirect()->route('Manager.Showrooms.index', [], 301);
         }
 
         $showroom = Showroom::query()
@@ -48,7 +48,7 @@ class ImagensShowroomsController extends Controller
             ->first();
 
         if (!$showroom) {
-            return Inertia::location(route('Manager.Showrooms.index'));
+            return redirect()->route('Manager.Showrooms.index', [], 301);
         }
 
         $showroomData = [
@@ -85,7 +85,7 @@ class ImagensShowroomsController extends Controller
                 ->first();
 
             if (!$showroom) {
-                return Inertia::location(route('Manager.Showrooms.index'));
+                return redirect()->route('Manager.Showrooms.index', [], 301);
             }
 
             foreach ($request->file('images') as $image) {

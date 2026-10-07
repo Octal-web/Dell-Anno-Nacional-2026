@@ -175,7 +175,7 @@ class LojasController extends Controller
      */
     public function editar($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Lojas.index'));
+            return redirect()->route('Manager.Lojas.index', [], 301);
         }
         
         $idiomas = Idioma::query()
@@ -207,7 +207,7 @@ class LojasController extends Controller
             ->first();
 
         if(!$loja) {
-            return Inertia::location(route('Manager.Lojas.index'));
+            return redirect()->route('Manager.Lojas.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -291,7 +291,7 @@ class LojasController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Lojas.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Lojas.index'));
+                return redirect()->route('Manager.Lojas.index', [], 301);
             }
 
             if (!$loja_idioma) {

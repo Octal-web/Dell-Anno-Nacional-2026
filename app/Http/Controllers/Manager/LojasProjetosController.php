@@ -101,7 +101,7 @@ class LojasProjetosController extends Controller
             ->first();
 
         if (!$projeto) {
-            return Inertia::location(route('Manager.Lojas.Projetos.index'));
+            return redirect()->route('Manager.Lojas.Projetos.index', [], 301);
         }
 
         $traducao = $projeto->projetosLojasIdiomas->first();

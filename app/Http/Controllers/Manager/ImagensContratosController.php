@@ -21,7 +21,7 @@ class ImagensContratosController extends Controller
     public function index($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Contratos.index'));
+            return redirect()->route('Manager.Contratos.index', [], 301);
         }
 
         $contrato = Contrato::query()
@@ -48,7 +48,7 @@ class ImagensContratosController extends Controller
             ->first();
 
         if (!$contrato) {
-            return Inertia::location(route('Manager.Contratos.index'));
+            return redirect()->route('Manager.Contratos.index', [], 301);
         }
 
         $contratoData = [
@@ -85,7 +85,7 @@ class ImagensContratosController extends Controller
                 ->first();
 
             if (!$contrato) {
-                return Inertia::location(route('Manager.Contratos.index'));
+                return redirect()->route('Manager.Contratos.index', [], 301);
             }
 
             foreach ($request->file('images') as $image) {

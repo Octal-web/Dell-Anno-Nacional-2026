@@ -25,7 +25,7 @@ class MostrasCidadesController extends Controller
      */
     public function index($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         $mostraAno = MostraAno::query()
@@ -65,7 +65,7 @@ class MostrasCidadesController extends Controller
             ->first();
 
         if(!$mostraAno) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         $mostraNome = count($mostraAno->mostra->mostrasIdiomas) ? $mostraAno->mostra->mostrasIdiomas[0]->nome : null;
@@ -95,7 +95,7 @@ class MostrasCidadesController extends Controller
      */
     public function adicionar($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         return Inertia::render('Manager/Mostras/Cidades/adicionar', [
@@ -111,7 +111,7 @@ class MostrasCidadesController extends Controller
      */
     public function novo(PostMostraCityRequest $request, $id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
         
         if($request->ajax()){
@@ -147,7 +147,7 @@ class MostrasCidadesController extends Controller
      */
     public function editar($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
         
         $idiomas = Idioma::query()
@@ -179,7 +179,7 @@ class MostrasCidadesController extends Controller
             ->first();
 
         if(!$mostra_cidade) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -244,7 +244,7 @@ class MostrasCidadesController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Mostras.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Mostras.index'));
+                return redirect()->route('Manager.Mostras.index', [], 301);
             }
 
             if (!$mostra_cidade_idioma) {

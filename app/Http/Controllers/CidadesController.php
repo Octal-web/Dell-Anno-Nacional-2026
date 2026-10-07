@@ -38,7 +38,7 @@ class CidadesController extends Controller
                 'cidades' => $cidades,
             ]);
         } else {
-            return Inertia::location(route('Home.index'));
+            return redirect()->route('Home.index', [], 301);
         }
     }
 }

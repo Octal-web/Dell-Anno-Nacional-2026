@@ -21,7 +21,7 @@ class ImagensMostrasCidadesController extends Controller
     public function index($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         $mostraCidade = MostraCidade::query()
@@ -66,7 +66,7 @@ class ImagensMostrasCidadesController extends Controller
             ->first();
 
         if (!$mostraCidade) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         $mostraCidadeData = [
@@ -104,7 +104,7 @@ class ImagensMostrasCidadesController extends Controller
                 ->first();
 
             if (!$mostraCidade) {
-                return Inertia::location(route('Manager.Mostras.index'));
+                return redirect()->route('Manager.Mostras.index', [], 301);
             }
 
             foreach ($request->file('images') as $image) {
