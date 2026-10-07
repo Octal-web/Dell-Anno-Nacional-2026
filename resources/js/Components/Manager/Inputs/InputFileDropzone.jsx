@@ -55,7 +55,7 @@ export const InputFileDropzone = ({
         }
 
         if (type === "image") {
-            return ["jpg", "jpeg", "png"].includes(extension);
+            return ["jpg", "png"].includes(extension);
         }
 
         return [
@@ -73,7 +73,7 @@ export const InputFileDropzone = ({
 
     const isValidFileSize = (file) => {
         const maxFileSize = type === 'video' ? 50 * 1024 * 1024
-            : type === 'image' ? 20 * 1024 * 1024
+            : type === 'image' ? 4 * 1024 * 1024
             : 50 * 1024 * 1024;
 
         return file.size <= maxFileSize;
@@ -141,7 +141,7 @@ export const InputFileDropzone = ({
                             type="file"
                             accept={
                                 type === "video"
-                                    ? ".mp4,.avi,.mov,.mkv,.webm"
+                                    ? ".mp4,.avi,.webm"
                                     : type === "image"
                                       ? ".jpg,.jpeg,.png"
                                       : ".pdf,.dwg,.dxf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
@@ -159,9 +159,9 @@ export const InputFileDropzone = ({
                             </p>
                             <p className="text-xs text-gray-400">
                                 {type === "video"
-                                    ? "Formatos suportados: MP4, AVI, MKV, WEBM, MOV (até 50 MB)"
+                                    ? "Formatos suportados: MP4, AVI, WEBM, (até 50 MB)"
                                     : type === "image"
-                                      ? "Formatos suportados: JPG, JPEG, PNG (até 20 MB)"
+                                      ? "Formatos suportados: JPG, PNG (até 4 MB)"
                                       : "Formatos suportados: PDF, DWG, DXF, DOC, DOCX, XLS, XLSX, PPT, PPTX (até 50 MB)"}
                             </p>
                         </div>
