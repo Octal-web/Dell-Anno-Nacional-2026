@@ -84,7 +84,7 @@ class CampanhasController extends Controller
     public function editar($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -116,7 +116,7 @@ class CampanhasController extends Controller
             ->first();
 
         if (!$campanha) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -183,7 +183,7 @@ class CampanhasController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Home.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Home.index'));
+                return redirect()->route('Manager.Home.index', [], 301);
             }
 
             if (!$campanha_idioma) {

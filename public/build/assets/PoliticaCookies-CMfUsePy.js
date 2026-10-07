@@ -1,0 +1,1 @@
+import{u as e,j as o}from"./app-C0vpJSMU.js";import{D as s}from"./DefaultLayout-Y1OAKP_1.js";import{P as r}from"./PolicyText-DYa7OQ9r.js";const n=()=>{const{conteudo:t}=e().props;return o.jsx(s,{children:o.jsx(r,{content:{titulo:"Política de Cookies",texto:t}})})};export{n as default};

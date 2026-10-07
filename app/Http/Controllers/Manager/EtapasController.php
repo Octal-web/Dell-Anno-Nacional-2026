@@ -81,7 +81,7 @@ class EtapasController extends Controller
     public function editar($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Institucional.index'));
+            return redirect()->route('Manager.Institucional.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -113,7 +113,7 @@ class EtapasController extends Controller
             ->first();
 
         if (!$etapa) {
-            return Inertia::location(route('Manager.Institucional.index'));
+            return redirect()->route('Manager.Institucional.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -178,7 +178,7 @@ class EtapasController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Institucional.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Institucional.index'));
+                return redirect()->route('Manager.Institucional.index', [], 301);
             }
 
             if (!$etapa_idioma) {

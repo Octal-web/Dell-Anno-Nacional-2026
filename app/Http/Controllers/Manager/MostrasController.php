@@ -173,7 +173,7 @@ class MostrasController extends Controller
      */
     public function editar($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -208,7 +208,7 @@ class MostrasController extends Controller
             ->first();
 
         if(!$mostra) {
-            return Inertia::location(route('Manager.Mostras.index'));
+            return redirect()->route('Manager.Mostras.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');

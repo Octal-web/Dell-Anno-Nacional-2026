@@ -25,7 +25,7 @@ class ImagensController extends Controller
     public function conteudo($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $conteudo = Conteudo::query()
@@ -51,7 +51,7 @@ class ImagensController extends Controller
             ->first();
 
         if (!$conteudo) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $conteudoData = [
@@ -92,7 +92,7 @@ class ImagensController extends Controller
                 ->first();
 
             if (!$conteudo) {
-                return Inertia::location(route('Manager.Home.index'));
+                return redirect()->route('Manager.Home.index', [], 301);
             }
 
             foreach ($request->file('images') as $image) {

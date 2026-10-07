@@ -36,7 +36,7 @@ class ColecoesController extends Controller
                 },
             ])->first();
 
-        if (!$ambiente) return Inertia::location(route('Manager.Ambientes.index'));
+        if (!$ambiente) return redirect()->route('Manager.Ambientes.index', [], 301);
 
         return Inertia::render('Manager/Ambientes/Colecoes/index', [
             'ambiente' => [
@@ -86,7 +86,7 @@ class ColecoesController extends Controller
                 $r->whereHas('idiomas', function ($query) { $query->where('padrao', true); });
             });
         }])->first();
-        if (!$colecao) return Inertia::location(route('Manager.Ambientes.index'));
+        if (!$colecao) return redirect()->route('Manager.Ambientes.index', [], 301);
         return Inertia::render('Manager/Ambientes/Colecoes/editar', ['colecao' => [
             'id' => $colecao->id,
             'ambiente_id' => $colecao->ambiente_id,
@@ -99,7 +99,7 @@ class ColecoesController extends Controller
     public function atualizar(PostCollectionRequest $request, $id)
     {
         $colecao = Colecao::query()->where(['excluido' => NULL, 'id' => $id])->first();
-        if (!$colecao) return Inertia::location(route('Manager.Ambientes.index'));
+        if (!$colecao) return redirect()->route('Manager.Ambientes.index', [], 301);
         $codigo = $request->query('lang');
         $traducao = ColecaoIdioma::query()->where(['excluido' => NULL, 'colecao_id' => $id])
             ->when($codigo, function ($q) use ($codigo) { $q->whereHas('idiomas', function ($i) use ($codigo) { $i->where('codigo', $codigo); }); })

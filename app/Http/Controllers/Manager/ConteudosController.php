@@ -90,7 +90,7 @@ class ConteudosController extends Controller
                 if ($request->ajax()) {
                     return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Home.index'));
+                return redirect()->route('Manager.Home.index', [], 301);
             }
 
             if (!$conteudo_idioma) {
@@ -169,7 +169,7 @@ class ConteudosController extends Controller
             }
             return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
         }
-        return Inertia::location(route('Manager.Usuarios.login'));
+        return redirect()->route('Manager.Usuarios.login', [], 301);
     }
 
     /**
@@ -182,7 +182,7 @@ class ConteudosController extends Controller
     public function baixarArquivo($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $conteudo = Conteudo::query()
@@ -193,7 +193,7 @@ class ConteudosController extends Controller
             ->first();
 
         if (!$conteudo || !$conteudo->parametro->habilitar_arq) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         return Response::download(File::path('content/files/' . $conteudo_idioma->arquivo));
@@ -230,6 +230,6 @@ class ConteudosController extends Controller
             }
         }
 
-        return Inertia::location(route('Manager.Home.index'));
+        return redirect()->route('Manager.Home.index', [], 301);
     }
 }

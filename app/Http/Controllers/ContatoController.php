@@ -72,6 +72,6 @@ class ContatoController extends Controller
             ]);
         }
 
-        return Inertia::location(route('Contato.index'));
+        return redirect()->route('Contato.index', [], 301);
     }
 };

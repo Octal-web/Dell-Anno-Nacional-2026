@@ -80,7 +80,7 @@ class PostsCategoriasController extends Controller
      */
     public function editar($id) {
         if (!$id) {
-            return Inertia::location(route('Manager.Blog.index'));
+            return redirect()->route('Manager.Blog.index', [], 301);
         }
         
         $idiomas = Idioma::query()
@@ -112,7 +112,7 @@ class PostsCategoriasController extends Controller
             ->first();
 
         if(!$categoria) {
-            return Inertia::location(route('Manager.Blog.index'));
+            return redirect()->route('Manager.Blog.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -174,7 +174,7 @@ class PostsCategoriasController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Blog.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Blog.index'));
+                return redirect()->route('Manager.Blog.index', [], 301);
             }
 
             if (!$categoria_idioma) {

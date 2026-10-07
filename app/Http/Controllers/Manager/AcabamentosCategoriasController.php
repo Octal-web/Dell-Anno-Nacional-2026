@@ -39,7 +39,7 @@ class AcabamentosCategoriasController extends Controller
                 ->when($codigo, fn ($r) => $r->whereHas('idiomas', fn ($i) => $i->where('codigo', $codigo)))
                 ->when(!$codigo, fn ($r) => $r->whereHas('idiomas', fn ($i) => $i->where('padrao', true))),
         ])->first();
-        if (!$categoria) return Inertia::location(route('Manager.Acabamentos.index'));
+        if (!$categoria) return redirect()->route('Manager.Acabamentos.index', [], 301);
         return Inertia::render('Manager/Acabamentos/Categorias/editar', ['categoria' => [
             'id' => $categoria->id, 'nome' => optional($categoria->acabamentosCategoriasIdiomas->first())->nome,
         ]]);

@@ -27,7 +27,7 @@ class SlidesController extends Controller
     public function adicionar($tipo)
     {
         if (!$tipo || !in_array($tipo, ['imagem', 'video'])) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -52,7 +52,7 @@ class SlidesController extends Controller
     {
         if ($request->ajax()) {
             if (!$tipo || !in_array($tipo, ['imagem', 'video'])) {
-                return Inertia::location(route('Manager.Home.index'));
+                return redirect()->route('Manager.Home.index', [], 301);
             }
 
             $idioma = inertia()->getShared('idioma');
@@ -105,7 +105,7 @@ class SlidesController extends Controller
     public function editar($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -137,7 +137,7 @@ class SlidesController extends Controller
             ->first();
 
         if (!$slide) {
-            return Inertia::location(route('Manager.Home.index'));
+            return redirect()->route('Manager.Home.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -207,7 +207,7 @@ class SlidesController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Home.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Home.index'));
+                return redirect()->route('Manager.Home.index', [], 301);
             }
 
             if (!$slide_idioma) {

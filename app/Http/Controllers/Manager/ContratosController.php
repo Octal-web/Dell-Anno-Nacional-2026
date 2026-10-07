@@ -106,7 +106,7 @@ class ContratosController extends Controller
     public function editar($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Contratos.index'));
+            return redirect()->route('Manager.Contratos.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -138,7 +138,7 @@ class ContratosController extends Controller
             ->first();
 
         if (!$contrato) {
-            return Inertia::location(route('Manager.Contratos.index'));
+            return redirect()->route('Manager.Contratos.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -204,7 +204,7 @@ class ContratosController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Contratos.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Contratos.index'));
+                return redirect()->route('Manager.Contratos.index', [], 301);
             }
 
             if (!$contrato_idioma) {

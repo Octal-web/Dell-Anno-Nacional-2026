@@ -80,7 +80,7 @@ class ProjetosContatosController extends Controller
     public function editar($id)
     {
         if (!$id) {
-            return Inertia::location(route('Manager.Contato.index'));
+            return redirect()->route('Manager.Contato.index', [], 301);
         }
 
         $idiomas = Idioma::query()
@@ -112,7 +112,7 @@ class ProjetosContatosController extends Controller
             ->first();
 
         if (!$projeto) {
-            return Inertia::location(route('Manager.Contato.index'));
+            return redirect()->route('Manager.Contato.index', [], 301);
         }
 
         $idioma = inertia()->getShared('idioma');
@@ -176,7 +176,7 @@ class ProjetosContatosController extends Controller
                 if ($request->ajax()) {
                     return to_route('Manager.Contato.index')->with('message', ['type' => 'error', 'msg' => 'Não foi possível salvar as informações. Tente novamente mais tarde.']);
                 }
-                return Inertia::location(route('Manager.Contato.index'));
+                return redirect()->route('Manager.Contato.index', [], 301);
             }
 
             if (!$projeto_idioma) {

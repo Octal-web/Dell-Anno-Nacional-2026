@@ -115,7 +115,7 @@ class AmbientesController extends Controller
             ->first();
 
         if (!$ambiente) {
-            return Inertia::location(route('Manager.Ambientes.index'));
+            return redirect()->route('Manager.Ambientes.index', [], 301);
         }
 
         return Inertia::render('Manager/Ambientes/editar', [
