@@ -131,7 +131,7 @@ export const InputFileDropzone = ({
                         onDragLeave={handleDrag}
                         onDragOver={handleDrag}
                         onDrop={handleDrop}
-                        className={`relative border-2 border-dashed rounded-lg px-4 py-10 text-center cursor-pointer transition-colors ${
+                        className={`relative border-2 border-dashed px-4 py-10 text-center cursor-pointer transition-colors ${
                             isDragging
                                 ? "border-secondary bg-secondary bg-opacity-10"
                                 : "border-gray-300"
