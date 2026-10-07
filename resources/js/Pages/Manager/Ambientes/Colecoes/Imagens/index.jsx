@@ -104,7 +104,7 @@ const Page = () => {
                     <div className="min-h-[calc(100vh-13rem)] lg:col-span-1">
                         <ImageUploader
                             onUpload={handleImageUpload}
-                            crop={true}
+                            crop={false}
                             size={{ largura: 450, altura: 357 }}
                         />
                     </div>
