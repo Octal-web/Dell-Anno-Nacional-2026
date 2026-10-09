@@ -93,6 +93,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
     // URLs antigas do blog
     Route::get('/blog', fn () => redirect()->route('Blog.index', [], 301));
     Route::get('/blog/{slug}', fn ($slug) => redirect()->route('Blog.post', ['slug' => $slug], 301));
+    
+    Route::get('/wine-information', fn () => redirect()->to(asset('files/Wine_Information.pdf')));
 
     Route::get('/acabamentos', [AcabamentosController::class, 'index'])->name('Acabamentos.index');
 
