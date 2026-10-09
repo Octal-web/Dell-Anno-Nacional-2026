@@ -363,9 +363,27 @@ class LojasController extends Controller
                     }
                 ])
                 ->get()
-                ->map(function ($loja) {
-                    return $loja->lojasIdiomas->isNotEmpty() ? $loja->lojasIdiomas[0]->cidade : null;
+                ->flatMap(function ($loja) {
+                    $cidade = $loja->lojasIdiomas->isNotEmpty() ? $loja->lojasIdiomas[0]->cidade : null;
+
+                    if (!$cidade) {
+                        return [];
+                    }
+
+                    $palavras = preg_split('/\s+/', trim($cidade), -1, PREG_SPLIT_NO_EMPTY);
+
+                    if (count($palavras) <= 3) {
+                        return [implode(' ', $palavras)];
+                    }
+
+                    return [
+                        implode(' ', $palavras),
+                        implode(' ', array_slice($palavras, 1)),
+                        implode(' ', array_slice($palavras, 2)),
+                    ];
                 })
+                ->filter()
+                ->unique()
                 ->values()
                 ->all();
 
