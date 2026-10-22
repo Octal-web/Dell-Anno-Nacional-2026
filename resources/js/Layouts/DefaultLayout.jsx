@@ -211,6 +211,41 @@ const DefaultLayout = ({ children }) => {
         window.location.origin.replace("://www.", "://") +
         window.location.pathname;
 
+    const sejaLojistaUrl = (() => {
+        const params = new URLSearchParams(window.location.search);
+        const trackingKeys = [
+            "utm_source",
+            "campaign",
+            "utm_campaign",
+            "group",
+            "utm_group",
+            "utm_medium",
+            "ad",
+            "utm_content",
+            "utm_term",
+        ];
+
+        const origin = params.get("origin") || params.get("utm_source") || "";
+        const query = [
+            [
+                "origin",
+                origin
+                    ? `${origin} - Site Institucional`
+                    : "Site Institucional",
+            ],
+            ...trackingKeys
+                .filter((key) => params.get(key))
+                .map((key) => [key, params.get(key)]),
+        ]
+            .map(
+                ([key, value]) =>
+                    `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+            )
+            .join("&");
+
+        return `/sejalojista?${query}`;
+    })();
+
     return (
         <>
             <Head>
@@ -325,12 +360,21 @@ const DefaultLayout = ({ children }) => {
                                         >
                                             {/* <Link href={route('Orcamentos.index')} className="lg:mx-4 border border-neutral-800 bg-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" >Design Consultation</Link> */}
 
-                                            <Link
-                                                href={route('Contato.index')}
-                                                className="lg:mx-4 border border-neutral-800 bg-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white uppercase"
-                                            >
-                                                Solicite orçamento
-                                            </Link>
+                                            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-2 lg:mx-4">
+                                                <Link
+                                                    href={route('Contato.index')}
+                                                    className="border border-neutral-800 bg-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white uppercase"
+                                                >
+                                                    Solicite orçamento
+                                                </Link>
+
+                                                <a
+                                                    href={sejaLojistaUrl}
+                                                    className="border border-neutral-800 bg-black text-white font-light text-center px-3 py-1.5 min-w-40 sm:min-w-44 transition-all hover:bg-white hover:text-black uppercase"
+                                                >
+                                                    Seja lojista
+                                                </a>
+                                            </div>
                                         </li>
                                     </ul>
                                 </nav>
