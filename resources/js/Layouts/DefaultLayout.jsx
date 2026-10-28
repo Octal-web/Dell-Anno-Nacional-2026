@@ -515,6 +515,16 @@ const DefaultLayout = ({ children }) => {
                                             Seja Lojista
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a
+                                            href="https://dellanno.com.br/unitoken"
+                                            target="blank"
+                                            className="block font-secondary text-white text-sm font-light leading-none transition-all opacity-70 hover:opacity-100"
+                                        >
+                                            Acompanhe seu pedido
+                                        </a>
+                                    </li>
                                 </ul>
                             </nav>
 
