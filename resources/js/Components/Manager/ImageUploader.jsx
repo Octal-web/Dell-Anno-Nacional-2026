@@ -5,7 +5,9 @@ import imageCompression from 'browser-image-compression';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt, faCheckCircle, faSpinner, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-export const ImageUploader = ({ onUpload, crop, size, uploadStatus }) => {
+const MAX_FILE_SIZE_MB = 10;
+
+export const ImageUploader =({ onUpload, crop, size, uploadStatus }) => {
     const [error, setError] = useState(null);
     const [queue, setQueue] = useState([]);
 
@@ -64,8 +66,20 @@ export const ImageUploader = ({ onUpload, crop, size, uploadStatus }) => {
         }
     };
 
-    const onDrop = useCallback(async (acceptedFiles) => {
+    const onDrop = useCallback(async (acceptedFiles, fileRejections = []) => {
         setError(null);
+
+        if (fileRejections.length > 0) {
+            const tooLarge = fileRejections.filter(({ errors }) => errors.some((e) => e.code === 'file-too-large'));
+            const names = (tooLarge.length > 0 ? tooLarge : fileRejections).map(({ file }) => file.name).join(', ');
+            setError(
+                tooLarge.length > 0
+                    ? `Arquivo(s) acima de ${MAX_FILE_SIZE_MB} MB ignorado(s): ${names}`
+                    : `Arquivo(s) inválido(s) ignorado(s): ${names}`
+            );
+        }
+
+        if (acceptedFiles.length === 0) return;
 
         const newQueueItems = acceptedFiles.map((file) => ({
             id: `${file.name}-${file.lastModified}-${Math.random().toString(36).slice(2)}`,
@@ -113,6 +127,7 @@ export const ImageUploader = ({ onUpload, crop, size, uploadStatus }) => {
             'image/jpg': ['.jpg'],
             'image/jpeg': ['.jpeg'],
         },
+        maxSize: MAX_FILE_SIZE_MB * 1024 * 1024,
     });
 
     const statusIcon = {

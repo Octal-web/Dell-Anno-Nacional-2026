@@ -53,9 +53,11 @@ export const CollectionEnvironmentSlides = ({ slides }) => {
                             spaceBetween: 20,
                         },
                         768: {
+                            slidesPerView: 2.46,
                             spaceBetween: 40,
                         },
                         1024: {
+                            slidesPerView: 2.46,
                             spaceBetween: 50,
                         },
                     }}
@@ -69,7 +71,7 @@ export const CollectionEnvironmentSlides = ({ slides }) => {
                             >
                                 <img
                                     src={slide.imagem}
-                                    className="w-full aspect-[3/2] md:aspect-[2.2/1] object-cover"
+                                    className="w-full aspect-[3/2] md:aspect-[5/4] object-cover"
                                     alt={slide.detalhes || `Imagem ${index + 1}`}
                                 />
 

@@ -84,6 +84,15 @@ class ImagensColecoesController extends Controller
             return redirect()->route('Manager.Ambientes.index', [], 301);
         }
 
+        $request->validate([
+            'images' => 'required|array',
+            'images.*.img' => 'required|file|image|max:10240',
+            'images.*.img_alt' => 'required|file|image|max:10240',
+        ], [
+            'images.*.img.max' => 'Cada imagem deve ter no máximo 10 MB.',
+            'images.*.img_alt.max' => 'Cada imagem deve ter no máximo 10 MB.',
+        ]);
+
         foreach ($request->file('images') as $image) {
             $imagem = new ImagemProjetoLoja;
             $imagem->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($image['img']->extension());
