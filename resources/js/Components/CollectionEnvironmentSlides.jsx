@@ -45,19 +45,24 @@ export const CollectionEnvironmentSlides = ({ slides }) => {
                 <Swiper
                     slidesPerView={1.4}
                     modules={[Autoplay]}
-                    loop={slides.length > 1}
-                    centeredSlides={slides.length != 2}
+                    loop={slides.length > 2}
+                    centeredSlides={slides.length > 1.4}
+                    centerInsufficientSlides={true}
                     spaceBetween={50}
                     breakpoints={{
                         0: {
+                            slidesPerView: 1.4,
+                            centeredSlides: slides.length > 1.4,
                             spaceBetween: 20,
                         },
                         768: {
                             slidesPerView: 2.46,
+                            centeredSlides: slides.length > 2.46,
                             spaceBetween: 40,
                         },
                         1024: {
                             slidesPerView: 2.46,
+                            centeredSlides: slides.length > 2.46,
                             spaceBetween: 50,
                         },
                     }}

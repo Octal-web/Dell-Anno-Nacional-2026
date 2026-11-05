@@ -94,7 +94,7 @@ const Page = () => {
                                         edit={true}
                                         routeParams={{ colecao: colecao.id }}
                                         crop={true}
-                                        size={{ largura: 450, altura: 357 }}
+                                        size={{ largura: 800, altura: 640 }}
                                     />
                                 </div>
                             ))}
@@ -105,7 +105,7 @@ const Page = () => {
                         <ImageUploader
                             onUpload={handleImageUpload}
                             crop={false}
-                            size={{ largura: 450, altura: 357 }}
+                            size={{ largura: 800, altura: 640 }}
                         />
                     </div>
                 </div>

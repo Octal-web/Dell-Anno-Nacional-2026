@@ -94,14 +94,14 @@ const Page = () => {
                         >
                             {state.map((image, index) => (
                                 <div key={index} className="relative h-full pb-12">
-                                    <IndividualImage key={index} individualContent={image} controller="Lojas.Projetos.Imagens" edit={true} crop={true} size={{ largura: 450, altura: 357 }} />
+                                    <IndividualImage key={index} individualContent={image} controller="Lojas.Projetos.Imagens" edit={true} crop={true} size={{ largura: 800, altura: 640 }} />
                                 </div>
                             ))}
                         </ReactSortable>
                     </div>
 
                     <div className="lg:col-span-1 min-h-[calc(100vh-13rem)]">
-                        <ImageUploader onUpload={handleImageUpload} crop={false} size={{ largura: 450, altura: 357 }} />
+                        <ImageUploader onUpload={handleImageUpload} crop={false} size={{ largura: 800, altura: 640 }} />
                     </div>
                 </div>
             </div>
