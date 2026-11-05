@@ -66,8 +66,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
     Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
 
-    Route::get('/sitemap.xml', [SitemapController::class, '__invoke'])->name('Sitemap.index');
-
     Route::get('/sobre', [InstitucionalController::class, 'index'])->name('Institucional.index');
 
     Route::get('/produtos', [ProdutosController::class, 'index'])->name('Produtos.index');

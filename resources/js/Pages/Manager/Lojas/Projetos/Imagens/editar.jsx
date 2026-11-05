@@ -20,7 +20,7 @@ const Page = () => {
     ];
 
     const inputItems = [
-        [{ titulo: 'Imagem', name: 'img', tamanho: 'col-span-12 md:col-span-6', tipo: 'imagem', crop: true, largura: 450, altura: 357, imagem: imagemItem.imagem }],
+        [{ titulo: 'Imagem', name: 'img', tamanho: 'col-span-12 md:col-span-6', tipo: 'imagem', crop: true, largura: 800, altura: 640, imagem: imagemItem.imagem }],
         [{ titulo: 'Detalhes', name: 'detalhes', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto_longo', editor: false, max: 720 }],
         [{ titulo: 'Acabamentos', name: 'acabamentos', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'select', isMulti: true, options: acabamentos }, { titulo: 'Coleções', name: 'colecoes', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'select', isMulti: true, options: colecoes }],
     ];
