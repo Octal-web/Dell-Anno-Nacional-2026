@@ -101,7 +101,7 @@ const Page = () => {
                     </div>
 
                     <div className="lg:col-span-1 min-h-[calc(100vh-13rem)]">
-                        <ImageUploader onUpload={handleImageUpload} crop={false} size={{ largura: 800, altura: 640 }} />
+                        <ImageUploader onUpload={handleImageUpload} crop={false} size={{ largura: 800, altura: 640 }} maxSizeMb={15} />
                     </div>
                 </div>
             </div>

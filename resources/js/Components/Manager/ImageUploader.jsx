@@ -5,9 +5,9 @@ import imageCompression from 'browser-image-compression';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt, faCheckCircle, faSpinner, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const MAX_FILE_SIZE_MB = 10;
+const DEFAULT_MAX_FILE_SIZE_MB = 10;
 
-export const ImageUploader =({ onUpload, crop, size, uploadStatus }) => {
+export const ImageUploader = ({ onUpload, crop, size, uploadStatus, maxSizeMb = DEFAULT_MAX_FILE_SIZE_MB }) => {
     const [error, setError] = useState(null);
     const [queue, setQueue] = useState([]);
 
@@ -74,7 +74,7 @@ export const ImageUploader =({ onUpload, crop, size, uploadStatus }) => {
             const names = (tooLarge.length > 0 ? tooLarge : fileRejections).map(({ file }) => file.name).join(', ');
             setError(
                 tooLarge.length > 0
-                    ? `Arquivo(s) acima de ${MAX_FILE_SIZE_MB} MB ignorado(s): ${names}`
+                    ? `Arquivo(s) acima de ${maxSizeMb} MB ignorado(s): ${names}`
                     : `Arquivo(s) inválido(s) ignorado(s): ${names}`
             );
         }
@@ -102,7 +102,7 @@ export const ImageUploader =({ onUpload, crop, size, uploadStatus }) => {
         );
 
         onUpload(processedImages);
-    }, [onUpload, crop]);
+    }, [onUpload, crop, maxSizeMb]);
 
     useEffect(() => {
         if (!uploadStatus || uploadStatus === 'idle') return;
@@ -127,7 +127,7 @@ export const ImageUploader =({ onUpload, crop, size, uploadStatus }) => {
             'image/jpg': ['.jpg'],
             'image/jpeg': ['.jpeg'],
         },
-        maxSize: MAX_FILE_SIZE_MB * 1024 * 1024,
+        maxSize: maxSizeMb * 1024 * 1024,
     });
 
     const statusIcon = {

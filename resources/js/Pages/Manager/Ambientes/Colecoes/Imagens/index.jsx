@@ -106,6 +106,7 @@ const Page = () => {
                             onUpload={handleImageUpload}
                             crop={false}
                             size={{ largura: 800, altura: 640 }}
+                            maxSizeMb={15}
                         />
                     </div>
                 </div>
