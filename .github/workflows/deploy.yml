@@ -75,22 +75,22 @@ jobs:
       - name: Add known hosts
         run: ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
-      - name: Deploy application
-        run: |
-          rsync -az --delete \
-            --include="/public/build/***" \
-            --filter=':- .gitignore' \
-            --exclude=".git/" \
-            --exclude=".github/" \
-            --exclude=".env" \
-            --exclude="public/content/" \
-            --exclude="public/files/" \
-            --exclude="public/storage" \
-            -e "ssh -p $SSH_PORT" \
-            ./ \
-            "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH/"
-      - name: Finish deployment
-        run: |
-          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
-            cd '$SSH_DEPLOY_PATH'
-          "
+      # - name: Deploy application
+      #   run: |
+      #     rsync -az --delete \
+      #       --include="/public/build/***" \
+      #       --filter=':- .gitignore' \
+      #       --exclude=".git/" \
+      #       --exclude=".github/" \
+      #       --exclude=".env" \
+      #       --exclude="public/content/" \
+      #       --exclude="public/files/" \
+      #       --exclude="public/storage" \
+      #       -e "ssh -p $SSH_PORT" \
+      #       ./ \
+      #       "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH/"
+      # - name: Finish deployment
+      #   run: |
+      #     ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "
+      #       cd '$SSH_DEPLOY_PATH'
+      #     "
