@@ -14,7 +14,7 @@ class PostStoreProjectImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'img' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:5120',
+            'img' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:15360',
             'detalhes' => 'nullable|string|max:720',
             'acabamentos' => 'nullable|array',
             'acabamentos.*' => 'integer|exists:acabamentos,id',

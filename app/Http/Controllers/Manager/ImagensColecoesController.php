@@ -86,10 +86,10 @@ class ImagensColecoesController extends Controller
 
         $request->validate([
             'images' => 'required|array',
-            'images.*.img' => 'required|file|image|max:10240',
+            'images.*.img' => 'required|file|image|max:15360',
             'images.*.img_alt' => 'required|file|image|max:10240',
         ], [
-            'images.*.img.max' => 'Cada imagem deve ter no máximo 10 MB.',
+            'images.*.img.max' => 'Cada imagem deve ter no máximo 15 MB.',
             'images.*.img_alt.max' => 'Cada imagem deve ter no máximo 10 MB.',
         ]);
 
@@ -107,7 +107,7 @@ class ImagensColecoesController extends Controller
 
             $compressor->compressOrFallback(
                 $image['img']->getRealPath(),
-                public_path('content/stores/projects/gallery/b/' . $imagem->imagem)
+                public_path('content/stores/projects/gallery/b/' . $imagem->imagem), 1920
             );
         }
 
@@ -199,7 +199,7 @@ class ImagensColecoesController extends Controller
 
             $compressor->compressOrFallback(
                 $request->file('img')->getRealPath(),
-                public_path('content/stores/projects/gallery/b/' . $imagem->imagem)
+                public_path('content/stores/projects/gallery/b/' . $imagem->imagem), 1920
             );
 
             if (File::exists(public_path('content/stores/projects/gallery/s/' . $imagem_original))) {

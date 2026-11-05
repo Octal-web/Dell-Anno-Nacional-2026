@@ -95,6 +95,14 @@ class ImagensLojasProjetosController extends Controller
                 return redirect()->route('Manager.Lojas.Projetos.index', [], 301);
             }
 
+            $request->validate([
+                'images' => 'required|array',
+                'images.*.img' => 'required|file|image|max:15360',
+                'images.*.img_alt' => 'required|file|image|max:10240',
+            ], [
+                'images.*.img.max' => 'Cada imagem deve ter no máximo 15 MB.',
+            ]);
+
             foreach ($request->file('images') as $image) {
                 $imagem = new ImagemProjetoLoja;
 
@@ -107,7 +115,7 @@ class ImagensLojasProjetosController extends Controller
                 if ($response) {
                     $compressor->compressOrFallback($image['img_alt']->getRealPath(), public_path('content/stores/projects/gallery/s/' . $imagem->imagem));
 
-                    $compressor->compressOrFallback($image['img']->getRealPath(), public_path('content/stores/projects/gallery/b/' . $imagem->imagem));
+                    $compressor->compressOrFallback($image['img']->getRealPath(), public_path('content/stores/projects/gallery/b/' . $imagem->imagem), 1920);
                 } else {
                     return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Erro ao salvar imagem']);
                 }
@@ -190,7 +198,7 @@ class ImagensLojasProjetosController extends Controller
 
             $compressor->compressOrFallback(
                 $request->file('img')->getRealPath(),
-                public_path('content/stores/projects/gallery/b/' . $imagem->imagem)
+                public_path('content/stores/projects/gallery/b/' . $imagem->imagem), 1920
             );
 
             if (File::exists(public_path('content/stores/projects/gallery/s/' . $imagem_original))) {
