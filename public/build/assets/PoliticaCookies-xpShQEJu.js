@@ -1,0 +1,1 @@
+import{u as e,j as o}from"./app-D-uGefaB.js";import{D as s}from"./DefaultLayout-IBebwvDc.js";import{P as r}from"./PolicyText-D0LBPWO3.js";const n=()=>{const{conteudo:t}=e().props;return o.jsx(s,{children:o.jsx(r,{content:{titulo:"Política de Cookies",texto:t}})})};export{n as default};
