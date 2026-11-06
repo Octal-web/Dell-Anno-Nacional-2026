@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -34,6 +34,41 @@ export const CollectionEnvironmentSlides = ({ slides }) => {
         ),
     }));
 
+    // Com mais de 2 slides é um carrossel de fato (loop). O loop do Swiper
+    // com centeredSlides + slidesPerView 2.46 precisa de folga dos dois lados
+    // do slide ativo; com poucos slides (ex.: 3 duplicados = 6) ele fica sem
+    // slide à direita. Repetimos a lista até ter pelo menos MIN_LOOP_SLIDES.
+    const MIN_LOOP_SLIDES = 10;
+    const isLoop = slides.length > 2;
+    const carouselSlides = useMemo(() => {
+        if (!isLoop) return slides;
+        const copies = Math.ceil(MIN_LOOP_SLIDES / slides.length);
+        return Array.from({ length: copies }, () => slides).flat();
+    }, [slides, isLoop]);
+
+    // Memoizado para o Swiper não reaplicar os breakpoints (e refazer o loop)
+    // a cada re-render, como ao abrir/fechar o lightbox.
+    const breakpoints = useMemo(
+        () => ({
+            0: {
+                slidesPerView: 1.4,
+                centeredSlides: slides.length > 1.4,
+                spaceBetween: 20,
+            },
+            768: {
+                slidesPerView: 2.46,
+                centeredSlides: slides.length > 2.46,
+                spaceBetween: 40,
+            },
+            1024: {
+                slidesPerView: 2.46,
+                centeredSlides: slides.length > 2.46,
+                spaceBetween: 50,
+            },
+        }),
+        [slides.length]
+    );
+
     const openLightbox = (index) => {
         setLightboxIndex(index);
         setLightboxOpen(true);
@@ -45,39 +80,23 @@ export const CollectionEnvironmentSlides = ({ slides }) => {
                 <Swiper
                     slidesPerView={1.4}
                     modules={[Autoplay]}
-                    loop={slides.length > 2}
+                    loop={isLoop}
                     centeredSlides={slides.length > 1.4}
                     centerInsufficientSlides={true}
                     spaceBetween={50}
-                    breakpoints={{
-                        0: {
-                            slidesPerView: 1.4,
-                            centeredSlides: slides.length > 1.4,
-                            spaceBetween: 20,
-                        },
-                        768: {
-                            slidesPerView: 2.46,
-                            centeredSlides: slides.length > 2.46,
-                            spaceBetween: 40,
-                        },
-                        1024: {
-                            slidesPerView: 2.46,
-                            centeredSlides: slides.length > 2.46,
-                            spaceBetween: 50,
-                        },
-                    }}
+                    breakpoints={breakpoints}
                 >
-                    {slides.map((slide, index) => (
-                        <SwiperSlide key={slide.id}>
+                    {carouselSlides.map((slide, i) => (
+                        <SwiperSlide key={`${slide.id}-${i}`}>
                             <button
                                 type="button"
-                                onClick={() => openLightbox(index)}
+                                onClick={() => openLightbox(i % slides.length)}
                                 className="relative block w-full 2xl:mb-10 overflow-hidden group"
                             >
                                 <img
                                     src={slide.imagem}
                                     className="w-full aspect-[3/2] md:aspect-[5/4] object-cover"
-                                    alt={slide.detalhes || `Imagem ${index + 1}`}
+                                    alt={slide.detalhes || `Imagem ${(i % slides.length) + 1}`}
                                 />
 
                                 <div className="hidden md:block absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-20" />
